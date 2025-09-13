@@ -14,7 +14,313 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alerts: {
+        Row: {
+          action_required: string | null
+          amu_entry_id: string | null
+          animal_id: string | null
+          can_dismiss: boolean | null
+          created_at: string
+          id: string
+          is_dismissed: boolean | null
+          message: string
+          title: string
+          type: Database["public"]["Enums"]["alert_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_required?: string | null
+          amu_entry_id?: string | null
+          animal_id?: string | null
+          can_dismiss?: boolean | null
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          message: string
+          title: string
+          type: Database["public"]["Enums"]["alert_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_required?: string | null
+          amu_entry_id?: string | null
+          animal_id?: string | null
+          can_dismiss?: boolean | null
+          created_at?: string
+          id?: string
+          is_dismissed?: boolean | null
+          message?: string
+          title?: string
+          type?: Database["public"]["Enums"]["alert_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_amu_entry_id_fkey"
+            columns: ["amu_entry_id"]
+            isOneToOne: false
+            referencedRelation: "amu_entries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_animal_id_fkey"
+            columns: ["animal_id"]
+            isOneToOne: false
+            referencedRelation: "animals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      amu_entries: {
+        Row: {
+          administered_by: string | null
+          administration_date: string
+          animal_id: string
+          antimicrobial_id: string
+          batch_number: string | null
+          created_at: string
+          dosage_given: string
+          id: string
+          notes: string | null
+          prescription_id: string | null
+          updated_at: string
+          user_id: string
+          withdrawal_end_date: string
+        }
+        Insert: {
+          administered_by?: string | null
+          administration_date: string
+          animal_id: string
+          antimicrobial_id: string
+          batch_number?: string | null
+          created_at?: string
+          dosage_given: string
+          id?: string
+          notes?: string | null
+          prescription_id?: string | null
+          updated_at?: string
+          user_id: string
+          withdrawal_end_date: string
+        }
+        Update: {
+          administered_by?: string | null
+          administration_date?: string
+          animal_id?: string
+          antimicrobial_id?: string
+          batch_number?: string | null
+          created_at?: string
+          dosage_given?: string
+          id?: string
+          notes?: string | null
+          prescription_id?: string | null
+          updated_at?: string
+          user_id?: string
+          withdrawal_end_date?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "amu_entries_animal_id_fkey"
+            columns: ["animal_id"]
+            isOneToOne: false
+            referencedRelation: "animals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "amu_entries_antimicrobial_id_fkey"
+            columns: ["antimicrobial_id"]
+            isOneToOne: false
+            referencedRelation: "antimicrobials"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "amu_entries_prescription_id_fkey"
+            columns: ["prescription_id"]
+            isOneToOne: false
+            referencedRelation: "prescriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      animals: {
+        Row: {
+          age_months: number | null
+          animal_id: string
+          breed: string | null
+          created_at: string
+          id: string
+          species: Database["public"]["Enums"]["animal_species"]
+          status: string | null
+          updated_at: string
+          user_id: string
+          weight_kg: number | null
+        }
+        Insert: {
+          age_months?: number | null
+          animal_id: string
+          breed?: string | null
+          created_at?: string
+          id?: string
+          species: Database["public"]["Enums"]["animal_species"]
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          weight_kg?: number | null
+        }
+        Update: {
+          age_months?: number | null
+          animal_id?: string
+          breed?: string | null
+          created_at?: string
+          id?: string
+          species?: Database["public"]["Enums"]["animal_species"]
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          weight_kg?: number | null
+        }
+        Relationships: []
+      }
+      antimicrobials: {
+        Row: {
+          active_ingredient: string | null
+          created_at: string
+          id: string
+          mrl_limit_mg_kg: number | null
+          name: string
+          withdrawal_period_days: number
+        }
+        Insert: {
+          active_ingredient?: string | null
+          created_at?: string
+          id?: string
+          mrl_limit_mg_kg?: number | null
+          name: string
+          withdrawal_period_days: number
+        }
+        Update: {
+          active_ingredient?: string | null
+          created_at?: string
+          id?: string
+          mrl_limit_mg_kg?: number | null
+          name?: string
+          withdrawal_period_days?: number
+        }
+        Relationships: []
+      }
+      prescriptions: {
+        Row: {
+          animal_id: string
+          antimicrobial_id: string
+          created_at: string
+          dosage: string
+          duration_days: number
+          expiry_date: string | null
+          file_url: string | null
+          frequency: string
+          id: string
+          issue_date: string
+          notes: string | null
+          prescription_id: string
+          reason: Database["public"]["Enums"]["amu_reason"]
+          status: string | null
+          updated_at: string
+          user_id: string
+          veterinarian_license: string | null
+          veterinarian_name: string
+        }
+        Insert: {
+          animal_id: string
+          antimicrobial_id: string
+          created_at?: string
+          dosage: string
+          duration_days: number
+          expiry_date?: string | null
+          file_url?: string | null
+          frequency: string
+          id?: string
+          issue_date: string
+          notes?: string | null
+          prescription_id: string
+          reason: Database["public"]["Enums"]["amu_reason"]
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          veterinarian_license?: string | null
+          veterinarian_name: string
+        }
+        Update: {
+          animal_id?: string
+          antimicrobial_id?: string
+          created_at?: string
+          dosage?: string
+          duration_days?: number
+          expiry_date?: string | null
+          file_url?: string | null
+          frequency?: string
+          id?: string
+          issue_date?: string
+          notes?: string | null
+          prescription_id?: string
+          reason?: Database["public"]["Enums"]["amu_reason"]
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          veterinarian_license?: string | null
+          veterinarian_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescriptions_animal_id_fkey"
+            columns: ["animal_id"]
+            isOneToOne: false
+            referencedRelation: "animals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prescriptions_antimicrobial_id_fkey"
+            columns: ["antimicrobial_id"]
+            isOneToOne: false
+            referencedRelation: "antimicrobials"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          farm_name: string | null
+          full_name: string | null
+          id: string
+          language: string | null
+          role: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          farm_name?: string | null
+          full_name?: string | null
+          id?: string
+          language?: string | null
+          role?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          farm_name?: string | null
+          full_name?: string | null
+          id?: string
+          language?: string | null
+          role?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +329,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      alert_type: "urgent" | "warning" | "compliant" | "pending"
+      amu_reason:
+        | "treatment"
+        | "prevention"
+        | "metaphylaxis"
+        | "growth_promotion"
+      animal_species: "cattle" | "sheep" | "goat" | "pig" | "poultry"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +462,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      alert_type: ["urgent", "warning", "compliant", "pending"],
+      amu_reason: [
+        "treatment",
+        "prevention",
+        "metaphylaxis",
+        "growth_promotion",
+      ],
+      animal_species: ["cattle", "sheep", "goat", "pig", "poultry"],
+    },
   },
 } as const

@@ -11,70 +11,25 @@ import {
   X
 } from "lucide-react";
 import { AlertBadge } from "./AlertBadge";
-
-interface Alert {
-  id: string;
-  type: "urgent" | "warning" | "compliant" | "pending";
-  title: string;
-  message: string;
-  animalId?: string;
-  date: string;
-  actionRequired?: string;
-  canDismiss?: boolean;
-}
+import { useRealTimeAlerts } from "@/hooks/useRealTimeAlerts";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const AlertCenter = () => {
-  const alerts: Alert[] = [
-    {
-      id: "1",
-      type: "urgent",
-      title: "Withdrawal Period Violation Risk",
-      message: "COW-023 scheduled for slaughter in 2 days but withdrawal period ends in 5 days",
-      animalId: "COW-023",
-      date: "2024-01-15",
-      actionRequired: "Delay slaughter until Jan 20th",
-      canDismiss: false
-    },
-    {
-      id: "2", 
-      type: "warning",
-      title: "Upcoming Withdrawal End",
-      message: "Milk withdrawal period for GOAT-015 ends tomorrow",
-      animalId: "GOAT-015",
-      date: "2024-01-16",
-      actionRequired: "Resume milk collection after 24h",
-      canDismiss: true
-    },
-    {
-      id: "3",
-      type: "compliant",
-      title: "Successful AMU Logging",
-      message: "AMU entry for PIG-008 submitted successfully. MRL compliance verified.",
-      animalId: "PIG-008", 
-      date: "2024-01-14",
-      canDismiss: true
-    },
-    {
-      id: "4",
-      type: "pending",
-      title: "Prescription Verification Pending",
-      message: "Veterinary prescription for SHEEP-012 requires verification",
-      animalId: "SHEEP-012",
-      date: "2024-01-13",
-      actionRequired: "Contact veterinarian",
-      canDismiss: false
-    },
-    {
-      id: "5",
-      type: "warning", 
-      title: "High AMU Frequency Alert",
-      message: "COW-007 has received 3 antimicrobial treatments this month",
-      animalId: "COW-007",
-      date: "2024-01-12",
-      actionRequired: "Review treatment protocol",
-      canDismiss: true
-    }
-  ];
+  const { alerts, loading, dismissAlert } = useRealTimeAlerts();
+  const { user } = useAuth();
+  const { t } = useLanguage();
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">{t('loading')}</p>
+        </div>
+      </div>
+    );
+  }
 
   const groupedAlerts = {
     urgent: alerts.filter(a => a.type === "urgent"),
@@ -83,7 +38,7 @@ export const AlertCenter = () => {
     compliant: alerts.filter(a => a.type === "compliant")
   };
 
-  const AlertItem = ({ alert }: { alert: Alert }) => (
+  const AlertItem = ({ alert }: { alert: any }) => (
     <Card className="shadow-card hover:shadow-elevated transition-smooth">
       <CardContent className="p-4">
         <div className="flex items-start justify-between space-x-4">
@@ -92,9 +47,9 @@ export const AlertCenter = () => {
               <AlertBadge type={alert.type}>
                 {alert.type.toUpperCase()}
               </AlertBadge>
-              {alert.animalId && (
+              {alert.animals?.animal_id && (
                 <Badge variant="outline" className="text-xs">
-                  {alert.animalId}
+                  {alert.animals.animal_id}
                 </Badge>
               )}
             </div>
@@ -102,27 +57,32 @@ export const AlertCenter = () => {
             <h4 className="font-medium text-foreground">{alert.title}</h4>
             <p className="text-sm text-muted-foreground">{alert.message}</p>
             
-            {alert.actionRequired && (
+            {alert.action_required && (
               <div className="flex items-center space-x-2 text-sm">
                 <Clock className="h-3 w-3 text-primary" />
-                <span className="text-primary font-medium">Action: {alert.actionRequired}</span>
+                <span className="text-primary font-medium">Action: {alert.action_required}</span>
               </div>
             )}
             
             <div className="flex items-center space-x-2 text-xs text-muted-foreground">
               <Calendar className="h-3 w-3" />
-              <span>{new Date(alert.date).toLocaleDateString()}</span>
+              <span>{new Date(alert.created_at).toLocaleDateString()}</span>
             </div>
           </div>
           
           <div className="flex flex-col space-y-2">
-            {alert.actionRequired && (
+            {alert.action_required && (
               <Button size="sm" variant="outline">
                 Take Action
               </Button>
             )}
-            {alert.canDismiss && (
-              <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground">
+            {alert.can_dismiss && (
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                className="text-muted-foreground hover:text-foreground"
+                onClick={() => dismissAlert(alert.id)}
+              >
                 <X className="h-3 w-3" />
               </Button>
             )}
@@ -138,7 +98,7 @@ export const AlertCenter = () => {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Bell className="h-5 w-5 text-primary" />
-            <span>Alert Center</span>
+            <span>{t('alerts')}</span>
             <Badge className="bg-destructive text-destructive-foreground">
               {groupedAlerts.urgent.length + groupedAlerts.warning.length + groupedAlerts.pending.length}
             </Badge>
@@ -146,56 +106,68 @@ export const AlertCenter = () => {
         </CardHeader>
       </Card>
 
-      {/* Urgent Alerts */}
-      {groupedAlerts.urgent.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <AlertTriangle className="h-4 w-4 text-destructive" />
-            <h3 className="font-semibold text-destructive">Urgent Alerts</h3>
-          </div>
-          {groupedAlerts.urgent.map(alert => (
-            <AlertItem key={alert.id} alert={alert} />
-          ))}
-        </div>
-      )}
+      {alerts.length === 0 ? (
+        <Card className="shadow-card">
+          <CardContent className="p-8 text-center">
+            <CheckCircle className="h-12 w-12 text-success mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">No Active Alerts</h3>
+            <p className="text-muted-foreground">All your animals are compliant with withdrawal periods.</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          {/* Urgent Alerts */}
+          {groupedAlerts.urgent.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <AlertTriangle className="h-4 w-4 text-destructive" />
+                <h3 className="font-semibold text-destructive">Urgent Alerts</h3>
+              </div>
+              {groupedAlerts.urgent.map(alert => (
+                <AlertItem key={alert.id} alert={alert} />
+              ))}
+            </div>
+          )}
 
-      {/* Warning Alerts */}
-      {groupedAlerts.warning.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Clock className="h-4 w-4 text-warning" />
-            <h3 className="font-semibold text-warning">Warnings</h3>
-          </div>
-          {groupedAlerts.warning.map(alert => (
-            <AlertItem key={alert.id} alert={alert} />
-          ))}
-        </div>
-      )}
+          {/* Warning Alerts */}
+          {groupedAlerts.warning.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Clock className="h-4 w-4 text-warning" />
+                <h3 className="font-semibold text-warning">Warnings</h3>
+              </div>
+              {groupedAlerts.warning.map(alert => (
+                <AlertItem key={alert.id} alert={alert} />
+              ))}
+            </div>
+          )}
 
-      {/* Pending Items */}
-      {groupedAlerts.pending.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Clock className="h-4 w-4 text-muted-foreground" />
-            <h3 className="font-semibold text-muted-foreground">Pending</h3>
-          </div>
-          {groupedAlerts.pending.map(alert => (
-            <AlertItem key={alert.id} alert={alert} />
-          ))}
-        </div>
-      )}
+          {/* Pending Items */}
+          {groupedAlerts.pending.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <h3 className="font-semibold text-muted-foreground">Pending</h3>
+              </div>
+              {groupedAlerts.pending.map(alert => (
+                <AlertItem key={alert.id} alert={alert} />
+              ))}
+            </div>
+          )}
 
-      {/* Recent Success */}
-      {groupedAlerts.compliant.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="h-4 w-4 text-success" />
-            <h3 className="font-semibold text-success">Recent Activity</h3>
-          </div>
-          {groupedAlerts.compliant.slice(0, 2).map(alert => (
-            <AlertItem key={alert.id} alert={alert} />
-          ))}
-        </div>
+          {/* Recent Success */}
+          {groupedAlerts.compliant.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="h-4 w-4 text-success" />
+                <h3 className="font-semibold text-success">Recent Activity</h3>
+              </div>
+              {groupedAlerts.compliant.slice(0, 2).map(alert => (
+                <AlertItem key={alert.id} alert={alert} />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

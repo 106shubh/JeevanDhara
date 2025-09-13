@@ -5,22 +5,12 @@ import { Dashboard } from "@/components/Dashboard";
 import { AMUForm } from "@/components/AMUForm";
 import { AlertCenter } from "@/components/AlertCenter";
 import { PrescriptionManager } from "@/components/PrescriptionManager";
-import heroImage from "@/assets/hero-image.jpg";
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
-  
-  // Mock user data - in real app this would come from authentication
-  const userData = {
-    role: "farmer" as const,
-    name: "John Smith", 
-    farmName: "Green Valley Farm",
-    isOnline: true,
-    alertCount: 3
-  };
+  const [activeView, setActiveView] = useState("dashboard");
 
   const renderContent = () => {
-    switch (activeTab) {
+    switch (activeView) {
       case "dashboard":
         return <Dashboard />;
       case "log-amu":
@@ -29,48 +19,45 @@ const Index = () => {
         return <AlertCenter />;
       case "prescriptions":
         return <PrescriptionManager />;
-      case "analytics":
-        return (
-          <div className="text-center py-20">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Advanced Analytics</h2>
-            <p className="text-muted-foreground">Feature coming soon - detailed AMU analytics and insights</p>
-          </div>
-        );
       default:
         return <Dashboard />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header 
-        userRole={userData.role}
-        userName={userData.name}
-        farmName={userData.farmName}
-        isOnline={userData.isOnline}
-        alertCount={userData.alertCount}
-      />
-      
-      <Navigation 
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        userRole={userData.role}
-      />
-      
-      <main className="container mx-auto px-4 py-6 pb-20 md:pb-6">
-        {renderContent()}
-      </main>
-      
-      {/* Hero section for landing state */}
-      {activeTab === "dashboard" && (
-        <div className="fixed inset-0 -z-10 opacity-5">
-          <img 
-            src={heroImage} 
-            alt="Digital farm management" 
-            className="w-full h-full object-cover"
-          />
+    <div className="min-h-screen bg-gradient-subtle">
+      <Header />
+      <div className="flex h-[calc(100vh-80px)]">
+        <div className="w-64 hidden md:block">
+          <Navigation activeView={activeView} setActiveView={setActiveView} />
         </div>
-      )}
+        <main className="flex-1 overflow-auto p-6">
+          {renderContent()}
+        </main>
+      </div>
+      
+      {/* Mobile Navigation - Bottom */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 p-2">
+        <div className="flex justify-around">
+          {[
+            { id: 'dashboard', icon: "📊", label: "Dashboard" },
+            { id: 'log-amu', icon: "➕", label: "Log AMU" },
+            { id: 'alerts', icon: "🔔", label: "Alerts" },
+            { id: 'prescriptions', icon: "📋", label: "Scripts" }
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveView(item.id)}
+              className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+                activeView === item.id ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
+              }`}
+            >
+              <span className="text-lg">{item.icon}</span>
+              <span className="text-xs">{item.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
