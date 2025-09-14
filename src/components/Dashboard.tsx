@@ -24,12 +24,41 @@ import {
   Filter,
   Stethoscope,
   TrendingDown,
-  TrendingUp
+  TrendingUp,
+  BarChart2,
+  PieChart as PieChartIcon,
+  Users,
+  Calendar,
+  ArrowUpRight
 } from "lucide-react";
+import { motion, Variants } from "framer-motion";
 import { DashboardCard } from "./DashboardCard";
 import { AlertBadge } from "./AlertBadge";
 
 export const Dashboard = () => {
+  // Animation variants for staggered animations
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const itemVariants: Variants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
   // Sample data for charts
   const amuTrendData = [
     { month: 'Jan', usage: 12, compliance: 95 },
@@ -55,45 +84,70 @@ export const Dashboard = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <motion.div 
+      className="space-y-6"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}>
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <DashboardCard
-          title="Total Animals"
-          value="247"
-          change="+12 this month"
-          changeType="positive"
-          icon={<Stethoscope className="h-4 w-4" />}
-        />
-        <DashboardCard
-          title="Active Treatments"
-          value="8"
-          change="-3 from last week"
-          changeType="positive"
-          icon={<Activity className="h-4 w-4" />}
-        />
-        <DashboardCard
-          title="MRL Compliance"
-          value="98.5%"
-          change="+2.1% improvement"
-          changeType="positive"
-          icon={<CheckCircle className="h-4 w-4" />}
-        />
-        <DashboardCard
-          title="Pending Alerts"
-          value="3"
-          change="2 urgent"
-          changeType="negative"
-          icon={<AlertTriangle className="h-4 w-4" />}
-        />
-      </div>
+      <motion.div 
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+        variants={containerVariants}
+      >
+        <motion.div variants={itemVariants}>
+          <DashboardCard
+            title="Total Animals"
+            value="247"
+            change="+12 this month"
+            changeType="positive"
+            icon={<Stethoscope className="h-4 w-4" />}
+            className="transform transition-all duration-300 hover:scale-105 hover:shadow-elevated"
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <DashboardCard
+            title="Active Treatments"
+            value="8"
+            change="-3 from last week"
+            changeType="positive"
+            icon={<Activity className="h-4 w-4" />}
+            className="transform transition-all duration-300 hover:scale-105 hover:shadow-elevated"
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <DashboardCard
+            title="MRL Compliance"
+            value="98.5%"
+            change="+2.1% improvement"
+            changeType="positive"
+            icon={<CheckCircle className="h-4 w-4" />}
+            className="transform transition-all duration-300 hover:scale-105 hover:shadow-elevated"
+          />
+        </motion.div>
+        <motion.div variants={itemVariants}>
+          <DashboardCard
+            title="Pending Alerts"
+            value="3"
+            change="2 urgent"
+            changeType="negative"
+            icon={<AlertTriangle className="h-4 w-4" />}
+            className="transform transition-all duration-300 hover:scale-105 hover:shadow-elevated"
+          />
+        </motion.div>
+      </motion.div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <motion.div
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
+        variants={containerVariants}>
         {/* AMU Trend Chart */}
-        <Card className="shadow-card">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-base">AMU Trends & Compliance</CardTitle>
+        <motion.div variants={itemVariants}>
+          <Card className="shadow-card overflow-hidden group hover:shadow-elevated transition-all duration-300">
+          <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
+            <CardTitle className="text-base flex items-center gap-2">
+              <BarChart2 className="h-5 w-5 text-primary" />
+              <span>AMU Trends & Compliance</span>
+            </CardTitle>
             <div className="flex space-x-2">
               <Button variant="outline" size="sm">
                 <Filter className="h-3 w-3 mr-1" />
@@ -106,7 +160,7 @@ export const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={300} className="mt-2">
               <LineChart data={amuTrendData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
                 <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
@@ -136,15 +190,20 @@ export const Dashboard = () => {
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
-        </Card>
+          </Card>
+        </motion.div>
 
         {/* Species Distribution */}
-        <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle className="text-base">AMU by Species</CardTitle>
+        <motion.div variants={itemVariants}>
+          <Card className="shadow-card overflow-hidden group hover:shadow-elevated transition-all duration-300">
+          <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
+            <CardTitle className="text-base flex items-center gap-2">
+              <PieChartIcon className="h-5 w-5 text-primary" />
+              <span>AMU by Species</span>
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={300} className="mt-2">
               <PieChart>
                 <Pie
                   data={speciesData}
@@ -162,12 +221,14 @@ export const Dashboard = () => {
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
-        </Card>
-      </div>
+          </Card>
+        </motion.div>
+      </motion.div>
 
       {/* Withdrawal Periods Table */}
-      <Card className="shadow-card">
-        <CardHeader>
+      <motion.div variants={itemVariants}>
+        <Card className="shadow-card overflow-hidden hover:shadow-elevated transition-all duration-300">
+        <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
           <CardTitle className="flex items-center space-x-2">
             <Clock className="h-5 w-5 text-primary" />
             <span>Active Withdrawal Periods</span>
@@ -176,15 +237,15 @@ export const Dashboard = () => {
         <CardContent>
           <div className="space-y-3">
             {withdrawalData.map((item) => (
-              <div key={item.animal} className="flex items-center justify-between p-3 rounded-lg border border-border hover:shadow-card transition-smooth">
-                <div className="flex items-center space-x-4">
+              <div key={item.animal} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 rounded-lg border border-border hover:shadow-card transition-smooth hover:bg-accent/10 transform hover:scale-[1.01]">
+                <div className="flex items-center space-x-4 mb-2 sm:mb-0">
                   <div>
                     <p className="font-medium text-foreground">{item.animal}</p>
                     <p className="text-sm text-muted-foreground">{item.drug}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="text-right">
+                <div className="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+                  <div className="text-left sm:text-right">
                     <p className="text-sm font-medium text-foreground">{item.daysLeft} days left</p>
                     <p className="text-xs text-muted-foreground">Until clearance</p>
                   </div>
@@ -196,36 +257,60 @@ export const Dashboard = () => {
             ))}
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </motion.div>
 
       {/* Quick Actions */}
-      <Card className="shadow-card">
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
+      <motion.div variants={itemVariants}>
+        <Card className="shadow-card overflow-hidden hover:shadow-elevated transition-all duration-300">
+        <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
+          <CardTitle className="flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-primary" />
+            <span>Quick Actions</span>
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button className="bg-gradient-primary h-auto p-4 justify-start">
-              <div className="text-left">
-                <div className="font-medium">Log New AMU</div>
-                <div className="text-xs opacity-80">Record antimicrobial usage</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-2">
+            <Button className="bg-gradient-primary h-auto p-4 justify-start group relative overflow-hidden hover:shadow-elevated transition-all duration-300">
+              <div className="text-left flex items-center gap-3">
+                <div className="bg-white/20 p-2 rounded-full">
+                  <Activity className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="font-medium group-hover:translate-x-1 transition-transform duration-300">Log New AMU</div>
+                  <div className="text-xs opacity-80 group-hover:translate-x-1 transition-transform duration-300">Record antimicrobial usage</div>
+                </div>
+                <ArrowUpRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </Button>
-            <Button variant="outline" className="h-auto p-4 justify-start">
-              <div className="text-left">
-                <div className="font-medium">Generate Report</div>
-                <div className="text-xs text-muted-foreground">Export compliance report</div>
+            <Button variant="outline" className="h-auto p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-primary/30 transition-all duration-300">
+              <div className="text-left flex items-center gap-3">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <BarChart2 className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <div className="font-medium group-hover:translate-x-1 transition-transform duration-300">Generate Report</div>
+                  <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">Export compliance report</div>
+                </div>
+                <ArrowUpRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
               </div>
             </Button>
-            <Button variant="outline" className="h-auto p-4 justify-start">
-              <div className="text-left">
-                <div className="font-medium">Check Alerts</div>
-                <div className="text-xs text-muted-foreground">View all notifications</div>
+            <Button variant="outline" className="h-auto p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-primary/30 transition-all duration-300">
+              <div className="text-left flex items-center gap-3">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <AlertTriangle className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <div className="font-medium group-hover:translate-x-1 transition-transform duration-300">Check Alerts</div>
+                  <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">View all notifications</div>
+                </div>
+                <ArrowUpRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
               </div>
             </Button>
           </div>
         </CardContent>
-      </Card>
-    </div>
+        </Card>
+      </motion.div>
+    </motion.div>
   );
 };

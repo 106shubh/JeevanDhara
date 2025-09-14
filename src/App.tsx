@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import { Auth } from "./pages/Auth";
+import Landing from "./pages/Landing";
 
 const queryClient = new QueryClient();
 
@@ -26,16 +27,20 @@ const App = () => {
       <TooltipProvider>
         <Routes>
           <Route 
+            path="/landing" 
+            element={<Landing />} 
+          />
+          <Route 
             path="/auth" 
             element={user ? <Navigate to="/" replace /> : <Auth />} 
           />
           <Route 
             path="/" 
-            element={user ? <Index /> : <Navigate to="/auth" replace />}
+            element={user ? <Index /> : <Navigate to="/landing" replace />}
           />
           <Route 
             path="*" 
-            element={<Navigate to={user ? "/" : "/auth"} replace />} 
+            element={<Navigate to={user ? "/" : "/landing"} replace />} 
           />
         </Routes>
       </TooltipProvider>
