@@ -37,7 +37,12 @@ export const Chatbot = () => {
   useEffect(() => {
     // Scroll to bottom when new message is added
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        setTimeout(() => {
+          scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }, 100);
+      }
     }
   }, [messages]);
 
@@ -129,21 +134,21 @@ export const Chatbot = () => {
         </p>
       </div>
 
-      <Card className="h-[600px] flex flex-col">
-        <CardHeader className="pb-4">
+      <Card className="h-[600px] flex flex-col overflow-hidden">
+        <CardHeader className="flex-shrink-0 pb-4 border-b border-border">
           <CardTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
             Chat with Farm Assistant
           </CardTitle>
         </CardHeader>
         
-        <CardContent className="flex-1 flex flex-col p-0">
-          <ScrollArea className="flex-1 px-6" ref={scrollAreaRef}>
-            <div className="space-y-4 pb-4">
+        <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
+          <ScrollArea className="flex-1 h-full" ref={scrollAreaRef}>
+            <div className="p-4 space-y-4 min-h-full">
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex items-start gap-3 ${
+                  className={`flex items-start gap-3 w-full ${
                     message.isBot ? 'justify-start' : 'justify-end'
                   }`}
                 >
@@ -154,14 +159,14 @@ export const Chatbot = () => {
                   )}
                   
                   <div
-                    className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                    className={`max-w-[70%] word-wrap break-words rounded-lg px-4 py-3 ${
                       message.isBot
                         ? 'bg-muted text-foreground'
-                        : 'bg-primary text-primary-foreground ml-auto'
+                        : 'bg-primary text-primary-foreground'
                     }`}
                   >
-                    <p className="whitespace-pre-wrap">{message.text}</p>
-                    <span className="text-xs opacity-70 mt-1 block">
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed break-words">{message.text}</p>
+                    <span className="text-xs opacity-70 mt-2 block">
                       {message.timestamp.toLocaleTimeString()}
                     </span>
                   </div>
@@ -175,14 +180,14 @@ export const Chatbot = () => {
               ))}
               
               {isLoading && (
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3 w-full">
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                     <Bot className="h-4 w-4 text-primary" />
                   </div>
-                  <div className="bg-muted text-foreground rounded-lg px-4 py-2">
+                  <div className="bg-muted text-foreground rounded-lg px-4 py-3 max-w-[70%]">
                     <div className="flex items-center gap-2">
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Assistant is typing...</span>
+                      <span className="text-sm">Assistant is typing...</span>
                     </div>
                   </div>
                 </div>
@@ -190,8 +195,8 @@ export const Chatbot = () => {
             </div>
           </ScrollArea>
           
-          <div className="border-t border-border p-6">
-            <div className="flex gap-2">
+          <div className="flex-shrink-0 border-t border-border p-4">
+            <div className="flex gap-2 mb-2">
               <Input
                 ref={inputRef}
                 placeholder={
@@ -219,7 +224,7 @@ export const Chatbot = () => {
                 )}
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs text-muted-foreground">
               {language === 'hindi'
                 ? "पशु स्वास्थ्य, खेती प्रबंधन, या दवा के बारे में पूछें"
                 : language === 'bengali'
