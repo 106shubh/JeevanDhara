@@ -5,6 +5,7 @@ import {
   Plus, 
   Bell, 
   FileText,
+  MessageCircle,
   Home
 } from "lucide-react";
 
@@ -21,6 +22,7 @@ export const Navigation = ({ activeView, setActiveView }: NavigationProps) => {
     { id: 'log-amu', label: t('logAMU'), icon: Plus },
     { id: 'alerts', label: t('alerts'), icon: Bell },
     { id: 'prescriptions', label: t('prescriptions'), icon: FileText },
+    { id: 'chatbot', label: t('chatbot'), icon: MessageCircle },
   ];
 
   return (

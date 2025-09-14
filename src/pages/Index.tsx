@@ -5,6 +5,7 @@ import { Dashboard } from "@/components/Dashboard";
 import { AMUForm } from "@/components/AMUForm";
 import { AlertCenter } from "@/components/AlertCenter";
 import { PrescriptionManager } from "@/components/PrescriptionManager";
+import { Chatbot } from "@/components/Chatbot";
 
 const Index = () => {
   const [activeView, setActiveView] = useState("dashboard");
@@ -19,6 +20,8 @@ const Index = () => {
         return <AlertCenter />;
       case "prescriptions":
         return <PrescriptionManager />;
+      case "chatbot":
+        return <Chatbot />;
       default:
         return <Dashboard />;
     }
@@ -43,7 +46,8 @@ const Index = () => {
             { id: 'dashboard', icon: "📊", label: "Dashboard" },
             { id: 'log-amu', icon: "➕", label: "Log AMU" },
             { id: 'alerts', icon: "🔔", label: "Alerts" },
-            { id: 'prescriptions', icon: "📋", label: "Scripts" }
+            { id: 'prescriptions', icon: "📋", label: "Scripts" },
+            { id: 'chatbot', icon: "💬", label: "Assistant" }
           ].map((item) => (
             <button
               key={item.id}

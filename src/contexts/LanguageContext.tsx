@@ -34,6 +34,11 @@ const translations: Translations = {
     hindi: 'नुस्खे',
     bengali: 'প্রেসক্রিপশন'
   },
+  chatbot: {
+    english: 'Farm Assistant',
+    hindi: 'कृषि सहायक',
+    bengali: 'কৃষি সহায়ক'
+  },
   
   // Authentication
   signIn: {
