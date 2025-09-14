@@ -49,11 +49,11 @@ export const Chatbot = () => {
   const getWelcomeMessage = () => {
     switch (language) {
       case 'hindi':
-        return "नमस्कार! मैं आपका कृषि सहायक हूं। मैं पशु स्वास्थ्य, खेती प्रबंधन, दवा उपयोग और MRL अनुपालन के बारे में आपकी मदद कर सकता हूं। आप मुझसे कोई भी प्रश्न पूछ सकते हैं।";
+        return "नमस्कार! मैं आपका कृषि सहायक हूं। आप मुझसे हिंदी, अंग्रेजी या हिंग्लिश में कोई भी प्रश्न पूछ सकते हैं। मैं पशु स्वास्थ्य, खेती प्रबंधन, दवा उपयोग और MRL अनुपालन के बारे में आपकी मदद कर सकता हूं।";
       case 'bengali':
-        return "নমস্কার! আমি আপনার কৃষি সহায়ক। আমি পশু স্বাস্থ্য, খামার ব্যবস্থাপনা, ওষুধ ব্যবহার এবং MRL সম্মতি সম্পর্কে সাহায্য করতে পারি। আমাকে যেকোনো প্রশ্ন জিজ্ঞাসা করুন।";
+        return "নমস্কার! আমি আপনার কৃষি সহায়ক। আপনি বাংলা, ইংরেজি বা মিশ্র ভাষায় আমাকে যেকোনো প্রশ্ন জিজ্ঞাসা করতে পারেন। আমি পশু স্বাস্থ্য, খামার ব্যবস্থাপনা, ওষুধ ব্যবহার এবং MRL সম্মতি সম্পর্কে সাহায্য করতে পারি।";
       default:
-        return "Hello! I'm your Farm Assistant. I can help you with animal health, farm management, medication usage, and MRL compliance. Feel free to ask me anything!";
+        return "Hello! I'm your Farm Assistant. You can ask me questions in English, Hindi, Bengali, or even Hinglish - whatever feels comfortable for you! I can help with animal health, farm management, medication usage, and MRL compliance.";
     }
   };
 
@@ -73,10 +73,7 @@ export const Chatbot = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke('chatbot', {
-        body: { 
-          message: inputMessage,
-          language: language === 'english' ? 'English' : language === 'hindi' ? 'Hindi' : 'Bengali'
-        }
+        body: { message: inputMessage }
       });
 
       if (error) throw error;
@@ -126,10 +123,10 @@ export const Chatbot = () => {
         <h2 className="text-3xl font-bold text-foreground">Farm Assistant</h2>
         <p className="text-muted-foreground">
           {language === 'hindi' 
-            ? "आपका व्यक्तिगत कृषि विशेषज्ञ - पशु स्वास्थ्य और खेती प्रबंधन में सहायता के लिए"
+            ? "आपका व्यक्तिगत कृषि विशेषज्ञ - पशु स्वास्थ्य और खेती प्रबंधन में सहायता के लिए। किसी भी भाषा में बात करें!"
             : language === 'bengali'
-            ? "আপনার ব্যক্তিগত কৃষি বিশেষজ্ঞ - পশু স্বাস্থ্য এবং খামার ব্যবস্থাপনার জন্য"
-            : "Your personal farming expert - Ask about animal health, farm management, and more"
+            ? "আপনার ব্যক্তিগত কৃষি বিশেষজ্ঞ - পশু স্বাস্থ্য এবং খামার ব্যবস্থাপনার জন্য। যেকোনো ভাষায় কথা বলুন!"
+            : "Your personal farming expert - Ask in any language including Hinglish!"
           }
         </p>
       </div>
@@ -226,10 +223,10 @@ export const Chatbot = () => {
             </div>
             <p className="text-xs text-muted-foreground">
               {language === 'hindi'
-                ? "पशु स्वास्थ्य, खेती प्रबंधन, या दवा के बारे में पूछें"
+                ? "पशु स्वास्थ्य, खेती प्रबंधन के बारे में पूछें - हिंदी, अंग्रेजी या हिंग्लिश में!"
                 : language === 'bengali'
-                ? "পশু স্বাস্থ্য, খামার ব্যবস্থাপনা বা ওষুধ সম্পর্কে জিজ্ঞাসা করুন"
-                : "Ask about animal health, farm management, or medications"
+                ? "পশু স্বাস্থ্য, খামার ব্যবস্থাপনা সম্পর্কে জিজ্ঞাসা করুন - যেকোনো ভাষায়!"
+                : "Ask about animal health, farm management - in any language or Hinglish!"
               }
             </p>
           </div>

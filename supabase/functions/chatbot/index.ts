@@ -14,7 +14,7 @@ serve(async (req) => {
   }
 
   try {
-    const { message, language } = await req.json();
+    const { message } = await req.json();
 
     const systemPrompt = `You are a helpful farm management and veterinary assistant. You specialize in:
     - Animal health and welfare
@@ -26,7 +26,23 @@ serve(async (req) => {
     - Disease prevention and treatment
     - Livestock care and nutrition
     
-    Always provide accurate, helpful, and professional advice. If you're unsure about medical treatments, recommend consulting a veterinarian. Respond in ${language === 'hindi' ? 'Hindi' : language === 'bengali' ? 'Bengali' : 'English'}.`;
+    LANGUAGE ADAPTATION INSTRUCTIONS:
+    - Always detect and respond in the EXACT same language/style as the user's message
+    - If user writes in English, respond in English
+    - If user writes in Hindi, respond in Hindi
+    - If user writes in Bengali, respond in Bengali
+    - If user writes in Hinglish (Hindi-English mix), respond in Hinglish using the same mixing pattern
+    - If user mixes languages, mirror their language mixing style exactly
+    - Be natural and comfortable with code-switching between languages within the same response
+    - Adapt your language formality level to match the user's style
+    
+    Examples of language adaptation:
+    - User: "Mere cow ka milk production kam ho gaya hai, kya karu?" → Respond in Hinglish
+    - User: "गाय को क्या दवाई देनी चाहिए?" → Respond in Hindi
+    - User: "What medicine should I give to my buffalo?" → Respond in English
+    - User: "Aaj morning mein dekha ki buffalo thoda sick lag raha hai" → Respond in Hinglish
+    
+    Always provide accurate, helpful, and professional advice. If you're unsure about medical treatments, recommend consulting a veterinarian. Match the user's communication style while maintaining professionalism.`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
