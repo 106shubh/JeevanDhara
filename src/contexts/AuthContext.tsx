@@ -42,7 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 user_id: session.user.id,
                 full_name: session.user.user_metadata?.full_name || '',
                 language: 'english'
-              });
+              }, { onConflict: 'user_id' });
             if (error) console.error('Error creating profile:', error);
           }, 0);
         }

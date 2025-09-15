@@ -24,7 +24,11 @@ export const useRealTimeAlerts = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      setAlerts([]);
+      return;
+    }
 
     const loadAlerts = async () => {
       const { data, error } = await supabase

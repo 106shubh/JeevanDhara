@@ -32,10 +32,22 @@ import {
   ArrowUpRight
 } from "lucide-react";
 import { motion, Variants } from "framer-motion";
+import { useState, useEffect } from "react";
 import { DashboardCard } from "./DashboardCard";
 import { AlertBadge } from "./AlertBadge";
 
 export const Dashboard = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+  // Check for mobile screen size on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   // Animation variants for staggered animations
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -85,13 +97,13 @@ export const Dashboard = () => {
 
   return (
     <motion.div 
-      className="space-y-6"
+      className="space-y-4 md:space-y-6 px-2 md:px-0"
       initial="hidden"
       animate="visible"
       variants={containerVariants}>
       {/* Key Metrics */}
       <motion.div 
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+        className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6"
         variants={containerVariants}
       >
         <motion.div variants={itemVariants}>
@@ -138,29 +150,29 @@ export const Dashboard = () => {
 
       {/* Charts Section */}
       <motion.div
-        className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8"
+        className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8"
         variants={containerVariants}>
         {/* AMU Trend Chart */}
         <motion.div variants={itemVariants}>
           <Card className="shadow-card overflow-hidden group hover:shadow-elevated transition-all duration-300">
-          <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
-            <CardTitle className="text-base flex items-center gap-2">
-              <BarChart2 className="h-5 w-5 text-primary" />
-              <span>AMU Trends & Compliance</span>
+          <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300 px-3 md:px-6 py-3 md:py-4">
+            <CardTitle className="text-sm md:text-base flex items-center gap-1 md:gap-2">
+              <BarChart2 className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+              <span>{isMobile ? "AMU Trends" : "AMU Trends & Compliance"}</span>
             </CardTitle>
-            <div className="flex space-x-2">
-              <Button variant="outline" size="sm">
-                <Filter className="h-3 w-3 mr-1" />
-                Filter
+            <div className="flex space-x-1 md:space-x-2">
+              <Button variant="outline" size="sm" className="h-7 md:h-8 text-xs md:text-sm">
+                <Filter className="h-3 w-3 mr-0.5 md:mr-1" />
+                {!isMobile && "Filter"}
               </Button>
-              <Button variant="outline" size="sm">
-                <Download className="h-3 w-3 mr-1" />
-                Export
+              <Button variant="outline" size={isMobile ? "sm" : "sm"} className="h-7 md:h-8 text-xs md:text-sm">
+                <Download className="h-3 w-3 mr-0.5 md:mr-1" />
+                {!isMobile && "Export"}
               </Button>
             </div>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300} className="mt-2">
+          <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
+            <ResponsiveContainer width="100%" height={isMobile ? 200 : 300} className="mt-1 md:mt-2">
               <LineChart data={amuTrendData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
                 <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
@@ -196,14 +208,14 @@ export const Dashboard = () => {
         {/* Species Distribution */}
         <motion.div variants={itemVariants}>
           <Card className="shadow-card overflow-hidden group hover:shadow-elevated transition-all duration-300">
-          <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
-            <CardTitle className="text-base flex items-center gap-2">
-              <PieChartIcon className="h-5 w-5 text-primary" />
+          <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300 px-3 md:px-6 py-3 md:py-4">
+            <CardTitle className="text-sm md:text-base flex items-center gap-1 md:gap-2">
+              <PieChartIcon className="h-4 w-4 md:h-5 md:w-5 text-primary" />
               <span>AMU by Species</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300} className="mt-2">
+          <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
+            <ResponsiveContainer width="100%" height={isMobile ? 200 : 300} className="mt-1 md:mt-2">
               <PieChart>
                 <Pie
                   data={speciesData}
@@ -228,13 +240,13 @@ export const Dashboard = () => {
       {/* Withdrawal Periods Table */}
       <motion.div variants={itemVariants}>
         <Card className="shadow-card overflow-hidden hover:shadow-elevated transition-all duration-300">
-        <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
-          <CardTitle className="flex items-center space-x-2">
-            <Clock className="h-5 w-5 text-primary" />
+        <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300 px-3 md:px-6 py-3 md:py-4">
+          <CardTitle className="text-sm md:text-base flex items-center gap-1 md:gap-2">
+            <Clock className="h-4 w-4 md:h-5 md:w-5 text-primary" />
             <span>Active Withdrawal Periods</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
           <div className="space-y-3">
             {withdrawalData.map((item) => (
               <div key={item.animal} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 rounded-lg border border-border hover:shadow-card transition-smooth hover:bg-accent/10 transform hover:scale-[1.01]">
@@ -263,48 +275,48 @@ export const Dashboard = () => {
       {/* Quick Actions */}
       <motion.div variants={itemVariants}>
         <Card className="shadow-card overflow-hidden hover:shadow-elevated transition-all duration-300">
-        <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-primary" />
+        <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300 px-3 md:px-6 py-3 md:py-4">
+          <CardTitle className="text-sm md:text-base flex items-center gap-1 md:gap-2">
+            <Calendar className="h-4 w-4 md:h-5 md:w-5 text-primary" />
             <span>Quick Actions</span>
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-2">
-            <Button className="bg-gradient-primary h-auto p-4 justify-start group relative overflow-hidden hover:shadow-elevated transition-all duration-300">
-              <div className="text-left flex items-center gap-3">
-                <div className="bg-white/20 p-2 rounded-full">
-                  <Activity className="h-5 w-5" />
+        <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mt-1 md:mt-2">
+            <Button className="bg-gradient-primary h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-elevated transition-all duration-300">
+              <div className="text-left flex items-center gap-2 md:gap-3">
+                <div className="bg-white/20 p-1.5 md:p-2 rounded-full">
+                  <Activity className="h-4 w-4 md:h-5 md:w-5" />
                 </div>
                 <div>
-                  <div className="font-medium group-hover:translate-x-1 transition-transform duration-300">Log New AMU</div>
+                  <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">Log New AMU</div>
                   <div className="text-xs opacity-80 group-hover:translate-x-1 transition-transform duration-300">Record antimicrobial usage</div>
                 </div>
-                <ArrowUpRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </Button>
-            <Button variant="outline" className="h-auto p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-primary/30 transition-all duration-300">
-              <div className="text-left flex items-center gap-3">
-                <div className="bg-primary/10 p-2 rounded-full">
-                  <BarChart2 className="h-5 w-5 text-primary" />
+            <Button variant="outline" className="h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-primary/30 transition-all duration-300">
+              <div className="text-left flex items-center gap-2 md:gap-3">
+                <div className="bg-primary/10 p-1.5 md:p-2 rounded-full">
+                  <BarChart2 className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                 </div>
                 <div>
-                  <div className="font-medium group-hover:translate-x-1 transition-transform duration-300">Generate Report</div>
+                  <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">Generate Report</div>
                   <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">Export compliance report</div>
                 </div>
-                <ArrowUpRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
+                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
               </div>
             </Button>
-            <Button variant="outline" className="h-auto p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-primary/30 transition-all duration-300">
-              <div className="text-left flex items-center gap-3">
-                <div className="bg-primary/10 p-2 rounded-full">
-                  <AlertTriangle className="h-5 w-5 text-primary" />
+            <Button variant="outline" className="h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-primary/30 transition-all duration-300">
+              <div className="text-left flex items-center gap-2 md:gap-3">
+                <div className="bg-primary/10 p-1.5 md:p-2 rounded-full">
+                  <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                 </div>
                 <div>
-                  <div className="font-medium group-hover:translate-x-1 transition-transform duration-300">Check Alerts</div>
+                  <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">Check Alerts</div>
                   <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">View all notifications</div>
                 </div>
-                <ArrowUpRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
+                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
               </div>
             </Button>
           </div>

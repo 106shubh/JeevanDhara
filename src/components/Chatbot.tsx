@@ -7,6 +7,7 @@ import { Send, Bot, User, Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { motion, Variants } from "framer-motion";
 
 interface Message {
   id: string;
@@ -23,6 +24,43 @@ export const Chatbot = () => {
   const { language, t } = useLanguage();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+  // Check for mobile screen size on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // Animation variants
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3
+      }
+    }
+  };
+  
+  const iconVariants = {
+    hover: { scale: 1.2, rotate: 5, transition: { duration: 0.3 } }
+  };
 
   useEffect(() => {
     // Add welcome message
@@ -118,10 +156,15 @@ export const Chatbot = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="text-center space-y-2">
-        <h2 className="text-3xl font-bold text-foreground">Farm Assistant</h2>
-        <p className="text-muted-foreground">
+    <motion.div 
+      className="max-w-4xl mx-auto space-y-4 md:space-y-6 px-2 md:px-0"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div className="text-center space-y-2" variants={itemVariants}>
+        <h2 className="text-2xl md:text-3xl font-bold text-foreground">Farm Assistant</h2>
+        <p className="text-sm md:text-base text-muted-foreground">
           {language === 'hindi' 
             ? "आपका व्यक्तिगत कृषि विशेषज्ञ - पशु स्वास्थ्य और खेती प्रबंधन में सहायता के लिए। किसी भी भाषा में बात करें!"
             : language === 'bengali'
@@ -129,12 +172,15 @@ export const Chatbot = () => {
             : "Your personal farming expert - Ask in any language including Hinglish!"
           }
         </p>
-      </div>
+      </motion.div>
 
-      <Card className="h-[600px] flex flex-col overflow-hidden">
-        <CardHeader className="flex-shrink-0 pb-4 border-b border-border">
+      <motion.div variants={itemVariants}>
+        <Card className="h-[500px] md:h-[600px] flex flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/20">
+        <CardHeader className="flex-shrink-0 pb-4 border-b border-border transition-all duration-300">
           <CardTitle className="flex items-center gap-2">
-            <Bot className="h-5 w-5 text-primary" />
+            <motion.div whileHover={iconVariants.hover}>
+              <Bot className="h-5 w-5 text-primary" />
+            </motion.div>
             Chat with Farm Assistant
           </CardTitle>
         </CardHeader>
@@ -143,95 +189,135 @@ export const Chatbot = () => {
           <ScrollArea className="flex-1 h-full" ref={scrollAreaRef}>
             <div className="p-4 space-y-4 min-h-full">
               {messages.map((message) => (
-                <div
+                <motion.div
                   key={message.id}
-                  className={`flex items-start gap-3 w-full ${
+                  className={`flex items-start gap-2 md:gap-3 w-full ${
                     message.isBot ? 'justify-start' : 'justify-end'
                   }`}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="visible"
                 >
                   {message.isBot && (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-primary" />
-                    </div>
+                    <motion.div 
+                      className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/10 flex items-center justify-center"
+                      whileHover={iconVariants.hover}
+                    >
+                      <Bot className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                    </motion.div>
                   )}
                   
-                  <div
-                    className={`max-w-[70%] word-wrap break-words rounded-lg px-4 py-3 ${
+                  <motion.div
+                    className={`max-w-[75%] md:max-w-[70%] word-wrap break-words rounded-lg px-3 py-2 md:px-4 md:py-3 transition-all duration-300 ${
                       message.isBot
-                        ? 'bg-muted text-foreground'
-                        : 'bg-primary text-primary-foreground'
+                        ? 'bg-muted text-foreground hover:shadow-md'
+                        : 'bg-primary text-primary-foreground hover:shadow-md'
                     }`}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <p className="whitespace-pre-wrap text-sm leading-relaxed break-words">{message.text}</p>
-                    <span className="text-xs opacity-70 mt-2 block">
+                    <p className="whitespace-pre-wrap text-xs md:text-sm leading-relaxed break-words">{message.text}</p>
+                    <span className="text-[10px] md:text-xs opacity-70 mt-1 md:mt-2 block">
                       {message.timestamp.toLocaleTimeString()}
                     </span>
-                  </div>
+                  </motion.div>
                   
                   {!message.isBot && (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="h-4 w-4 text-primary" />
-                    </div>
+                    <motion.div 
+                      className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/10 flex items-center justify-center"
+                      whileHover={iconVariants.hover}
+                    >
+                      <User className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                    </motion.div>
                   )}
-                </div>
+                </motion.div>
               ))}
               
               {isLoading && (
-                <div className="flex items-start gap-3 w-full">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-primary" />
-                  </div>
-                  <div className="bg-muted text-foreground rounded-lg px-4 py-3 max-w-[70%]">
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      <span className="text-sm">Assistant is typing...</span>
+                <motion.div 
+                  className="flex items-start gap-2 md:gap-3 w-full justify-start"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <motion.div 
+                    className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/10 flex items-center justify-center"
+                    animate={{ rotate: [0, 10, 0, -10, 0] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                  >
+                    <Bot className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                  </motion.div>
+                  <motion.div 
+                    className="max-w-[75%] md:max-w-[70%] rounded-lg px-3 py-2 md:px-4 md:py-3 bg-muted text-foreground transition-all duration-300 hover:shadow-md"
+                    animate={{ scale: [1, 1.02, 1] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                  >
+                    <div className="flex items-center gap-1 md:gap-2">
+                      <Loader2 className="h-3 w-3 md:h-4 md:w-4 animate-spin" />
+                      <span className="text-xs md:text-sm">Assistant is typing...</span>
                     </div>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               )}
             </div>
           </ScrollArea>
           
-          <div className="flex-shrink-0 border-t border-border p-4">
-            <div className="flex gap-2 mb-2">
-              <Input
-                ref={inputRef}
-                placeholder={
-                  language === 'hindi' 
-                    ? "अपना संदेश टाइप करें..."
-                    : language === 'bengali'
-                    ? "আপনার বার্তা টাইপ করুন..."
-                    : "Type your message..."
-                }
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                disabled={isLoading}
-                className="flex-1"
-              />
-              <Button 
-                onClick={sendMessage} 
-                disabled={isLoading || !inputMessage.trim()}
-                className="px-3"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Send className="h-4 w-4" />
-                )}
-              </Button>
+          <motion.div 
+            className="flex-shrink-0 border-t border-border p-2 md:p-4"
+            variants={itemVariants}
+          >
+            <div className="flex gap-1 md:gap-2 mb-2">
+              <motion.div className="flex-1" whileHover={{ scale: 1.01 }} transition={{ duration: 0.2 }}>
+                <Input
+                  ref={inputRef}
+                  placeholder={
+                    language === 'hindi' 
+                      ? "अपना संदेश टाइप करें..."
+                      : language === 'bengali'
+                      ? "আপনার বার্তা টাইপ করুন..."
+                      : "Type your message..."
+                  }
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  disabled={isLoading}
+                  className="w-full transition-all duration-300 focus:border-primary/50 text-xs md:text-sm h-9 md:h-10"
+                />
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  onClick={sendMessage} 
+                  disabled={isLoading || !inputMessage.trim()}
+                  className="px-2 md:px-3 transition-all duration-300 h-9 md:h-10 w-9 md:w-10"
+                  size={isMobile ? "sm" : "default"}
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-3 w-3 md:h-4 md:w-4 animate-spin" />
+                  ) : (
+                    <motion.div whileHover={{ rotate: 15 }} transition={{ duration: 0.2 }}>
+                      <Send className="h-3 w-3 md:h-4 md:w-4" />
+                    </motion.div>
+                  )}
+                </Button>
+              </motion.div>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <motion.p 
+              className="text-xs text-muted-foreground"
+              initial={{ opacity: 0.8 }}
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               {language === 'hindi'
                 ? "पशु स्वास्थ्य, खेती प्रबंधन के बारे में पूछें - हिंदी, अंग्रेजी या हिंग्लिश में!"
                 : language === 'bengali'
                 ? "পশু স্বাস্থ্য, খামার ব্যবস্থাপনা সম্পর্কে জিজ্ঞাসা করুন - যেকোনো ভাষায়!"
                 : "Ask about animal health, farm management - in any language or Hinglish!"
               }
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </CardContent>
       </Card>
-    </div>
-  );
+      </motion.div>
+    </motion.div>
+    );
 };

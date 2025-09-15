@@ -30,34 +30,34 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-subtle">
       <Header />
-      <div className="flex h-[calc(100vh-80px)]">
-        <div className="w-64 hidden md:block">
+      <div className="flex h-[calc(100vh-80px)] pb-[60px] md:pb-0">
+        <div className="w-56 lg:w-64 hidden md:block">
           <Navigation activeView={activeView} setActiveView={setActiveView} />
         </div>
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-3 md:p-6">
           {renderContent()}
         </main>
       </div>
       
       {/* Mobile Navigation - Bottom */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 p-2">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 p-1 pb-safe">
         <div className="flex justify-around">
           {[
             { id: 'dashboard', icon: "📊", label: "Dashboard" },
-            { id: 'log-amu', icon: "➕", label: "Log AMU" },
+            { id: 'log-amu', icon: "➕", label: "Log" },
             { id: 'alerts', icon: "🔔", label: "Alerts" },
-            { id: 'prescriptions', icon: "📋", label: "Scripts" },
-            { id: 'chatbot', icon: "💬", label: "Assistant" }
+            { id: 'prescriptions', icon: "📋", label: "Rx" },
+            { id: 'chatbot', icon: "💬", label: "Chat" }
           ].map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveView(item.id)}
-              className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
+              className={`flex flex-col items-center p-1.5 rounded-lg transition-colors ${
                 activeView === item.id ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
               }`}
             >
-              <span className="text-lg">{item.icon}</span>
-              <span className="text-xs">{item.label}</span>
+              <span className="text-base md:text-lg">{item.icon}</span>
+              <span className="text-[10px]">{item.label}</span>
             </button>
           ))}
         </div>
