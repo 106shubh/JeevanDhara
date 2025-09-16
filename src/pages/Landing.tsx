@@ -18,11 +18,10 @@ import {
   X
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import heroImage from "@/assets/hero-image.jpg";
-import gradientBg from "@/assets/gradient-bg.svg";
-// ...existing code ...
-
-// Add this import at the top with other imports
+// Import images with public URL paths to ensure they work in production
+import heroImage from "/src/assets/hero-image.jpg";
+import gradientBg from "/src/assets/gradient-bg.svg";
+// Import dashboard preview component
 import { DashboardPreview } from "@/components/DashboardPreview";
 
 export const Landing = () => {

@@ -1,10 +1,11 @@
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import { Auth } from "./pages/Auth";
 import Landing from "./pages/Landing";
+import { NotFound } from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
