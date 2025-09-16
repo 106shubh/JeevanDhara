@@ -111,6 +111,72 @@ const translations: Translations = {
     bengali: 'ডোজ'
   },
   
+  // Dashboard translations
+  totalAnimals: {
+    english: 'Total Animals',
+    hindi: 'कुल पशु',
+    bengali: 'মোট পশু'
+  },
+  activeTreatments: {
+    english: 'Active Treatments',
+    hindi: 'सक्रिय उपचार',
+    bengali: 'সক্রিয় চিকিৎসা'
+  },
+  mrlCompliance: {
+    english: 'MRL Compliance',
+    hindi: 'एमआरएल अनुपालन',
+    bengali: 'এমআরএল কমপ্লায়েন্স'
+  },
+  pendingAlerts: {
+    english: 'Pending Alerts',
+    hindi: 'लंबित अलर्ट',
+    bengali: 'অপেক্ষমান সতর্কতা'
+  },
+  amuTrends: {
+    english: 'AMU Trends & Compliance',
+    hindi: 'एएमयू ट्रेंड्स और अनुपालन',
+    bengali: 'এএমইউ ট্রেন্ডস এবং কমপ্লায়েন্স'
+  },
+  amuBySpecies: {
+    english: 'AMU by Species',
+    hindi: 'प्रजाति के अनुसार एएमयू',
+    bengali: 'প্রজাতি অনুসারে এএমইউ'
+  },
+  withdrawalPeriods: {
+    english: 'Withdrawal Periods',
+    hindi: 'वापसी अवधि',
+    bengali: 'প্রত্যাহার সময়কাল'
+  },
+  filter: {
+    english: 'Filter',
+    hindi: 'फ़िल्टर',
+    bengali: 'ফিল্টার'
+  },
+  export: {
+    english: 'Export',
+    hindi: 'निर्यात',
+    bengali: 'রপ্তানি'
+  },
+  cattle: {
+    english: 'Cattle',
+    hindi: 'मवेशी',
+    bengali: 'গবাদি পশু'
+  },
+  sheep: {
+    english: 'Sheep',
+    hindi: 'भेड़',
+    bengali: 'ভেড়া'
+  },
+  goats: {
+    english: 'Goats',
+    hindi: 'बकरियां',
+    bengali: 'ছাগল'
+  },
+  pigs: {
+    english: 'Pigs',
+    hindi: 'सूअर',
+    bengali: 'শূকর'
+  },
   // Common
   submit: {
     english: 'Submit',
@@ -141,6 +207,126 @@ const translations: Translations = {
     english: 'Loading...',
     hindi: 'लोड हो रहा है...',
     bengali: 'লোড হচ্ছে...'
+  },
+  dashboard: {
+    english: 'Dashboard',
+    hindi: 'डैशबोर्ड',
+    bengali: 'ড্যাশবোর্ড'
+  },
+  logAMU: {
+    english: 'Log AMU',
+    hindi: 'एएमयू लॉग',
+    bengali: 'এএমইউ লগ'
+  },
+  alerts: {
+    english: 'Alerts',
+    hindi: 'अलर्ट',
+    bengali: 'সতর্কতা'
+  },
+  scripts: {
+    english: 'Scripts',
+    hindi: 'स्क्रिप्ट',
+    bengali: 'স্ক্রিপ্ট'
+  },
+  assistant: {
+    english: 'Assistant',
+    hindi: 'सहायक',
+    bengali: 'সহকারী'
+  },
+  scanPrescription: {
+    english: 'Scan Prescription',
+    hindi: 'नुस्खा स्कैन करें',
+    bengali: 'প্রেসক্রিপশন স্ক্যান করুন'
+  },
+  uploadFile: {
+    english: 'Upload File',
+    hindi: 'फ़ाइल अपलोड करें',
+    bengali: 'ফাইল আপলোড করুন'
+  },
+  uploadInstructions: {
+    english: 'Upload veterinary prescriptions (PDF, JPG, PNG) or use camera to scan',
+    hindi: 'पशु चिकित्सा नुस्खे अपलोड करें (PDF, JPG, PNG) या स्कैन करने के लिए कैमरा का उपयोग करें',
+    bengali: 'পশুচিকিৎসা প্রেসক্রিপশন আপলোড করুন (PDF, JPG, PNG) অথবা স্ক্যান করতে ক্যামেরা ব্যবহার করুন'
+  },
+  searchPrescriptions: {
+    english: 'Search prescriptions by animal ID, drug name, or veterinarian',
+    hindi: 'पशु आईडी, दवा का नाम, या पशु चिकित्सक द्वारा नुस्खे खोजें',
+    bengali: 'পশু আইডি, ওষুধের নাম, বা পশুচিকিৎসক দ্বারা প্রেসক্রিপশন খুঁজুন'
+  },
+  prescriptions: {
+    english: 'Prescription Management',
+    hindi: 'नुस्खा प्रबंधन',
+    bengali: 'প্রেসক্রিপশন ম্যানেজমেন্ট'
+  },
+  verified: {
+    english: 'Verified',
+    hindi: 'सत्यापित',
+    bengali: 'যাচাই করা'
+  },
+  pending: {
+    english: 'Pending',
+    hindi: 'लंबित',
+    bengali: 'বিচারাধীন'
+  },
+  expired: {
+    english: 'Expired',
+    hindi: 'समाप्त',
+    bengali: 'মেয়াদ শেষ'
+  },
+  prescribedBy: {
+    english: 'Prescribed by',
+    hindi: 'द्वारा निर्धारित',
+    bengali: 'দ্বারা নির্ধারিত'
+  },
+  date: {
+    english: 'Date',
+    hindi: 'तारीख',
+    bengali: 'তারিখ'
+  },
+  medication: {
+    english: 'Medication',
+    hindi: 'दवा',
+    bengali: 'ঔষধ'
+  },
+  dosage: {
+    english: 'Dosage',
+    hindi: 'खुराक',
+    bengali: 'মাত্রা'
+  },
+  viewDetails: {
+    english: 'View Details',
+    hindi: 'विवरण देखें',
+    bengali: 'বিস্তারিত দেখুন'
+  },
+  veterinarian: {
+    english: 'Veterinarian',
+    hindi: 'पशु चिकित्सक',
+    bengali: 'পশুচিকিৎসক'
+  },
+  drug: {
+    english: 'Drug',
+    hindi: 'दवा',
+    bengali: 'ঔষধ'
+  },
+  issueDate: {
+    english: 'Issue Date',
+    hindi: 'जारी करने की तारीख',
+    bengali: 'ইস্যু তারিখ'
+  },
+  view: {
+    english: 'View',
+    hindi: 'देखें',
+    bengali: 'দেখুন'
+  },
+  download: {
+    english: 'Download',
+    hindi: 'डाउनलोड',
+    bengali: 'ডাউনলোড'
+  },
+  verify: {
+    english: 'Verify',
+    hindi: 'सत्यापित करें',
+    bengali: 'যাচাই করুন'
   }
 };
 

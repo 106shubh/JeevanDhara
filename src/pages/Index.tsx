@@ -6,9 +6,11 @@ import { AMUForm } from "@/components/AMUForm";
 import { AlertCenter } from "@/components/AlertCenter";
 import { PrescriptionManager } from "@/components/PrescriptionManager";
 import { Chatbot } from "@/components/Chatbot";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const [activeView, setActiveView] = useState("dashboard");
+  const { t } = useLanguage();
 
   const renderContent = () => {
     switch (activeView) {
@@ -43,11 +45,11 @@ const Index = () => {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 p-2">
         <div className="flex justify-around">
           {[
-            { id: 'dashboard', icon: "📊", label: "Dashboard" },
-            { id: 'log-amu', icon: "➕", label: "Log AMU" },
-            { id: 'alerts', icon: "🔔", label: "Alerts" },
-            { id: 'prescriptions', icon: "📋", label: "Scripts" },
-            { id: 'chatbot', icon: "💬", label: "Assistant" }
+            { id: 'dashboard', icon: "📊", label: t('dashboard') },
+            { id: 'log-amu', icon: "➕", label: t('logAMU') },
+            { id: 'alerts', icon: "🔔", label: t('alerts') },
+            { id: 'prescriptions', icon: "📋", label: t('scripts') },
+            { id: 'chatbot', icon: "💬", label: t('assistant') }
           ].map((item) => (
             <button
               key={item.id}

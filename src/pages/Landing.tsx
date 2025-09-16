@@ -350,6 +350,7 @@ export const Landing = () => {
                     <div className="ml-2 text-sm font-medium">JeevanDhara Dashboard</div>
                   </div>
                 </div>
+                // Replace the img tag in the Benefits section with our new component
                 <div className="p-6">
                   <DashboardPreview />
                 </div>

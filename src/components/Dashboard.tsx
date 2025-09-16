@@ -34,8 +34,11 @@ import {
 import { motion, Variants } from "framer-motion";
 import { DashboardCard } from "./DashboardCard";
 import { AlertBadge } from "./AlertBadge";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Dashboard = () => {
+  const { t } = useLanguage();
+  
   // Animation variants for staggered animations
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -96,7 +99,7 @@ export const Dashboard = () => {
       >
         <motion.div variants={itemVariants}>
           <DashboardCard
-            title="Total Animals"
+            title={t('totalAnimals')}
             value="247"
             change="+12 this month"
             changeType="positive"
@@ -106,7 +109,7 @@ export const Dashboard = () => {
         </motion.div>
         <motion.div variants={itemVariants}>
           <DashboardCard
-            title="Active Treatments"
+            title={t('activeTreatments')}
             value="8"
             change="-3 from last week"
             changeType="positive"
@@ -116,7 +119,7 @@ export const Dashboard = () => {
         </motion.div>
         <motion.div variants={itemVariants}>
           <DashboardCard
-            title="MRL Compliance"
+            title={t('mrlCompliance')}
             value="98.5%"
             change="+2.1% improvement"
             changeType="positive"
@@ -126,7 +129,7 @@ export const Dashboard = () => {
         </motion.div>
         <motion.div variants={itemVariants}>
           <DashboardCard
-            title="Pending Alerts"
+            title={t('pendingAlerts')}
             value="3"
             change="2 urgent"
             changeType="negative"
@@ -146,16 +149,16 @@ export const Dashboard = () => {
           <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
             <CardTitle className="text-base flex items-center gap-2">
               <BarChart2 className="h-5 w-5 text-primary" />
-              <span>AMU Trends & Compliance</span>
+              <span>{t('amuTrends')}</span>
             </CardTitle>
             <div className="flex space-x-2">
               <Button variant="outline" size="sm">
                 <Filter className="h-3 w-3 mr-1" />
-                Filter
+                {t('filter')}
               </Button>
               <Button variant="outline" size="sm">
                 <Download className="h-3 w-3 mr-1" />
-                Export
+                {t('export')}
               </Button>
             </div>
           </CardHeader>

@@ -59,11 +59,11 @@ export const DashboardPreview = () => {
           >
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-xs text-muted-foreground">AMU Reduction</p>
-                <p className="text-lg font-bold">24%</p>
+                <p className="text-xs text-muted-foreground">AMU Score</p>
+                <p className="text-lg font-bold">8.2</p>
                 <div className="flex items-center mt-1">
                   <TrendingDown className="h-3 w-3 text-success mr-1" />
-                  <span className="text-xs text-success">-8%</span>
+                  <span className="text-xs text-success">-30%</span>
                 </div>
               </div>
               <div className="bg-primary/10 p-2 rounded-full">
@@ -81,8 +81,8 @@ export const DashboardPreview = () => {
                 <p className="text-xs text-muted-foreground">Compliance</p>
                 <p className="text-lg font-bold">98%</p>
                 <div className="flex items-center mt-1">
-                  <TrendingUp className="h-3 w-3 text-success mr-1" />
-                  <span className="text-xs text-success">+2%</span>
+                  <CheckCircle className="h-3 w-3 text-success mr-1" />
+                  <span className="text-xs text-success">+5%</span>
                 </div>
               </div>
               <div className="bg-primary/10 p-2 rounded-full">
@@ -100,33 +100,71 @@ export const DashboardPreview = () => {
           <div className="flex justify-between items-center mb-2">
             <p className="text-sm font-medium">AMU Trend</p>
             <div className="flex space-x-1">
-              <div className="h-2 w-4 bg-primary/20 rounded-sm"></div>
-              <div className="h-2 w-4 bg-primary/40 rounded-sm"></div>
-              <div className="h-2 w-4 bg-primary/60 rounded-sm"></div>
+              <div className="h-4 w-4 bg-primary/20 rounded-sm flex items-center justify-center">
+                <LineChart className="h-2.5 w-2.5 text-primary" />
+              </div>
+              <div className="h-4 w-4 bg-muted/50 rounded-sm flex items-center justify-center">
+                <BarChart2 className="h-2.5 w-2.5 text-muted-foreground" />
+              </div>
+              <div className="h-4 w-4 bg-muted/50 rounded-sm flex items-center justify-center">
+                <PieChart className="h-2.5 w-2.5 text-muted-foreground" />
+              </div>
             </div>
           </div>
-          <div className="h-[80px] w-full relative">
-            <svg width="100%" height="100%" viewBox="0 0 300 80" preserveAspectRatio="none">
-              <path 
-                d="M0,40 C60,10 140,60 300,30" 
-                fill="none" 
-                stroke="hsl(var(--primary) / 0.2)" 
-                strokeWidth="2"
-              />
-              <path 
-                d="M0,60 C100,30 200,50 300,40" 
-                fill="none" 
-                stroke="hsl(var(--primary) / 0.4)" 
-                strokeWidth="2"
-              />
-              <path 
-                d="M0,50 C50,30 250,10 300,20" 
-                fill="none" 
-                stroke="hsl(var(--primary))" 
-                strokeWidth="2"
-              />
-            </svg>
-            <div className="absolute bottom-0 left-0 right-0 h-[20px] bg-gradient-to-t from-card to-transparent"></div>
+          
+          {/* Chart Placeholder */}
+          <div className="h-24 w-full bg-muted/20 rounded-md relative overflow-hidden">
+            {/* Chart Lines */}
+            <div className="absolute bottom-0 left-0 w-full h-full flex items-end">
+              <div className="flex-1 h-[30%] border-t border-primary/30"></div>
+              <div className="flex-1 h-[60%] border-t border-primary/30"></div>
+              <div className="flex-1 h-[40%] border-t border-primary/30"></div>
+              <div className="flex-1 h-[20%] border-t border-primary/30"></div>
+              <div className="flex-1 h-[50%] border-t border-primary/30"></div>
+              <div className="flex-1 h-[70%] border-t border-primary/30"></div>
+            </div>
+            
+            {/* Chart Line */}
+            <div className="absolute bottom-0 left-0 w-full h-full">
+              <svg className="w-full h-full" preserveAspectRatio="none">
+                <path 
+                  d="M0,24 L40,12 L80,18 L120,6 L160,15 L200,9 L240,3" 
+                  fill="none" 
+                  stroke="hsl(var(--primary))" 
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+            
+            {/* Data Points */}
+            <div className="absolute bottom-0 left-0 w-full h-full flex justify-between items-end px-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary transform translate-y-[-24px]"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-primary transform translate-y-[-12px]"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-primary transform translate-y-[-18px]"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-primary transform translate-y-[-6px]"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-primary transform translate-y-[-15px]"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-primary transform translate-y-[-9px]"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-primary transform translate-y-[-3px]"></div>
+            </div>
+          </div>
+          
+          {/* Chart Legend */}
+          <div className="flex justify-between mt-2">
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center">
+                <div className="h-2 w-2 bg-primary rounded-sm mr-1"></div>
+                <span className="text-xs text-muted-foreground">AMU</span>
+              </div>
+              <div className="flex items-center">
+                <div className="h-2 w-2 bg-success rounded-sm mr-1"></div>
+                <span className="text-xs text-muted-foreground">Target</span>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <ArrowUpRight className="h-3 w-3 text-primary mr-1" />
+              <span className="text-xs text-primary">Details</span>
+            </div>
           </div>
         </motion.div>
 
@@ -135,10 +173,7 @@ export const DashboardPreview = () => {
           whileHover={{ scale: 1.02 }}
           className="bg-card border rounded-lg p-3 shadow-sm"
         >
-          <div className="flex justify-between items-center mb-2">
-            <p className="text-sm font-medium">Recent Alerts</p>
-            <Badge className="text-[10px] h-4">2 New</Badge>
-          </div>
+          <p className="text-sm font-medium mb-2">Recent Alerts</p>
           <div className="space-y-2">
             <div className="flex items-center justify-between bg-muted/50 p-2 rounded-md">
               <div className="flex items-center">
