@@ -18,6 +18,8 @@ import {
   X
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import heroImage from "@/assets/hero-image.jpg";
+import gradientBg from "@/assets/gradient-bg.svg";
 
 export const Landing = () => {
   const navigate = useNavigate();
@@ -94,7 +96,7 @@ export const Landing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundImage: 'url(/src/assets/gradient-bg.svg)', backgroundSize: 'cover' }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundImage: `url(${gradientBg})`, backgroundSize: 'cover' }}>
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto flex items-center justify-between px-6 py-4">
@@ -205,7 +207,7 @@ export const Landing = () => {
             <div className="relative bg-gradient-to-br from-card to-card/50 p-2 rounded-2xl shadow-2xl border border-border/50 overflow-hidden">
               <div className="aspect-video rounded-xl overflow-hidden shadow-inner">
                 <img 
-                  src="/src/assets/hero-image.jpg" 
+                  src={heroImage} 
                   alt="Farm Management" 
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
