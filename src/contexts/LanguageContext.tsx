@@ -14,30 +14,15 @@ interface Translations {
 
 const translations: Translations = {
   // Navigation
-  dashboard: {
-    english: 'Dashboard',
-    hindi: 'डैशबोर्ड',
-    bengali: 'ড্যাশবোর্ড'
-  },
   logAMU: {
     english: 'Log AMU',
     hindi: 'AMU लॉग करें',
     bengali: 'AMU লগ করুন'
   },
-  alerts: {
-    english: 'Alerts',
-    hindi: 'अलर्ट',
-    bengali: 'সতর্কতা'
-  },
   prescriptions: {
     english: 'Prescriptions',
     hindi: 'नुस्खे',
     bengali: 'প্রেসক্রিপশন'
-  },
-  chatbot: {
-    english: 'Farm Assistant',
-    hindi: 'कृषि सहायक',
-    bengali: 'কৃষি সহায়ক'
   },
   
   // Authentication
@@ -68,26 +53,6 @@ const translations: Translations = {
   },
   
   // Dashboard
-  totalAnimals: {
-    english: 'Total Animals',
-    hindi: 'कुल पशु',
-    bengali: 'মোট পশু'
-  },
-  activeTreatments: {
-    english: 'Active Treatments',
-    hindi: 'सक्रिय उपचार',
-    bengali: 'সক্রিয় চিকিৎসা'
-  },
-  mrlCompliance: {
-    english: 'MRL Compliance',
-    hindi: 'MRL अनुपालन',
-    bengali: 'MRL সম্মতি'
-  },
-  pendingAlerts: {
-    english: 'Pending Alerts',
-    hindi: 'लंबित अलर्ट',
-    bengali: 'অমীমাংসিত সতর্কতা'
-  },
   
   // Forms
   animalId: {
@@ -208,30 +173,20 @@ const translations: Translations = {
     hindi: 'लोड हो रहा है...',
     bengali: 'লোড হচ্ছে...'
   },
-  dashboard: {
-    english: 'Dashboard',
-    hindi: 'डैशबोर्ड',
-    bengali: 'ড্যাশবোর্ড'
+  all: {
+    english: 'All',
+    hindi: 'सभी',
+    bengali: 'সব'
   },
-  logAMU: {
+  logAMUData: {
     english: 'Log AMU',
     hindi: 'एएमयू लॉग',
     bengali: 'এএমইউ লগ'
-  },
-  alerts: {
-    english: 'Alerts',
-    hindi: 'अलर्ट',
-    bengali: 'সতর্কতা'
   },
   scripts: {
     english: 'Scripts',
     hindi: 'स्क्रिप्ट',
     bengali: 'স্ক্রিপ্ট'
-  },
-  assistant: {
-    english: 'Assistant',
-    hindi: 'सहायक',
-    bengali: 'সহকারী'
   },
   scanPrescription: {
     english: 'Scan Prescription',
@@ -252,11 +207,6 @@ const translations: Translations = {
     english: 'Search prescriptions by animal ID, drug name, or veterinarian',
     hindi: 'पशु आईडी, दवा का नाम, या पशु चिकित्सक द्वारा नुस्खे खोजें',
     bengali: 'পশু আইডি, ওষুধের নাম, বা পশুচিকিৎসক দ্বারা প্রেসক্রিপশন খুঁজুন'
-  },
-  prescriptions: {
-    english: 'Prescription Management',
-    hindi: 'नुस्खा प्रबंधन',
-    bengali: 'প্রেসক্রিপশন ম্যানেজমেন্ট'
   },
   verified: {
     english: 'Verified',
@@ -288,7 +238,7 @@ const translations: Translations = {
     hindi: 'दवा',
     bengali: 'ঔষধ'
   },
-  dosage: {
+  medicationDosage: {
     english: 'Dosage',
     hindi: 'खुराक',
     bengali: 'মাত্রা'
