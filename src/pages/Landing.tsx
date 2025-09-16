@@ -20,6 +20,10 @@ import {
 import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-image.jpg";
 import gradientBg from "@/assets/gradient-bg.svg";
+// ...existing code ...
+
+// Add this import at the top with other imports
+import { DashboardPreview } from "@/components/DashboardPreview";
 
 export const Landing = () => {
   const navigate = useNavigate();
@@ -347,11 +351,7 @@ export const Landing = () => {
                   </div>
                 </div>
                 <div className="p-6">
-                  <img 
-                    src="/dashboard-preview.svg" 
-                    alt="JeevanDhara Dashboard Preview" 
-                    className="w-full h-full object-contain rounded-lg"
-                  />
+                  <DashboardPreview />
                 </div>
               </div>
             </div>

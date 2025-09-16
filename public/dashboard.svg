@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <!-- Dashboard Background -->
+  <rect width="800" height="600" fill="#f8f9fa" rx="10" ry="10" />
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="800" height="60" fill="#ffffff" rx="10" ry="10" />
+  <text x="30" y="38" font-family="Arial" font-size="20" font-weight="bold" fill="#333">JeevanDhara</text>
+  <text x="200" y="38" font-family="Arial" font-size="14" fill="#666">MRL & AMU Monitoring System</text>
+  
+  <!-- Cards Row -->
+  <g transform="translate(30, 80)">
+    <!-- Total Animals Card -->
+    <rect width="170" height="100" fill="#ffffff" rx="8" ry="8" stroke="#e6e6e6" stroke-width="1" />
+    <text x="20" y="30" font-family="Arial" font-size="14" fill="#666">Total Animals</text>
+    <text x="20" y="65" font-family="Arial" font-size="24" font-weight="bold" fill="#333">247</text>
+    <text x="20" y="85" font-family="Arial" font-size="12" fill="#4caf50">+12 this month</text>
+    <circle cx="150" cy="30" r="12" fill="#e6f7e9" />
+    <path d="M145,30 L149,34 L155,26" stroke="#4caf50" stroke-width="2" fill="none" />
+  </g>
+  
+  <g transform="translate(220, 80)">
+    <!-- Active Treatments Card -->
+    <rect width="170" height="100" fill="#ffffff" rx="8" ry="8" stroke="#e6e6e6" stroke-width="1" />
+    <text x="20" y="30" font-family="Arial" font-size="14" fill="#666">Active Treatments</text>
+    <text x="20" y="65" font-family="Arial" font-size="24" font-weight="bold" fill="#333">8</text>
+    <text x="20" y="85" font-family="Arial" font-size="12" fill="#2196f3">-2 from last week</text>
+    <circle cx="150" cy="30" r="12" fill="#e3f2fd" />
+    <path d="M144,30 L150,30 L156,30 M150,24 L150,36" stroke="#2196f3" stroke-width="2" fill="none" />
+  </g>
+  
+  <g transform="translate(410, 80)">
+    <!-- MRL Compliance Card -->
+    <rect width="170" height="100" fill="#ffffff" rx="8" ry="8" stroke="#e6e6e6" stroke-width="1" />
+    <text x="20" y="30" font-family="Arial" font-size="14" fill="#666">MRL Compliance</text>
+    <text x="20" y="65" font-family="Arial" font-size="24" font-weight="bold" fill="#333">98.5%</text>
+    <text x="20" y="85" font-family="Arial" font-size="12" fill="#4caf50">+2.1% improvement</text>
+    <circle cx="150" cy="30" r="12" fill="#e6f7e9" />
+    <path d="M145,30 L149,34 L155,26" stroke="#4caf50" stroke-width="2" fill="none" />
+  </g>
+  
+  <g transform="translate(600, 80)">
+    <!-- Pending Alerts Card -->
+    <rect width="170" height="100" fill="#ffffff" rx="8" ry="8" stroke="#e6e6e6" stroke-width="1" />
+    <text x="20" y="30" font-family="Arial" font-size="14" fill="#666">Pending Alerts</text>
+    <text x="20" y="65" font-family="Arial" font-size="24" font-weight="bold" fill="#333">3</text>
+    <text x="20" y="85" font-family="Arial" font-size="12" fill="#f44336">2 urgent</text>
+    <circle cx="150" cy="30" r="12" fill="#ffebee" />
+    <path d="M150,24 L150,32 M150,36 L150,36" stroke="#f44336" stroke-width="2" fill="none" />
+  </g>
+  
+  <!-- Charts Section -->
+  <g transform="translate(30, 200)">
+    <!-- AMU Trends Chart -->
+    <rect width="450" height="250" fill="#ffffff" rx="8" ry="8" stroke="#e6e6e6" stroke-width="1" />
+    <text x="20" y="30" font-family="Arial" font-size="16" font-weight="bold" fill="#333">AMU Trends & Compliance</text>
+    
+    <!-- Chart Grid -->
+    <line x1="50" y1="60" x2="50" y2="210" stroke="#e6e6e6" stroke-width="1" />
+    <line x1="50" y1="210" x2="430" y2="210" stroke="#e6e6e6" stroke-width="1" />
+    
+    <!-- Y-axis labels -->
+    <text x="30" y="70" font-family="Arial" font-size="10" fill="#999" text-anchor="end">100</text>
+    <text x="30" y="110" font-family="Arial" font-size="10" fill="#999" text-anchor="end">75</text>
+    <text x="30" y="150" font-family="Arial" font-size="10" fill="#999" text-anchor="end">50</text>
+    <text x="30" y="190" font-family="Arial" font-size="10" fill="#999" text-anchor="end">25</text>
+    <text x="30" y="210" font-family="Arial" font-size="10" fill="#999" text-anchor="end">0</text>
+    
+    <!-- X-axis labels -->
+    <text x="80" y="225" font-family="Arial" font-size="10" fill="#999" text-anchor="middle">Jan</text>
+    <text x="140" y="225" font-family="Arial" font-size="10" fill="#999" text-anchor="middle">Feb</text>
+    <text x="200" y="225" font-family="Arial" font-size="10" fill="#999" text-anchor="middle">Mar</text>
+    <text x="260" y="225" font-family="Arial" font-size="10" fill="#999" text-anchor="middle">Apr</text>
+    <text x="320" y="225" font-family="Arial" font-size="10" fill="#999" text-anchor="middle">May</text>
+    <text x="380" y="225" font-family="Arial" font-size="10" fill="#999" text-anchor="middle">Jun</text>
+    
+    <!-- Compliance Line -->
+    <path d="M80,70 L140,75 L200,85 L260,75 L320,65 L380,70" stroke="#4caf50" stroke-width="2" fill="none" />
+    <circle cx="80" cy="70" r="3" fill="#4caf50" />
+    <circle cx="140" cy="75" r="3" fill="#4caf50" />
+    <circle cx="200" cy="85" r="3" fill="#4caf50" />
+    <circle cx="260" cy="75" r="3" fill="#4caf50" />
+    <circle cx="320" cy="65" r="3" fill="#4caf50" />
+    <circle cx="380" cy="70" r="3" fill="#4caf50" />
+    
+    <!-- AMU Count Line -->
+    <path d="M80,190 L140,180 L200,170 L260,180 L320,190 L380,175" stroke="#2196f3" stroke-width="2" fill="none" />
+    <circle cx="80" cy="190" r="3" fill="#2196f3" />
+    <circle cx="140" cy="180" r="3" fill="#2196f3" />
+    <circle cx="200" cy="170" r="3" fill="#2196f3" />
+    <circle cx="260" cy="180" r="3" fill="#2196f3" />
+    <circle cx="320" cy="190" r="3" fill="#2196f3" />
+    <circle cx="380" cy="175" r="3" fill="#2196f3" />
+    
+    <!-- Legend -->
+    <circle cx="100" cy="240" r="3" fill="#2196f3" />
+    <text x="110" y="243" font-family="Arial" font-size="10" fill="#666">AMU Count</text>
+    <circle cx="200" cy="240" r="3" fill="#4caf50" />
+    <text x="210" y="243" font-family="Arial" font-size="10" fill="#666">Compliance %</text>
+  </g>
+  
+  <g transform="translate(500, 200)">
+    <!-- AMU by Species Pie Chart -->
+    <rect width="270" height="250" fill="#ffffff" rx="8" ry="8" stroke="#e6e6e6" stroke-width="1" />
+    <text x="20" y="30" font-family="Arial" font-size="16" font-weight="bold" fill="#333">AMU by Species</text>
+    
+    <!-- Pie Chart -->
+    <circle cx="135" cy="140" r="80" fill="none" stroke="#e6e6e6" stroke-width="1" />
+    
+    <!-- Pie Slices -->
+    <path d="M135,140 L135,60 A80,80 0 0,1 204,175 z" fill="#4caf50" />
+    <path d="M135,140 L204,175 A80,80 0 0,1 135,220 z" fill="#388e3c" />
+    <path d="M135,140 L135,220 A80,80 0 0,1 66,175 z" fill="#ffc107" />
+    <path d="M135,140 L66,175 A80,80 0 0,1 135,60 z" fill="#f5f5f5" />
+    
+    <!-- Legend -->
+    <rect x="20" y="200" width="10" height="10" fill="#4caf50" />
+    <text x="35" y="210" font-family="Arial" font-size="12" fill="#666">Cattle: 45%</text>
+    
+    <rect x="100" y="200" width="10" height="10" fill="#388e3c" />
+    <text x="115" y="210" font-family="Arial" font-size="12" fill="#666">Sheep: 25%</text>
+    
+    <rect x="180" y="200" width="10" height="10" fill="#ffc107" />
+    <text x="195" y="210" font-family="Arial" font-size="12" fill="#666">Goats: 20%</text>
+  </g>
+  
+  <!-- Bottom Section -->
+  <g transform="translate(30, 470)">
+    <!-- Recent Activity -->
+    <rect width="740" height="100" fill="#ffffff" rx="8" ry="8" stroke="#e6e6e6" stroke-width="1" />
+    <text x="20" y="30" font-family="Arial" font-size="16" font-weight="bold" fill="#333">Recent Activity</text>
+    
+    <line x1="20" y1="45" x2="720" y2="45" stroke="#e6e6e6" stroke-width="1" />
+    
+    <circle cx="30" cy="65" r="5" fill="#2196f3" />
+    <text x="45" y="70" font-family="Arial" font-size="12" fill="#333">New treatment recorded for Cattle #1045</text>
+    <text x="650" y="70" font-family="Arial" font-size="12" fill="#999">10m ago</text>
+    
+    <circle cx="30" cy="85" r="5" fill="#f44336" />
+    <text x="45" y="90" font-family="Arial" font-size="12" fill="#333">Withdrawal period alert for Sheep #238</text>
+    <text x="650" y="90" font-family="Arial" font-size="12" fill="#999">1h ago</text>
+  </g>
+</svg>
