@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion, Variants } from "framer-motion";
+import { LivestockAntibioticGraph } from "@/components/LivestockAntibioticGraph";
 import {
   ArrowRight,
   Leaf,
@@ -253,6 +254,19 @@ export const Landing = () => {
             <p className="text-xl text-muted-foreground">
               Everything you need to manage your farm efficiently and comply with regulations
             </p>
+          </div>
+          
+          {/* Livestock Antibiotic Usage Graph */}
+          <div className="max-w-4xl mx-auto">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="bg-card rounded-xl shadow-lg border border-border overflow-hidden"
+            >
+              <LivestockAntibioticGraph />
+            </motion.div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
