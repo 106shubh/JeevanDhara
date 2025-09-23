@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, Bot, User, Loader2, Mic, MicOff, Camera, Image as ImageIcon, Cloud, CloudRain, Sun, MapPin, Wifi, WifiOff, Volume2, VolumeX } from "lucide-react";
+import { Send, Bot, User, Loader2, Mic, MicOff, Camera, Image as ImageIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,46 +14,12 @@ interface Message {
   text: string;
   isBot: boolean;
   timestamp: Date;
-  type?: 'text' | 'voice' | 'image' | 'weather';
-  audioUrl?: string;
-  imageUrl?: string;
-  weatherData?: {
-    location: string;
-    temperature: number;
-    condition: string;
-    humidity: number;
-    windSpeed: number;
-    forecast: Array<{
-      day: string;
-      temp: number;
-      condition: string;
-    }>;
-  };
-}
-
-interface WeatherData {
-  location: string;
-  temperature: number;
-  condition: string;
-  humidity: number;
-  windSpeed: number;
-  forecast: Array<{
-    day: string;
-    temp: number;
-    condition: string;
-  }>;
-}
-
-interface OfflineMessage {
-  id: string;
-  message: string;
-  timestamp: Date;
-  type: 'text' | 'voice' | 'image';
+  type?: 'text' | 'voice' | 'image';
   audioUrl?: string;
   imageUrl?: string;
 }
 
-export const Chatbot = () => {
+const EnhancedChatbot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -68,23 +34,6 @@ export const Chatbot = () => {
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  // Enhanced Voice Features
-  const [speechRecognition, setSpeechRecognition] = useState<any>(null);
-  const [speechSynthesis, setSpeechSynthesis] = useState<any>(null);
-  const [isListening, setIsListening] = useState(false);
-  const [voiceEnabled, setVoiceEnabled] = useState(true);
-  const [autoSpeak, setAutoSpeak] = useState(false);
-  
-  // Weather Integration States
-  const [userLocation, setUserLocation] = useState<{lat: number, lon: number} | null>(null);
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [isLoadingWeather, setIsLoadingWeather] = useState(false);
-  
-  // Offline Mode States
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [offlineQueue, setOfflineQueue] = useState<OfflineMessage[]>([]);
-  const [offlineMessages, setOfflineMessages] = useState<Message[]>([]);
 
   // Animation variants
   const containerVariants: Variants = {
@@ -112,122 +61,6 @@ export const Chatbot = () => {
     hover: { scale: 1.2, rotate: 5, transition: { duration: 0.3 } }
   };
 
-  // Enhanced Voice Features
-  const initializeVoiceFeatures = () => {
-    if (typeof window !== 'undefined') {
-      // Initialize Speech Recognition
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        const recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = language === 'hindi' ? 'hi-IN' : language === 'bengali' ? 'bn-IN' : 'en-US';
-        
-        recognition.onstart = () => {
-          setIsListening(true);
-        };
-        
-        recognition.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript;
-          setInputMessage(transcript);
-          setIsListening(false);
-          
-          // Auto-send if transcript is detected
-          setTimeout(() => {
-            if (transcript.trim()) {
-              handleVoiceInput(transcript);
-            }
-          }, 500);
-        };
-        
-        recognition.onerror = (event: any) => {
-          console.error('Speech recognition error:', event.error);
-          setIsListening(false);
-          toast({
-            title: "Voice Recognition Error",
-            description: "Unable to recognize speech. Please try again.",
-            variant: "destructive"
-          });
-        };
-        
-        recognition.onend = () => {
-          setIsListening(false);
-        };
-        
-        setSpeechRecognition(recognition);
-      }
-      
-      // Initialize Speech Synthesis
-      if (window.speechSynthesis) {
-        setSpeechSynthesis(window.speechSynthesis);
-      }
-    }
-  };
-
-  // Offline Mode Functions
-  const setupOfflineMode = () => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      toast({
-        title: "Back Online",
-        description: "Connection restored. Processing queued messages...",
-      });
-      processOfflineQueue();
-    };
-
-    const handleOffline = () => {
-      setIsOnline(false);
-      toast({
-        title: "Offline Mode",
-        description: "No internet connection. Messages will be saved and sent when online.",
-        variant: "destructive"
-      });
-    };
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  };
-
-  // Weather Integration
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-          };
-          setUserLocation(location);
-          fetchWeatherData(location);
-        },
-        (error) => {
-          console.warn('Location access denied:', error);
-          // Use default location (Delhi, India) for farming context
-          const defaultLocation = { lat: 28.6139, lon: 77.2090 };
-          setUserLocation(defaultLocation);
-          fetchWeatherData(defaultLocation);
-        }
-      );
-    }
-  };
-
-  const loadOfflineMessages = () => {
-    const saved = localStorage.getItem('chatbot_offline_queue');
-    if (saved) {
-      try {
-        const savedQueue = JSON.parse(saved);
-        setOfflineQueue(savedQueue);
-      } catch (error) {
-        console.error('Failed to load offline messages:', error);
-      }
-    }
-  };
-
   useEffect(() => {
     // Add welcome message
     setMessages([{
@@ -236,18 +69,6 @@ export const Chatbot = () => {
       isBot: true,
       timestamp: new Date()
     }]);
-    
-    // Initialize enhanced voice features
-    initializeVoiceFeatures();
-    
-    // Setup offline mode listeners
-    setupOfflineMode();
-    
-    // Get user location for weather
-    getUserLocation();
-    
-    // Load offline messages from localStorage
-    loadOfflineMessages();
   }, [language]);
 
   useEffect(() => {
@@ -502,11 +323,6 @@ export const Chatbot = () => {
           type: 'text'
         };
         setMessages(prev => [...prev, botMessage]);
-        
-        // Auto-speak response if enabled
-        if (autoSpeak && voiceEnabled) {
-          speakText(botMessage.text);
-        }
       }
     } catch (error) {
       console.error('Image processing error:', error);
@@ -520,322 +336,8 @@ export const Chatbot = () => {
         type: 'text'
       };
       setMessages(prev => [...prev, botMessage]);
-      
-      if (autoSpeak && voiceEnabled) {
-        speakText(botMessage.text);
-      }
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  // Enhanced Voice Features
-  const initializeVoiceFeatures = () => {
-    if (typeof window !== 'undefined') {
-      // Initialize Speech Recognition
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        const recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = language === 'hindi' ? 'hi-IN' : language === 'bengali' ? 'bn-IN' : 'en-US';
-        
-        recognition.onstart = () => {
-          setIsListening(true);
-        };
-        
-        recognition.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript;
-          setInputMessage(transcript);
-          setIsListening(false);
-          
-          // Auto-send if transcript is detected
-          setTimeout(() => {
-            if (transcript.trim()) {
-              handleVoiceInput(transcript);
-            }
-          }, 500);
-        };
-        
-        recognition.onerror = (event: any) => {
-          console.error('Speech recognition error:', event.error);
-          setIsListening(false);
-          toast({
-            title: "Voice Recognition Error",
-            description: "Unable to recognize speech. Please try again.",
-            variant: "destructive"
-          });
-        };
-        
-        recognition.onend = () => {
-          setIsListening(false);
-        };
-        
-        setSpeechRecognition(recognition);
-      }
-      
-      // Initialize Speech Synthesis
-      if (window.speechSynthesis) {
-        setSpeechSynthesis(window.speechSynthesis);
-      }
-    }
-  };
-
-  const startVoiceRecognition = () => {
-    if (speechRecognition && !isListening) {
-      speechRecognition.start();
-      toast({
-        title: "Voice Recognition Started",
-        description: "Speak now in any language...",
-      });
-    }
-  };
-
-  const stopVoiceRecognition = () => {
-    if (speechRecognition && isListening) {
-      speechRecognition.stop();
-    }
-  };
-
-  const speakText = (text: string) => {
-    if (speechSynthesis && voiceEnabled) {
-      speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = language === 'hindi' ? 'hi-IN' : language === 'bengali' ? 'bn-IN' : 'en-US';
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      speechSynthesis.speak(utterance);
-    }
-  };
-
-  const handleVoiceInput = async (transcript: string) => {
-    if (!transcript.trim()) return;
-    
-    setIsLoading(true);
-
-    try {
-      if (!isOnline) {
-        await handleOfflineMessage(transcript, 'voice');
-        return;
-      }
-
-      const { data, error } = await supabase.functions.invoke('chatbot', {
-        body: { 
-          message: transcript,
-          isVoiceMessage: true,
-          language: language
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.success) {
-        const botMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: data.reply,
-          isBot: true,
-          timestamp: new Date(),
-          type: 'text'
-        };
-        setMessages(prev => [...prev, botMessage]);
-        
-        if (autoSpeak && voiceEnabled) {
-          speakText(botMessage.text);
-        }
-      }
-    } catch (error) {
-      console.error('Voice processing error:', error);
-      await handleOfflineMessage(transcript, 'voice');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Weather Integration
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-          };
-          setUserLocation(location);
-          fetchWeatherData(location);
-        },
-        (error) => {
-          console.warn('Location access denied:', error);
-          // Use default location (Delhi, India) for farming context
-          const defaultLocation = { lat: 28.6139, lon: 77.2090 };
-          setUserLocation(defaultLocation);
-          fetchWeatherData(defaultLocation);
-        }
-      );
-    }
-  };
-
-  const fetchWeatherData = async (location: {lat: number, lon: number}) => {
-    setIsLoadingWeather(true);
-    
-    try {
-      const mockWeather: WeatherData = {
-        location: "Your Area",
-        temperature: 28,
-        condition: "Clear",
-        humidity: 65,
-        windSpeed: 12,
-        forecast: [
-          { day: "Today", temp: 28, condition: "Clear" },
-          { day: "Tomorrow", temp: 30, condition: "Sunny" },
-          { day: "Wed", temp: 26, condition: "Cloudy" },
-          { day: "Thu", temp: 24, condition: "Rain" },
-          { day: "Fri", temp: 27, condition: "Clear" }
-        ]
-      };
-      
-      setWeatherData(mockWeather);
-    } catch (error) {
-      console.error('Weather fetch error:', error);
-    } finally {
-      setIsLoadingWeather(false);
-    }
-  };
-
-  const getWeatherAdvice = (weather: WeatherData) => {
-    const { temperature, condition, humidity } = weather;
-    let advice = `Current weather in ${weather.location}: ${temperature}°C, ${condition}\n\n`;
-    
-    if (condition.toLowerCase().includes('rain')) {
-      advice += "🌧️ Rainy conditions detected:\n• Avoid irrigation today\n• Check for crop diseases\n• Ensure proper drainage\n• Protect harvested crops";
-    } else if (temperature > 35) {
-      advice += "🌡️ High temperature alert:\n• Increase irrigation frequency\n• Provide shade for livestock\n• Harvest early morning\n• Monitor for heat stress";
-    } else {
-      advice += "☀️ Good farming conditions:\n• Ideal for field work\n• Normal irrigation schedule\n• Good time for planting\n• Livestock can graze freely";
-    }
-    
-    return advice;
-  };
-
-  const addWeatherMessage = () => {
-    if (!weatherData) {
-      toast({
-        title: "Weather Unavailable",
-        description: "Unable to fetch weather data at the moment.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const weatherMessage: Message = {
-      id: Date.now().toString(),
-      text: getWeatherAdvice(weatherData),
-      isBot: true,
-      timestamp: new Date(),
-      type: 'weather',
-      weatherData: weatherData
-    };
-
-    setMessages(prev => [...prev, weatherMessage]);
-    
-    if (autoSpeak && voiceEnabled) {
-      speakText(weatherMessage.text);
-    }
-  };
-
-  // Offline Mode Functions
-  const setupOfflineMode = () => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      toast({
-        title: "Back Online",
-        description: "Connection restored. Processing queued messages...",
-      });
-      processOfflineQueue();
-    };
-
-    const handleOffline = () => {
-      setIsOnline(false);
-      toast({
-        title: "Offline Mode",
-        description: "No internet connection. Messages will be saved and sent when online.",
-        variant: "destructive"
-      });
-    };
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  };
-
-  const handleOfflineMessage = async (message: string, type: 'text' | 'voice' | 'image') => {
-    const offlineMsg: OfflineMessage = {
-      id: Date.now().toString(),
-      message,
-      timestamp: new Date(),
-      type
-    };
-
-    const updatedQueue = [...offlineQueue, offlineMsg];
-    setOfflineQueue(updatedQueue);
-    localStorage.setItem('chatbot_offline_queue', JSON.stringify(updatedQueue));
-
-    const offlineResponse: Message = {
-      id: (Date.now() + 1).toString(),
-      text: "🔄 I'm currently offline, but I've saved your message. I'll respond as soon as we're back online.",
-      isBot: true,
-      timestamp: new Date(),
-      type: 'text'
-    };
-    
-    setMessages(prev => [...prev, offlineResponse]);
-  };
-
-  const processOfflineQueue = async () => {
-    if (offlineQueue.length === 0) return;
-
-    for (const queuedMessage of offlineQueue) {
-      try {
-        const { data, error } = await supabase.functions.invoke('chatbot', {
-          body: { 
-            message: queuedMessage.message,
-            isOfflineMessage: true,
-            type: queuedMessage.type
-          }
-        });
-
-        if (!error && data.success) {
-          const botMessage: Message = {
-            id: (Date.now() + 1).toString(),
-            text: `📡 Response to offline message: ${data.reply}`,
-            isBot: true,
-            timestamp: new Date(),
-            type: 'text'
-          };
-          
-          setMessages(prev => [...prev, botMessage]);
-        }
-      } catch (error) {
-        console.error('Failed to process offline message:', error);
-      }
-    }
-
-    setOfflineQueue([]);
-    localStorage.removeItem('chatbot_offline_queue');
-  };
-
-  const loadOfflineMessages = () => {
-    const saved = localStorage.getItem('chatbot_offline_queue');
-    if (saved) {
-      try {
-        const savedQueue = JSON.parse(saved);
-        setOfflineQueue(savedQueue);
-      } catch (error) {
-        console.error('Failed to load offline messages:', error);
-      }
     }
   };
 
@@ -1076,7 +578,7 @@ export const Chatbot = () => {
                 </span>
               ) : (
                 language === 'hindi'
-                  ? "💬 टाइप करें, 🎤 आवाज भेजें, या 📷 फोटो अपलोड करें - हिंदी, अंग्रेजी या हिंग्लिश में!"
+                  ? "💬 टाইप करें, 🎤 आवाज भेजें, या 📷 फोटो अपलोड करें - हिंदी, अंग्रेजी या हिंग्लिश में!"
                   : language === 'bengali'
                   ? "💬 টাইপ করুন, 🎤 ভয়েস পাঠান, বা 📷 ছবি আপলোড করুন - যেকোনো ভাষায়!"
                   : "💬 Type, 🎤 send voice, or 📷 upload image - in any language!"
@@ -1089,3 +591,5 @@ export const Chatbot = () => {
     </motion.div>
   );
 };
+
+export default EnhancedChatbot;

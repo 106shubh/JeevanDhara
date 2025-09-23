@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { AlertTriangle, CheckCircle, Clock } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AlertBadgeProps {
   type: "urgent" | "warning" | "compliant" | "pending";
@@ -10,6 +11,25 @@ interface AlertBadgeProps {
 }
 
 export const AlertBadge = ({ type, children, className }: AlertBadgeProps) => {
+  const { t } = useLanguage();
+  
+  // Get translated text for standard alert types
+  const getTranslatedText = (alertType: string) => {
+    switch(alertType.toLowerCase()) {
+      case 'urgent':
+        return t('alert.urgent') || 'Urgent';
+      case 'soon':
+      case 'warning':
+        return t('alert.soon') || 'Soon';
+      case 'normal':
+      case 'compliant':
+        return t('alert.normal') || 'Normal';
+      default:
+        return children; // Use provided children if no translation found
+    }
+  };
+  
+  const displayText = typeof children === 'string' ? getTranslatedText(children) : children;
   const variants = {
     urgent: {
       className: "bg-destructive text-destructive-foreground shadow-alert border-destructive/50",
@@ -57,7 +77,7 @@ export const AlertBadge = ({ type, children, className }: AlertBadgeProps) => {
           <Icon className="h-3 w-3" />
         </motion.div>
         <span className="relative">
-          {children}
+          {displayText}
           {type === "urgent" && (
             <motion.span 
               className="absolute -right-1 -top-1 h-1.5 w-1.5 rounded-full bg-destructive"

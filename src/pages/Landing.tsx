@@ -20,6 +20,7 @@ import {
 import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-image.jpg";
 import gradientBg from "@/assets/gradient-bg.svg";
+import { LandingDashboardPreview } from "@/components/LandingDashboardPreview";
 
 export const Landing = () => {
   const navigate = useNavigate();
@@ -54,10 +55,10 @@ export const Landing = () => {
 
   // Stats data
   const stats = [
-    { value: "2,500+", label: "Farmers" },
-    { value: "98%", label: "Compliance Rate" },
-    { value: "30%", label: "AMU Reduction" },
-    { value: "24/7", label: "Support" }
+    { value: "2,500+", label: t("stats.farmers") || "Farmers" },
+    { value: "98%", label: t("stats.compliance") || "Compliance Rate" },
+    { value: "30%", label: t("stats.reduction") || "AMU Reduction" },
+    { value: "24/7", label: t("stats.support") || "Support" }
   ];
 
   // Testimonials data
@@ -165,20 +166,20 @@ export const Landing = () => {
           <motion.div className="space-y-6" variants={itemVariants}>
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-2">
               <Star className="h-3.5 w-3.5 mr-1" />
-              <span>India's #1 Farm Compliance Platform</span>
+              <span>{t("hero.badge") || "India's #1 Farm Compliance Platform"}</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-              Smart Farming with <span className="text-transparent bg-clip-text bg-gradient-primary">JeevanDhara</span>
+              {t("hero.title") || "Smart Farming with "}<span className="text-transparent bg-clip-text bg-gradient-primary">JeevanDhara</span>
             </h1>
             <p className="text-xl text-muted-foreground">
-              Simplify your farm management, monitor antimicrobial usage, and ensure compliance with regulations - all in one powerful platform.
+              {t("hero.subtitle") || "Simplify your farm management, monitor antimicrobial usage, and ensure compliance with regulations - all in one powerful platform."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button size="lg" onClick={() => navigate("/auth")} className="bg-gradient-primary hover:shadow-lg transition-all duration-300">
                 {t("GetStarted") || "Get Started"} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" className="group">
-                Check For Pricing
+                {t("pricing.button") || "Check For Pricing"}
                 <div className="ml-2 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                   <ChevronRight className="h-3 w-3 text-primary" />
                 </div>
@@ -246,9 +247,9 @@ export const Landing = () => {
       <section id="features" className="py-20 px-6 bg-muted/30">
         <div className="container mx-auto space-y-12">
           <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold">Powerful Features for Modern Farming</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">{t("features.title") || "Powerful Features for Modern Farming"}</h2>
             <p className="text-xl text-muted-foreground">
-              Everything you need to manage your farm efficiently and comply with regulations
+              {t("features.subtitle") || "Everything you need to manage your farm efficiently and comply with regulations"}
             </p>
           </div>
 
@@ -256,33 +257,33 @@ export const Landing = () => {
             {[
               {
                 icon: <BarChart className="h-10 w-10 text-primary" />,
-                title: "AMU Monitoring",
-                description: "Track and monitor antimicrobial usage with detailed analytics and reporting. Get insights on usage patterns and identify areas for improvement."
+                title: t("feature.amuMonitoring.title") || "AMU Monitoring",
+                description: t("feature.amuMonitoring.desc") || "Track and monitor antimicrobial usage with detailed analytics and reporting. Get insights on usage patterns and identify areas for improvement."
               },
               {
                 icon: <Shield className="h-10 w-10 text-primary" />,
-                title: "Compliance Management",
-                description: "Stay compliant with regulations and maintain proper documentation. Automated alerts ensure you never miss important deadlines."
+                title: t("feature.compliance.title") || "Compliance Management",
+                description: t("feature.compliance.desc") || "Stay compliant with regulations and maintain proper documentation. Automated alerts ensure you never miss important deadlines."
               },
               {
                 icon: <MessageSquare className="h-10 w-10 text-primary" />,
-                title: "AI Assistant",
-                description: "Get instant answers to your farming and compliance questions. Our AI assistant is trained on the latest agricultural regulations and best practices."
+                title: t("feature.assistant.title") || "AI Assistant",
+                description: t("feature.assistant.desc") || "Get instant answers to your farming and compliance questions. Our AI assistant is trained on the latest agricultural regulations and best practices."
               },
               {
                 icon: <Clock className="h-10 w-10 text-primary" />,
-                title: "Withdrawal Period Tracking",
-                description: "Automatically track withdrawal periods for all medications. Receive timely alerts when animals are approaching clearance dates."
+                title: t("feature.withdrawal.title") || "Withdrawal Period Tracking",
+                description: t("feature.withdrawal.desc") || "Automatically track withdrawal periods for all medications. Receive timely alerts when animals are approaching clearance dates."
               },
               {
                 icon: <Download className="h-10 w-10 text-primary" />,
-                title: "Export & Reporting",
-                description: "Generate comprehensive reports for regulatory submissions. Export data in multiple formats for easy sharing with authorities."
+                title: t("feature.export.title") || "Export & Reporting",
+                description: t("feature.export.desc") || "Generate comprehensive reports for regulatory submissions. Export data in multiple formats for easy sharing with authorities."
               },
               {
                 icon: <Users className="h-10 w-10 text-primary" />,
-                title: "Team Collaboration",
-                description: "Collaborate with your team members, veterinarians, and consultants. Assign tasks and share important information securely."
+                title: t("feature.team.title") || "Team Collaboration",
+                description: t("feature.team.desc") || "Collaborate with your team members, veterinarians, and consultants. Assign tasks and share important information securely."
               }
             ].map((feature, index) => (
               <div 
@@ -337,40 +338,7 @@ export const Landing = () => {
             </div>
             <div className="relative">
               <div className="absolute -z-10 w-full h-full bg-gradient-to-r from-primary/5 to-primary/10 rounded-3xl -rotate-6 transform-gpu"></div>
-              <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-xl">
-                <div className="p-6 border-b border-border bg-muted/20">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-destructive/60"></div>
-                    <div className="w-3 h-3 rounded-full bg-warning/60"></div>
-                    <div className="w-3 h-3 rounded-full bg-success/60"></div>
-                    <div className="ml-2 text-sm font-medium">JeevanDhara Dashboard</div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="space-y-6">
-                    <div className="space-y-2">
-                      <div className="h-4 w-1/3 bg-muted rounded"></div>
-                      <div className="grid grid-cols-3 gap-4">
-                        {[1, 2, 3].map((i) => (
-                          <div key={i} className="h-20 bg-muted/60 rounded-lg"></div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="h-4 w-1/4 bg-muted rounded"></div>
-                      <div className="h-40 bg-muted/60 rounded-lg"></div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="h-4 w-1/5 bg-muted rounded"></div>
-                      <div className="grid grid-cols-2 gap-4">
-                        {[1, 2].map((i) => (
-                          <div key={i} className="h-24 bg-muted/60 rounded-lg"></div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <LandingDashboardPreview />
             </div>
           </div>
         </div>
@@ -520,40 +488,40 @@ export const Landing = () => {
                 <span className="text-lg font-semibold">JeevanDhara</span>
               </div>
               <p className="text-muted-foreground">
-                Empowering farmers with smart technology for better compliance and sustainable farming practices.
+                {t("footer.empowering") || "Empowering farmers with smart technology for better compliance and sustainable farming practices."}
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Product</h3>
+              <h3 className="font-semibold mb-4">{t("footer.product") || "Product"}</h3>
               <ul className="space-y-2">
-                <li><a href="#features" className="text-muted-foreground hover:text-primary transition-colors">Features</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Pricing</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Case Studies</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Integrations</a></li>
+                <li><a href="#features" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.features") || "Features"}</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.pricing") || "Pricing"}</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.caseStudies") || "Case Studies"}</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.integrations") || "Integrations"}</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Resources</h3>
+              <h3 className="font-semibold mb-4">{t("footer.resources") || "Resources"}</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Documentation</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Blog</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Webinars</a></li>
-                <li><a href="#faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.documentation") || "Documentation"}</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.blog") || "Blog"}</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.webinars") || "Webinars"}</a></li>
+                <li><a href="#faq" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.faq") || "FAQ"}</a></li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Company</h3>
+              <h3 className="font-semibold mb-4">{t("footer.company") || "Company"}</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">About Us</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Careers</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Contact</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.aboutUs") || "About Us"}</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.careers") || "Careers"}</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.contact") || "Contact"}</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">{t("footer.privacy") || "Privacy Policy"}</a></li>
               </ul>
             </div>
           </div>
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-muted-foreground mb-4 md:mb-0">
-              © {new Date().getFullYear()} JeevanDhara. All rights reserved.
+              © {new Date().getFullYear()} JeevanDhara. {t("footer.allRights") || "All rights reserved."}
             </div>
             <div className="flex space-x-6">
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Twitter</a>

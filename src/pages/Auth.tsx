@@ -58,7 +58,7 @@ export const Auth = () => {
           <CardContent className="p-4">
             <div className="flex items-center space-x-3">
               <Globe className="h-4 w-4 text-primary" />
-              <Label htmlFor="language">Language</Label>
+              <Label htmlFor="language">{t('auth.language') || t('prescriptions.language') || 'Language'}</Label>
               <Select value={language} onValueChange={(value) => setLanguage(value as any)}>
                 <SelectTrigger className="w-32">
                   <SelectValue />
@@ -82,12 +82,12 @@ export const Auth = () => {
               </div>
             </div>
             <CardTitle className="text-2xl font-bold text-foreground">
-              {isSignUp ? t('signUp') : t('signIn')}
+              {isSignUp ? t('auth.signUp') || t('signUp') : t('auth.signIn') || t('signIn')}
             </CardTitle>
             <p className="text-muted-foreground">
               {isSignUp 
-                ? 'Create your farm management account' 
-                : 'Access your farm management portal'
+                ? t('auth.createAccount') || 'Create your farm management account'
+                : t('auth.accessPortal') || 'Access your farm management portal'
               }
             </p>
           </CardHeader>
@@ -147,8 +147,8 @@ export const Auth = () => {
                 className="text-primary hover:text-primary-hover underline"
               >
                 {isSignUp 
-                  ? 'Already have an account? Sign in' 
-                  : "Don't have an account? Sign up"
+                  ? t('auth.alreadyHaveAccount') || 'Already have an account? Sign in'
+                  : t('auth.noAccount') || "Don't have an account? Sign up"
                 }
               </button>
             </div>
@@ -157,7 +157,7 @@ export const Auth = () => {
               <div className="mt-4 p-3 bg-muted rounded-lg flex items-start space-x-2">
                 <AlertCircle className="h-4 w-4 text-warning mt-0.5" />
                 <p className="text-xs text-muted-foreground">
-                  After signing up, please check your email for a verification link before signing in.
+                  {t('auth.emailVerification') || 'After signing up, please check your email for a verification link before signing in.'}
                 </p>
               </div>
             )}

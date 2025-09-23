@@ -17,8 +17,10 @@ import {
 import { useState, useEffect } from "react";
 import { AlertBadge } from "./AlertBadge";
 import { motion, Variants } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const AMUForm = () => {
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     animalId: '',
@@ -67,10 +69,10 @@ export const AMUForm = () => {
   };
 
   const steps = [
-    { id: 1, title: "Animal Details", icon: Stethoscope },
-    { id: 2, title: "Drug Information", icon: Plus },
-    { id: 3, title: "Prescription", icon: FileText },
-    { id: 4, title: "Review", icon: Calendar }
+    { id: 1, title: t("form.animalDetails") || "Animal Details", icon: Stethoscope },
+    { id: 2, title: t("form.drugInformation") || "Drug Information", icon: Plus },
+    { id: 3, title: t("form.prescription") || "Prescription", icon: FileText },
+    { id: 4, title: t("form.review") || "Review", icon: Calendar }
   ];
 
   const antimicrobials = [
@@ -327,7 +329,7 @@ export const AMUForm = () => {
                 className="transition-all duration-300 hover:shadow-md hover:border-primary h-8 md:h-10 text-xs md:text-sm px-3 md:px-4"
                 size={isMobile ? "sm" : "default"}
               >
-                Previous
+                {t("previous") || "Previous"}
               </Button>
             </motion.div>
             {currentStep < 4 ? (
@@ -337,7 +339,7 @@ export const AMUForm = () => {
                   className="bg-gradient-primary transition-all duration-300 hover:shadow-md h-8 md:h-10 text-xs md:text-sm px-3 md:px-4"
                   size={isMobile ? "sm" : "default"}
                 >
-                  Next
+                  {t("next") || "Next"}
                 </Button>
               </motion.div>
             ) : (
@@ -347,7 +349,7 @@ export const AMUForm = () => {
                   className="bg-gradient-primary transition-all duration-300 hover:shadow-md h-8 md:h-10 text-xs md:text-sm px-3 md:px-4"
                   size={isMobile ? "sm" : "default"}
                 >
-                  Submit AMU Entry
+                  {t("submit") || "Submit AMU Entry"}
                 </Button>
               </motion.div>
             )}

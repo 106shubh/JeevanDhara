@@ -7,7 +7,10 @@ import {
   Bell, 
   FileText,
   MessageCircle,
-  Home
+  Home,
+  Stethoscope,
+  Users,
+  TrendingUp
 } from "lucide-react";
 
 interface NavigationProps {
@@ -30,11 +33,14 @@ export const Navigation = ({ activeView, setActiveView }: NavigationProps) => {
   }, []);
   
   const navItems = [
-    { id: 'dashboard', label: t('dashboard'), icon: BarChart3 },
-    { id: 'log-amu', label: t('logAMU'), icon: Plus },
-    { id: 'alerts', label: t('alerts'), icon: Bell },
-    { id: 'prescriptions', label: t('prescriptions'), icon: FileText },
-    { id: 'chatbot', label: t('chatbot'), icon: MessageCircle },
+    { id: 'dashboard', label: t('dashboard') || 'Dashboard', icon: BarChart3 },
+    { id: 'log-amu', label: t('logAMU') || 'Log AMU', icon: Plus },
+    { id: 'alerts', label: t('alerts') || 'Alerts', icon: Bell },
+    { id: 'prescriptions', label: t('prescriptions') || 'Prescriptions', icon: FileText },
+    { id: 'veterinarians', label: 'Veterinarians', icon: Stethoscope },
+    { id: 'community', label: 'Community', icon: Users },
+    { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+    { id: 'chatbot', label: t('chatbot') || 'Chatbot', icon: MessageCircle },
   ];
 
   return (

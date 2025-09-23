@@ -5,9 +5,14 @@ import { Dashboard } from "@/components/Dashboard";
 import { AMUForm } from "@/components/AMUForm";
 import { AlertCenter } from "@/components/AlertCenter";
 import { PrescriptionManager } from "@/components/PrescriptionManager";
-import { Chatbot } from "@/components/Chatbot";
+import { Chatbot } from "@/components/ChatbotEnhanced";
+import VeterinarianNetwork from "@/components/VeterinarianNetwork";
+import FarmerCommunity from "@/components/FarmerCommunity";
+import AdvancedAnalytics from "@/components/AdvancedAnalytics";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
+  const { t } = useLanguage();
   const [activeView, setActiveView] = useState("dashboard");
 
   const renderContent = () => {
@@ -22,6 +27,12 @@ const Index = () => {
         return <PrescriptionManager />;
       case "chatbot":
         return <Chatbot />;
+      case "veterinarians":
+        return <VeterinarianNetwork />;
+      case "community":
+        return <FarmerCommunity />;
+      case "analytics":
+        return <AdvancedAnalytics />;
       default:
         return <Dashboard />;
     }
@@ -41,13 +52,31 @@ const Index = () => {
       
       {/* Mobile Navigation - Bottom */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 p-1 pb-safe">
-        <div className="flex justify-around">
+        <div className="grid grid-cols-5 gap-1">
           {[
-            { id: 'dashboard', icon: "📊", label: "Dashboard" },
-            { id: 'log-amu', icon: "➕", label: "Log" },
-            { id: 'alerts', icon: "🔔", label: "Alerts" },
+            { id: 'dashboard', icon: "📊", label: t("dashboard") || "Dashboard" },
+            { id: 'log-amu', icon: "➕", label: t("logAMU") || "Log" },
+            { id: 'alerts', icon: "🔔", label: t("alerts") || "Alerts" },
             { id: 'prescriptions', icon: "📋", label: "Rx" },
             { id: 'chatbot', icon: "💬", label: "Chat" }
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveView(item.id)}
+              className={`flex flex-col items-center p-1.5 rounded-lg transition-colors ${
+                activeView === item.id ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
+              }`}
+            >
+              <span className="text-base md:text-lg">{item.icon}</span>
+              <span className="text-[10px]">{item.label}</span>
+            </button>
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-1 mt-1">
+          {[
+            { id: 'veterinarians', icon: "🩺", label: "Vets" },
+            { id: 'community', icon: "👥", label: "Community" },
+            { id: 'analytics', icon: "📈", label: "Analytics" }
           ].map((item) => (
             <button
               key={item.id}
