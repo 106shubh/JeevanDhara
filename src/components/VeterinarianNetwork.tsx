@@ -52,7 +52,18 @@ export default function VeterinarianNetwork() {
   const [showBookingDialog, setShowBookingDialog] = useState(false);
   const [showVetDetails, setShowVetDetails] = useState(false);
   const [activeTab, setActiveTab] = useState("find");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { toast } = useToast();
+
+  // Check for mobile screen size on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Sample data initialization
   useEffect(() => {
@@ -151,41 +162,47 @@ export default function VeterinarianNetwork() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 p-4">
+    <div className="max-w-6xl mx-auto space-y-4 md:space-y-6 p-2 md:p-4">
       <motion.div 
         className="text-center space-y-2"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl font-bold text-foreground">Veterinarian Network</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-xl md:text-3xl font-bold text-foreground">Veterinarian Network</h2>
+        <p className="text-sm md:text-base text-muted-foreground px-4">
           Connect with qualified veterinarians for expert consultation and emergency care
         </p>
       </motion.div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="find">Find Veterinarians</TabsTrigger>
-          <TabsTrigger value="consultations">My Consultations</TabsTrigger>
-          <TabsTrigger value="emergency">Emergency Services</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 h-10 md:h-12">
+          <TabsTrigger value="find" className="text-xs md:text-sm px-2">
+            {isMobile ? "Find" : "Find Veterinarians"}
+          </TabsTrigger>
+          <TabsTrigger value="consultations" className="text-xs md:text-sm px-2">
+            {isMobile ? "Consults" : "My Consultations"}
+          </TabsTrigger>
+          <TabsTrigger value="emergency" className="text-xs md:text-sm px-2">
+            {isMobile ? "Emergency" : "Emergency Services"}
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="find" className="space-y-6 mt-6">
+        <TabsContent value="find" className="space-y-4 md:space-y-6 mt-4 md:mt-6">
           {/* Search and Filters */}
-          <div className="bg-card rounded-lg p-4 border">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-card rounded-lg p-3 md:p-4 border">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search by name or specialization..."
+                  placeholder={isMobile ? "Search vets..." : "Search by name or specialization..."}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 h-10"
                 />
               </div>
               <Select value={locationFilter} onValueChange={setLocationFilter}>
-                <SelectTrigger>
+                <SelectTrigger className="h-10">
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
                 <SelectContent>
@@ -196,7 +213,7 @@ export default function VeterinarianNetwork() {
                 </SelectContent>
               </Select>
               <Select value={specializationFilter} onValueChange={setSpecializationFilter}>
-                <SelectTrigger>
+                <SelectTrigger className="h-10">
                   <SelectValue placeholder="Specialization" />
                 </SelectTrigger>
                 <SelectContent>

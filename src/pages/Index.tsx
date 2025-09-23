@@ -5,10 +5,11 @@ import { Dashboard } from "@/components/Dashboard";
 import { AMUForm } from "@/components/AMUForm";
 import { AlertCenter } from "@/components/AlertCenter";
 import { PrescriptionManager } from "@/components/PrescriptionManager";
-import { Chatbot } from "@/components/ChatbotEnhanced";
+import { Chatbot } from "@/components/FunctionalChatbot";
 import VeterinarianNetwork from "@/components/VeterinarianNetwork";
 import FarmerCommunity from "@/components/FarmerCommunity";
 import AdvancedAnalytics from "@/components/AdvancedAnalytics";
+import { FoodSafetyMonitor } from "@/components/FoodSafetyMonitor";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
@@ -33,6 +34,8 @@ const Index = () => {
         return <FarmerCommunity />;
       case "analytics":
         return <AdvancedAnalytics />;
+      case "food-safety":
+        return <FoodSafetyMonitor />;
       default:
         return <Dashboard />;
     }
@@ -72,11 +75,12 @@ const Index = () => {
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-1 mt-1">
+        <div className="grid grid-cols-4 gap-1 mt-1">
           {[
             { id: 'veterinarians', icon: "🩺", label: "Vets" },
             { id: 'community', icon: "👥", label: "Community" },
-            { id: 'analytics', icon: "📈", label: "Analytics" }
+            { id: 'analytics', icon: "📈", label: "Analytics" },
+            { id: 'food-safety', icon: "🛡️", label: "Safety" }
           ].map((item) => (
             <button
               key={item.id}

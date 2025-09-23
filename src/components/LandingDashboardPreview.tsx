@@ -104,38 +104,38 @@ export const LandingDashboardPreview = () => {
 
   return (
     <motion.div 
-      className="bg-card border border-border rounded-2xl overflow-hidden shadow-xl"
+      className="bg-card border border-border rounded-lg md:rounded-2xl overflow-hidden shadow-lg md:shadow-xl mx-2 md:mx-0"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
       variants={containerVariants}
     >
       {/* Header */}
-      <div className="p-4 bg-gradient-to-r from-primary/5 to-primary/10 border-b border-border">
+      <div className="p-2 md:p-4 bg-gradient-to-r from-primary/5 to-primary/10 border-b border-border">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded-full bg-destructive/60"></div>
-            <div className="w-3 h-3 rounded-full bg-warning/60"></div>
-            <div className="w-3 h-3 rounded-full bg-success/60"></div>
-            <div className="ml-2 text-sm font-medium text-foreground">JeevanDhara Dashboard</div>
+          <div className="flex items-center space-x-1 md:space-x-2">
+            <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-destructive/60"></div>
+            <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-warning/60"></div>
+            <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-success/60"></div>
+            <div className="ml-1 md:ml-2 text-xs md:text-sm font-medium text-foreground">JeevanDhara Dashboard</div>
           </div>
           <div className="flex items-center space-x-1">
-            <Button variant="ghost" size="sm" className="h-6 text-xs">
-              <Filter className="h-3 w-3 mr-1" />
-              Filter
+            <Button variant="ghost" size="sm" className="h-5 md:h-6 text-[10px] md:text-xs px-1 md:px-2">
+              <Filter className="h-2.5 w-2.5 md:h-3 md:w-3 mr-0.5 md:mr-1" />
+              <span className="hidden sm:inline">Filter</span>
             </Button>
-            <Button variant="ghost" size="sm" className="h-6 text-xs">
-              <Download className="h-3 w-3 mr-1" />
-              Export
+            <Button variant="ghost" size="sm" className="h-5 md:h-6 text-[10px] md:text-xs px-1 md:px-2">
+              <Download className="h-2.5 w-2.5 md:h-3 md:w-3 mr-0.5 md:mr-1" />
+              <span className="hidden sm:inline">Export</span>
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="p-2 md:p-4 space-y-3 md:space-y-4">
         {/* Key Metrics */}
         <motion.div 
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3"
           variants={containerVariants}
         >
           <motion.div variants={itemVariants}>
@@ -144,8 +144,8 @@ export const LandingDashboardPreview = () => {
               value="247"
               change="+12 this month"
               changeType="positive"
-              icon={<Stethoscope className="h-4 w-4" />}
-              className="transform transition-all duration-300 hover:scale-105"
+              icon={<Stethoscope className="h-3 w-3 md:h-4 md:w-4" />}
+              className="transform transition-all duration-300 hover:scale-105 text-xs md:text-sm"
             />
           </motion.div>
           <motion.div variants={itemVariants}>
@@ -154,8 +154,8 @@ export const LandingDashboardPreview = () => {
               value="8"
               change="-3 from last week"
               changeType="positive"
-              icon={<Activity className="h-4 w-4" />}
-              className="transform transition-all duration-300 hover:scale-105"
+              icon={<Activity className="h-3 w-3 md:h-4 md:w-4" />}
+              className="transform transition-all duration-300 hover:scale-105 text-xs md:text-sm"
             />
           </motion.div>
           <motion.div variants={itemVariants}>
@@ -164,8 +164,8 @@ export const LandingDashboardPreview = () => {
               value="98.5%"
               change="+2.1% improvement"
               changeType="positive"
-              icon={<CheckCircle className="h-4 w-4" />}
-              className="transform transition-all duration-300 hover:scale-105"
+              icon={<CheckCircle className="h-3 w-3 md:h-4 md:w-4" />}
+              className="transform transition-all duration-300 hover:scale-105 text-xs md:text-sm"
             />
           </motion.div>
           <motion.div variants={itemVariants}>
@@ -174,8 +174,8 @@ export const LandingDashboardPreview = () => {
               value="3"
               change="2 urgent"
               changeType="negative"
-              icon={<AlertTriangle className="h-4 w-4" />}
-              className="transform transition-all duration-300 hover:scale-105"
+              icon={<AlertTriangle className="h-3 w-3 md:h-4 md:w-4" />}
+              className="transform transition-all duration-300 hover:scale-105 text-xs md:text-sm"
             />
           </motion.div>
         </motion.div>
@@ -322,54 +322,60 @@ export const LandingDashboardPreview = () => {
 
         {/* Quick Actions */}
         <motion.div variants={itemVariants}>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-2 md:gap-3">
             <Button 
               onClick={() => handlePreviewAction("Log AMU")}
-              className="bg-gradient-primary h-auto p-3 justify-start group relative overflow-hidden hover:shadow-elevated transition-all duration-300"
+              className="bg-gradient-primary h-auto p-2 md:p-3 justify-start group relative overflow-hidden hover:shadow-elevated transition-all duration-300"
             >
-              <div className="text-left flex items-center gap-2">
-                <div className="bg-white/20 p-1.5 rounded-full">
-                  <Activity className="h-4 w-4" />
+              <div className="text-left flex items-center gap-1 md:gap-2 w-full">
+                <div className="bg-white/20 p-1 md:p-1.5 rounded-full">
+                  <Activity className="h-3 w-3 md:h-4 md:w-4" />
                 </div>
-                <div>
-                  <div className="text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">{t("action.logAMU") || "Log AMU"}</div>
-                  <div className="text-xs opacity-80 group-hover:translate-x-1 transition-transform duration-300">Quick entry</div>
+                <div className="flex-1">
+                  <div className="text-xs md:text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">{t("action.logAMU") || "Log AMU"}</div>
+                  <div className="text-[10px] md:text-xs opacity-80 group-hover:translate-x-1 transition-transform duration-300">Quick entry</div>
                 </div>
-                <ArrowUpRight className="h-3 w-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </Button>
-            <Button 
-              onClick={() => handlePreviewAction("Generate Reports")}
-              variant="outline" 
-              className="h-auto p-3 justify-start group hover:shadow-card hover:border-primary/30 transition-all duration-300"
-            >
-              <div className="text-left flex items-center gap-2">
-                <div className="bg-primary/10 p-1.5 rounded-full">
-                  <BarChart2 className="h-4 w-4 text-primary" />
+            <div className="grid grid-cols-2 gap-2 md:gap-3">
+              <Button 
+                onClick={() => handlePreviewAction("Generate Reports")}
+                variant="outline" 
+                className="h-auto p-2 md:p-3 justify-start group hover:shadow-card hover:border-primary/30 transition-all duration-300"
+              >
+                <div className="text-left flex flex-col items-start gap-1 w-full">
+                  <div className="flex items-center gap-1 md:gap-2 w-full">
+                    <div className="bg-primary/10 p-1 md:p-1.5 rounded-full">
+                      <BarChart2 className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-xs md:text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">{t("action.reports") || "Reports"}</div>
+                    </div>
+                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
+                  </div>
+                  <div className="text-[10px] md:text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">{t("action.exportData") || "Export data"}</div>
                 </div>
-                <div>
-                  <div className="text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">{t("action.reports") || "Reports"}</div>
-                  <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">{t("action.exportData") || "Export data"}</div>
+              </Button>
+              <Button 
+                onClick={() => handlePreviewAction("Check Alerts")}
+                variant="outline" 
+                className="h-auto p-2 md:p-3 justify-start group hover:shadow-card hover:border-primary/30 transition-all duration-300"
+              >
+                <div className="text-left flex flex-col items-start gap-1 w-full">
+                  <div className="flex items-center gap-1 md:gap-2 w-full">
+                    <div className="bg-primary/10 p-1 md:p-1.5 rounded-full">
+                      <AlertTriangle className="h-3 w-3 md:h-4 md:w-4 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-xs md:text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">{t("alerts") || "Alerts"}</div>
+                    </div>
+                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
+                  </div>
+                  <div className="text-[10px] md:text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">3 pending</div>
                 </div>
-                <ArrowUpRight className="h-3 w-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
-              </div>
-            </Button>
-            <Button 
-              onClick={() => handlePreviewAction("Check Alerts")}
-              variant="outline" 
-              className="h-auto p-3 justify-start group hover:shadow-card hover:border-primary/30 transition-all duration-300"
-            >
-              <div className="text-left flex items-center gap-2">
-                <div className="bg-primary/10 p-1.5 rounded-full">
-                  <AlertTriangle className="h-4 w-4 text-primary" />
-                </div>
-                <div>
-                  <div className="text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">{t("alerts") || "Alerts"}</div>
-                  <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">3 pending</div>
-                </div>
-                <ArrowUpRight className="h-3 w-3 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
-              </div>
-            </Button>
+              </Button>
+            </div>
           </div>
         </motion.div>
       </div>

@@ -10,7 +10,8 @@ import {
   Home,
   Stethoscope,
   Users,
-  TrendingUp
+  TrendingUp,
+  Shield
 } from "lucide-react";
 
 interface NavigationProps {
@@ -37,6 +38,7 @@ export const Navigation = ({ activeView, setActiveView }: NavigationProps) => {
     { id: 'log-amu', label: t('logAMU') || 'Log AMU', icon: Plus },
     { id: 'alerts', label: t('alerts') || 'Alerts', icon: Bell },
     { id: 'prescriptions', label: t('prescriptions') || 'Prescriptions', icon: FileText },
+    { id: 'food-safety', label: 'Food Safety', icon: Shield },
     { id: 'veterinarians', label: 'Veterinarians', icon: Stethoscope },
     { id: 'community', label: 'Community', icon: Users },
     { id: 'analytics', label: 'Analytics', icon: TrendingUp },
@@ -44,22 +46,22 @@ export const Navigation = ({ activeView, setActiveView }: NavigationProps) => {
   ];
 
   return (
-    <nav className="bg-card border-r border-border h-full p-2 md:p-4">
-      <div className="space-y-1 md:space-y-2">
+    <nav className="bg-card border-r border-border h-full p-1 md:p-4">
+      <div className="space-y-0.5 md:space-y-2">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
             <Button
               key={item.id}
               variant={activeView === item.id ? "default" : "ghost"}
-              className={`w-full justify-start text-xs md:text-sm h-8 md:h-10 ${
+              className={`w-full justify-start text-xs md:text-sm h-8 md:h-10 px-2 md:px-3 ${
                 activeView === item.id ? "bg-gradient-primary text-white" : ""
-              }`}
+              } transition-all duration-200`}
               onClick={() => setActiveView(item.id)}
               size={isMobile ? "sm" : "default"}
             >
-              <Icon className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1.5 md:mr-2" />
-              {item.label}
+              <Icon className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1 md:mr-2 flex-shrink-0" />
+              <span className="truncate">{isMobile && item.label.length > 8 ? item.label.slice(0, 8) + '...' : item.label}</span>
             </Button>
           );
         })}

@@ -37,7 +37,8 @@ import {
   Droplets,
   Wind,
   Eye,
-  RefreshCw
+  RefreshCw,
+  Shield
 } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -330,10 +331,23 @@ export const Dashboard = () => {
     setShowAlertsDialog(true);
   };
 
+  const handleFoodSafety = () => {
+    // In a real implementation, this would navigate to the food safety page
+    // For now, we'll just show a toast
+    toast({
+      title: "Food Safety Monitoring",
+      description: "Navigate to the Food Safety Monitoring page to check compliance.",
+    });
+  };
+
   const handleWithdrawalClick = (animal: string, drug: string, daysLeft: number) => {
+    // Find the withdrawal data to get more details
+    const withdrawalItem = withdrawalData.find(item => item.animal === animal && item.drug === drug);
+    
     toast({
       title: `Withdrawal Period Details`,
       description: `${animal} treated with ${drug} has ${daysLeft} days remaining until clearance.`,
+      duration: 5000
     });
   };
 
@@ -406,16 +420,54 @@ export const Dashboard = () => {
     { name: 'Pigs', usage: 10, fill: 'hsl(var(--muted))' }
   ];
 
+  // Withdrawal period calculation function
+  const calculateWithdrawalPeriod = (drugName: string, dosage: string, species: string) => {
+    // Parse dosage value (e.g., "5mg/kg" -> 5)
+    const dosageMatch = dosage.match(/(\d*\.?\d+)/);
+    const dosageValue = dosageMatch ? parseFloat(dosageMatch[1]) : 1;
+    
+    // Base withdrawal periods for each drug (in days)
+    const basePeriods: Record<string, number> = {
+      "amoxicillin": 14,
+      "oxytetracycline": 21,
+      "florfenicol": 28,
+      "tulathromycin": 35,
+      "ceftiofur": 10,
+      "enrofloxacin": 15
+    };
+    
+    // Species multipliers
+    const speciesMultipliers: Record<string, number> = {
+      "cattle": 1.0,
+      "sheep": 0.8,
+      "goat": 0.9,
+      "pig": 0.7,
+      "poultry": 0.5
+    };
+    
+    // Dosage multipliers (higher dosage = longer withdrawal)
+    const dosageMultiplier = dosageValue > 0 ? Math.max(0.5, Math.min(2.0, dosageValue / 5)) : 1;
+    
+    // Calculate withdrawal period
+    const drugBase = basePeriods[drugName.toLowerCase()] || 28;
+    const speciesFactor = speciesMultipliers[species.toLowerCase()] || 1.0;
+    
+    const withdrawalPeriod = Math.round(drugBase * speciesFactor * dosageMultiplier);
+    
+    // Ensure minimum withdrawal period of 3 days
+    return Math.max(3, withdrawalPeriod);
+  };
+
   const withdrawalData = [
-    { animal: 'COW-023', drug: 'Amoxicillin', daysLeft: 2, status: 'urgent' },
-    { animal: 'GOAT-015', drug: 'Oxytetracycline', daysLeft: 1, status: 'warning' },
-    { animal: 'SHEEP-008', drug: 'Florfenicol', daysLeft: 7, status: 'normal' },
-    { animal: 'PIG-012', drug: 'Enrofloxacin', daysLeft: 14, status: 'normal' }
+    { animal: 'COW-023', drug: 'Amoxicillin', daysLeft: calculateWithdrawalPeriod('amoxicillin', '5mg/kg', 'cattle'), status: 'urgent' },
+    { animal: 'GOAT-015', drug: 'Oxytetracycline', daysLeft: calculateWithdrawalPeriod('oxytetracycline', '10mg/kg', 'goat'), status: 'warning' },
+    { animal: 'SHEEP-008', drug: 'Florfenicol', daysLeft: calculateWithdrawalPeriod('florfenicol', '3mg/kg', 'sheep'), status: 'normal' },
+    { animal: 'PIG-012', drug: 'Enrofloxacin', daysLeft: calculateWithdrawalPeriod('enrofloxacin', '2.5mg/kg', 'pig'), status: 'normal' }
   ];
 
   return (
     <motion.div 
-      className="space-y-4 md:space-y-6 px-2 md:px-0"
+      className="space-y-4 md:space-y-6 px-2 md:px-0 max-w-full overflow-hidden"
       initial="hidden"
       animate="visible"
       variants={containerVariants}>
@@ -464,6 +516,178 @@ export const Dashboard = () => {
             className="transform transition-all duration-300 hover:scale-105 hover:shadow-elevated"
           />
         </motion.div>
+      </motion.div>
+
+      {/* Quick Actions */}
+      <motion.div variants={itemVariants}>
+        <Card className="shadow-card overflow-hidden hover:shadow-elevated transition-all duration-300">
+        <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300 px-3 md:px-6 py-3 md:py-4">
+          <CardTitle className="text-sm md:text-base flex items-center gap-1 md:gap-2">
+            <Calendar className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+            <span>{t("dashboard.quickActions") || "Quick Actions"}</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 md:gap-6 mt-1 md:mt-2">
+            <Dialog open={showAMUDialog} onOpenChange={setShowAMUDialog}>
+              <DialogTrigger asChild>
+                <Button 
+                  onClick={handleLogAMU}
+                  className="bg-gradient-primary h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-elevated transition-all duration-300"
+                >
+                  <div className="text-left flex items-center gap-2 md:gap-3">
+                    <div className="bg-white/20 p-1.5 md:p-2 rounded-full">
+                      <Activity className="h-4 w-4 md:h-5 md:w-5" />
+                    </div>
+                    <div>
+                      <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">{t("action.logAMU") || "Log New AMU"}</div>
+                      <div className="text-xs opacity-80 group-hover:translate-x-1 transition-transform duration-300">Record antimicrobial usage</div>
+                    </div>
+                    <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>{t("action.logAMU") || "Log New AMU Entry"}</DialogTitle>
+                </DialogHeader>
+                <AMUForm />
+              </DialogContent>
+            </Dialog>
+
+            <Dialog open={showReportDialog} onOpenChange={setShowReportDialog}>
+              <DialogTrigger asChild>
+                <Button 
+                  onClick={handleGenerateReport}
+                  variant="outline" 
+                  className="h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-primary/30 transition-all duration-300"
+                >
+                  <div className="text-left flex items-center gap-2 md:gap-3">
+                    <div className="bg-primary/10 p-1.5 md:p-2 rounded-full">
+                      <BarChart2 className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">{t("dashboard.generateReport") || "Generate Report"}</div>
+                      <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">{t("dashboard.exportCompliance") || "Export compliance report"}</div>
+                    </div>
+                    <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
+                  </div>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>{t("dashboard.generateReport") || "Generate Report"}</DialogTitle>
+                </DialogHeader>
+                <Tabs defaultValue="compliance" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="compliance">Compliance</TabsTrigger>
+                    <TabsTrigger value="amu">AMU Report</TabsTrigger>
+                    <TabsTrigger value="withdrawal">Withdrawal</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="compliance" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card>
+                        <CardContent className="p-4">
+                          <h3 className="font-semibold mb-2">MRL Compliance Report</h3>
+                          <p className="text-sm text-muted-foreground mb-4">Comprehensive compliance status and regulatory requirements</p>
+                          <div className="space-y-2">
+                            <Button onClick={() => exportReport('pdf')} className="w-full" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download PDF
+                            </Button>
+                            <Button onClick={() => exportReport('excel')} variant="outline" className="w-full" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download Excel
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="amu" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card>
+                        <CardContent className="p-4">
+                          <h3 className="font-semibold mb-2">AMU Usage Report</h3>
+                          <p className="text-sm text-muted-foreground mb-4">Detailed antimicrobial usage patterns and trends</p>
+                          <div className="space-y-2">
+                            <Button onClick={() => exportReport('pdf')} className="w-full" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download PDF
+                            </Button>
+                            <Button onClick={() => exportReport('csv')} variant="outline" className="w-full" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download CSV
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="withdrawal" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card>
+                        <CardContent className="p-4">
+                          <h3 className="font-semibold mb-2">Withdrawal Period Report</h3>
+                          <p className="text-sm text-muted-foreground mb-4">Current and upcoming withdrawal period compliance</p>
+                          <div className="space-y-2">
+                            <Button onClick={() => exportReport('pdf')} className="w-full" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download PDF
+                            </Button>
+                            <Button onClick={() => exportReport('json')} variant="outline" className="w-full" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download JSON
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </DialogContent>
+            </Dialog>
+
+            <Button 
+              onClick={handleFoodSafety}
+              variant="outline" 
+              className="h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-green-500/30 transition-all duration-300"
+            >
+              <div className="text-left flex items-center gap-2 md:gap-3">
+                <div className="bg-green-500/10 p-1.5 md:p-2 rounded-full">
+                  <Shield className="h-4 w-4 md:h-5 md:w-5 text-green-500" />
+                </div>
+                <div>
+                  <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">Food Safety</div>
+                  <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">Monitor compliance</div>
+                </div>
+                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-green-500" />
+              </div>
+            </Button>
+
+            <Button 
+              onClick={toggleWeatherCard}
+              variant="outline" 
+              className="h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-blue-500/30 transition-all duration-300"
+            >
+              <div className="text-left flex items-center gap-2 md:gap-3">
+                <div className="bg-blue-500/10 p-1.5 md:p-2 rounded-full">
+                  <Cloud className="h-4 w-4 md:h-5 md:w-5 text-blue-500" />
+                </div>
+                <div>
+                  <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">
+                    {showWeatherCard ? "Hide Weather" : "Show Weather"}
+                  </div>
+                  <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">
+                    {showWeatherCard ? "Hide weather dashboard" : "Display weather information"}
+                  </div>
+                </div>
+                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-500" />
+              </div>
+            </Button>
+          </div>
+        </CardContent>
+        </Card>
       </motion.div>
 
       {/* Location Permission Prompt */}
@@ -815,161 +1039,6 @@ export const Dashboard = () => {
                 </div>
               </div>
             ))}
-          </div>
-        </CardContent>
-        </Card>
-      </motion.div>
-
-      {/* Quick Actions with Dialogs */}
-      <motion.div variants={itemVariants}>
-        <Card className="shadow-card overflow-hidden hover:shadow-elevated transition-all duration-300">
-        <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300 px-3 md:px-6 py-3 md:py-4">
-          <CardTitle className="text-sm md:text-base flex items-center gap-1 md:gap-2">
-            <Calendar className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-            <span>{t("dashboard.quickActions") || "Quick Actions"}</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6 mt-1 md:mt-2">
-            <Dialog open={showAMUDialog} onOpenChange={setShowAMUDialog}>
-              <DialogTrigger asChild>
-                <Button 
-                  onClick={handleLogAMU}
-                  className="bg-gradient-primary h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-elevated transition-all duration-300"
-                >
-                  <div className="text-left flex items-center gap-2 md:gap-3">
-                    <div className="bg-white/20 p-1.5 md:p-2 rounded-full">
-                      <Activity className="h-4 w-4 md:h-5 md:w-5" />
-                    </div>
-                    <div>
-                      <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">{t("action.logAMU") || "Log New AMU"}</div>
-                      <div className="text-xs opacity-80 group-hover:translate-x-1 transition-transform duration-300">Record antimicrobial usage</div>
-                    </div>
-                    <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>{t("action.logAMU") || "Log New AMU Entry"}</DialogTitle>
-                </DialogHeader>
-                <AMUForm />
-              </DialogContent>
-            </Dialog>
-
-            <Dialog open={showReportDialog} onOpenChange={setShowReportDialog}>
-              <DialogTrigger asChild>
-                <Button 
-                  onClick={handleGenerateReport}
-                  variant="outline" 
-                  className="h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-primary/30 transition-all duration-300"
-                >
-                  <div className="text-left flex items-center gap-2 md:gap-3">
-                    <div className="bg-primary/10 p-1.5 md:p-2 rounded-full">
-                      <BarChart2 className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">{t("dashboard.generateReport") || "Generate Report"}</div>
-                      <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">{t("dashboard.exportCompliance") || "Export compliance report"}</div>
-                    </div>
-                    <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-primary" />
-                  </div>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>{t("dashboard.generateReport") || "Generate Report"}</DialogTitle>
-                </DialogHeader>
-                <Tabs defaultValue="compliance" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="compliance">Compliance</TabsTrigger>
-                    <TabsTrigger value="amu">AMU Report</TabsTrigger>
-                    <TabsTrigger value="withdrawal">Withdrawal</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="compliance" className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Card>
-                        <CardContent className="p-4">
-                          <h3 className="font-semibold mb-2">MRL Compliance Report</h3>
-                          <p className="text-sm text-muted-foreground mb-4">Comprehensive compliance status and regulatory requirements</p>
-                          <div className="space-y-2">
-                            <Button onClick={() => exportReport('pdf')} className="w-full" size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              Download PDF
-                            </Button>
-                            <Button onClick={() => exportReport('excel')} variant="outline" className="w-full" size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              Download Excel
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </TabsContent>
-                  <TabsContent value="amu" className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Card>
-                        <CardContent className="p-4">
-                          <h3 className="font-semibold mb-2">AMU Usage Report</h3>
-                          <p className="text-sm text-muted-foreground mb-4">Detailed antimicrobial usage patterns and trends</p>
-                          <div className="space-y-2">
-                            <Button onClick={() => exportReport('pdf')} className="w-full" size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              Download PDF
-                            </Button>
-                            <Button onClick={() => exportReport('csv')} variant="outline" className="w-full" size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              Download CSV
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </TabsContent>
-                  <TabsContent value="withdrawal" className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Card>
-                        <CardContent className="p-4">
-                          <h3 className="font-semibold mb-2">Withdrawal Period Report</h3>
-                          <p className="text-sm text-muted-foreground mb-4">Current and upcoming withdrawal period compliance</p>
-                          <div className="space-y-2">
-                            <Button onClick={() => exportReport('pdf')} className="w-full" size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              Download PDF
-                            </Button>
-                            <Button onClick={() => exportReport('json')} variant="outline" className="w-full" size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              Download JSON
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </DialogContent>
-            </Dialog>
-
-            <Button 
-              onClick={toggleWeatherCard}
-              variant="outline" 
-              className="h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-blue-500/30 transition-all duration-300"
-            >
-              <div className="text-left flex items-center gap-2 md:gap-3">
-                <div className="bg-blue-500/10 p-1.5 md:p-2 rounded-full">
-                  <Cloud className="h-4 w-4 md:h-5 md:w-5 text-blue-500" />
-                </div>
-                <div>
-                  <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">
-                    {showWeatherCard ? "Hide Weather" : "Show Weather"}
-                  </div>
-                  <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">
-                    {showWeatherCard ? "Hide weather dashboard" : "Display weather information"}
-                  </div>
-                </div>
-                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-blue-500" />
-              </div>
-            </Button>
           </div>
         </CardContent>
         </Card>

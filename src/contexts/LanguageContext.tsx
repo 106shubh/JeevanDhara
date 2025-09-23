@@ -34,6 +34,11 @@ const translations: Translations = {
     hindi: 'नुस्खे',
     bengali: 'প্রেসক্রিপশন'
   },
+  'foodSafety': {
+    english: 'Food Safety',
+    hindi: 'खाद्य सुरक्षा',
+    bengali: 'খাদ্য নিরাপত্তা'
+  },
   'prescriptions.management': {
     english: 'Prescription Management',
     hindi: 'नुस्खे प्रबंधन',
@@ -164,22 +169,22 @@ const translations: Translations = {
   },
   'auth.createAccount': {
     english: 'Create your farm management account',
-    hindi: 'अपना खेत प्रबंধन खाता बनाएं',
+    hindi: 'अपना खेत प्रबंधन खाता बनाएं',
     bengali: 'আপনার খামার ব্যবস্থাপনা অ্যাকাউন্ট তৈরি করুন'
   },
   'auth.accessPortal': {
     english: 'Access your farm management portal',
-    hindi: 'अपने खेत प्रबंধन पोर्टल में प्रवेश करें',
+    hindi: 'अपने खेत प्रबंधन पोर्टल में प्रवेश करें',
     bengali: 'আপনার খামার ব্যবস্থাপনা পোর্টালে প্রবেশ করুন'
   },
   'auth.language': {
     english: 'Language',
-    hindi: 'भाষা',
+    hindi: 'भाषा',
     bengali: 'ভাষা'
   },
   'auth.alreadyHaveAccount': {
     english: 'Already have an account? Sign in',
-    hindi: 'पहলे से খाता है? साइन इन करें',
+    hindi: 'पहले से खाता है? साइन इन करें',
     bengali: 'আগে থেকেই অ্যাকাউন্ট আছে? সাইন ইন করুন'
   },
   'auth.noAccount': {
@@ -189,7 +194,7 @@ const translations: Translations = {
   },
   'auth.emailVerification': {
     english: 'After signing up, please check your email for a verification link before signing in.',
-    hindi: 'साइन अप करने के बाद, साइन इन करने से पहলे वेরिफिकेशन लिंक के लिए अपने ईमेल की जांच करें।',
+    hindi: 'साइन अप करने के बाद, साइन इन करने से पहले वेरिफिकेशन लिंक के लिए अपने ईमेल की जांच करें।',
     bengali: 'সাইন আপ করার পর, সাইন ইন করার আগে ভেরিফিকেশন লিঙ্কের জন্য আপনার ইমেইল চেক করুন।'
   },
   signIn: {
@@ -293,6 +298,41 @@ const translations: Translations = {
     hindi: 'लोड हो रहा है...',
     bengali: 'লোড হচ্ছে...'
   },
+  newTest: {
+    english: 'New Test',
+    hindi: 'नया परीक्षण',
+    bengali: 'নতুন পরীক্ষা'
+  },
+  uploadFile: {
+    english: 'Upload File',
+    hindi: 'फ़ाइल अपलोड करें',
+    bengali: 'ফাইল আপলোড করুন'
+  },
+  fileUploaded: {
+    english: 'File Uploaded',
+    hindi: 'फ़ाइल अपलोड हो गई',
+    bengali: 'ফাইল আপলোড হয়েছে'
+  },
+  sampleData: {
+    english: 'Sample Data',
+    hindi: 'नमूना डेटा',
+    bengali: 'নমুনা ডেটা'
+  },
+  foodItem: {
+    english: 'Food Item',
+    hindi: 'खाद्य पदार्थ',
+    bengali: 'খাদ্য পদার্থ'
+  },
+  type: {
+    english: 'Type',
+    hindi: 'प्रकार',
+    bengali: 'ধরন'
+  },
+  unit: {
+    english: 'Unit',
+    hindi: 'इकाई',
+    bengali: 'একক'
+  },
   
   // Landing Page
   GetStarted: {
@@ -342,17 +382,17 @@ const translations: Translations = {
   },
   'features.title': {
     english: 'Powerful Features for Modern Farming',
-    hindi: 'आधुনिक खेती के लिए शक्तिशाली सुविधाएं',
+    hindi: 'आधुनिक खेती के लिए शक्तिशाली सुविधाएं',
     bengali: 'আধুনিক কৃষির জন্য শক্তিশালী বৈশিষ্ট্য'
   },
   'features.subtitle': {
     english: 'Everything you need to manage your farm efficiently and comply with regulations',
-    hindi: 'अपने खेत का कुशलतापूর्वक प्रबंधन करने और नियমों का पालन करने के लिए आपको जो कुछ भी चाहिए',
+    hindi: 'अपने खेत का कुशलतापूर्वक प्रबंधन करने और नियमों का पालन करने के लिए आपको जो कुछ भी चाहिए',
     bengali: 'আপনার খামার দক্ষতার সাথে পরিচালনা করতে এবং নিয়মাবলী মেনে চলতে আপনার যা কিছু প্রয়োজন'
   },
   'feature.amuMonitoring.title': {
     english: 'AMU Monitoring',
-    hindi: 'AMU निगরানी',
+    hindi: 'AMU निगरानी',
     bengali: 'AMU পর্যবেক্ষণ'
   },
   'feature.amuMonitoring.desc': {
@@ -362,7 +402,7 @@ const translations: Translations = {
   },
   'feature.compliance.title': {
     english: 'Compliance Management',
-    hindi: 'अनुपालन प्रबंধन',
+    hindi: 'अनुपालन प्रबंधन',
     bengali: 'সম্মতি ব্যবস্থাপনা'
   },
   'feature.compliance.desc': {
@@ -372,7 +412,7 @@ const translations: Translations = {
   },
   'feature.assistant.title': {
     english: 'AI Assistant',
-    hindi: 'AI सहायক',
+    hindi: 'AI सहायक',
     bengali: 'AI সহায়ক'
   },
   'feature.assistant.desc': {
@@ -382,54 +422,54 @@ const translations: Translations = {
   },
   'feature.withdrawal.title': {
     english: 'Withdrawal Period Tracking',
-    hindi: 'विद্राওয়াল পিরিয়ড ট্র্যাকিং',
+    hindi: 'विद्राओय़ाल पीरियड ट्र्याकिंग',
     bengali: 'প্রত্যাহার সময়কাল ট্র্যাকিং'
   },
   'feature.withdrawal.desc': {
     english: 'Automatically track withdrawal periods for all medications. Receive timely alerts when animals are approaching clearance dates.',
-    hindi: 'सभी दवाओं के लिए विद्राওয়াল সময়কাল স্বয়ংক্রিয়ভাবে ট্র্যাক করুন। পশুরা নিষ্কাশনের তারিখের কাছাকাছি আসার সময় সময়মত সতর্কতা পান।',
+    hindi: 'सभी दवाओं के लिए विद्राओय़ाल समयकाल स्वयंक्रियभाबे ट्र्याक करून। पशुरा निष्काशनेर तारिखेर काछाकाछि आसार समय समयमत सतर्कता पान।',
     bengali: 'সমস্ত ওষুধের জন্য প্রত্যাহার সময়কাল স্বয়ংক্রিয়ভাবে ট্র্যাক করুন। পশুরা ক্লিয়ারেন্স তারিখের কাছাকাছি আসার সময় সময়মত সতর্কতা পান।'
   },
   'feature.export.title': {
     english: 'Export & Reporting',
-    hindi: 'निर्यात और रিপোর্টিং',
+    hindi: 'निर्यात और रिपोर्टिंग',
     bengali: 'রপ্তানি এবং রিপোর্টিং'
   },
   'feature.export.desc': {
     english: 'Generate comprehensive reports for regulatory submissions. Export data in multiple formats for easy sharing with authorities.',
-    hindi: 'नियामক प্রस্তুতির জন্য বিস্তৃত রিপোর্ট তৈরি করুন। কর্তৃপক্ষের সাথে সহজ শেয়ারিংয়ের জন্য একাধিক বিন্যাসে ডেটা রপ্তানি করুন।',
+    hindi: 'नियामक प्रस्तुति के लिए विस्तृत रिपोर्ट तैयार करें। कर्तृपक्ष के साथ आसान शेयरिंग के लिए एकाधिक प्रारूपों में डेटा निर्यात करें।',
     bengali: 'নিয়ন্ত্রক জমা দেওয়ার জন্য ব্যাপক রিপোর্ট তৈরি করুন। কর্তৃপক্ষের সাথে সহজ ভাগাভাগির জন্য একাধিক ফরম্যাটে ডেটা রপ্তানি করুন।'
   },
   'feature.team.title': {
     english: 'Team Collaboration',
-    hindi: 'দল सহযোগিতা',
+    hindi: 'दल सहयोगिता',
     bengali: 'দলীয় সহযোগিতা'
   },
   'feature.team.desc': {
     english: 'Collaborate with your team members, veterinarians, and consultants. Assign tasks and share important information securely.',
-    hindi: 'আপনার দলের সদস্য, পশুচিকিৎসক এবং পরামর্শদাতাদের সাথে সহযোগিতা করুন। কাজ বরাদ্দ করুন এবং গুরুত্বপূর্ণ তথ্য নিরাপদে ভাগ করুন।',
+    hindi: 'अपने दल के सदस्यों, पशुचिकित्सकों और परामर्शदाताओं के साथ सहयोग करें। कार्य निर्धारित करें और महत्वपूर्ण जानकारी सुरक्षित रूप से साझा करें।',
     bengali: 'আপনার দলের সদস্য, পশুচিকিৎসক এবং পরামর্শদাতাদের সাথে সহযোগিতা করুন। কাজ বরাদ্দ করুন এবং গুরুত্বপূর্ণ তথ্য নিরাপদে ভাগ করুন।'
   },
   
   // Common Actions
   'action.logAMU': {
     english: 'Log AMU',
-    hindi: 'AMU লগ করুন',
+    hindi: 'AMU लॉग करें',
     bengali: 'AMU লগ করুন'
   },
   'action.reports': {
     english: 'Reports',
-    hindi: 'रिपोर্ট',
+    hindi: 'रिपोर्ट',
     bengali: 'রিপোর্ট'
   },
   'action.exportData': {
     english: 'Export data',
-    hindi: 'ডেটা রপ্তানি',
-    bengali: 'ডেটা রপ্তানি'
+    hindi: 'डेटा निर्यात करें',
+    bengali: 'ডেটা রপ্তানি করুন'
   },
   'action.checkAlerts': {
     english: 'Check Alerts',
-    hindi: 'सतর্কতা চেক করুন',
+    hindi: 'सतर्कता चेक करें',
     bengali: 'সতর্কতা চেক করুন'
   },
   
@@ -518,12 +558,12 @@ const translations: Translations = {
   },
   'form.animalDetails': {
     english: 'Animal Details',
-    hindi: 'पশু विवरण',
+    hindi: 'पशु विवरण',
     bengali: 'পশুর বিবরণ'
   },
   'form.drugInformation': {
     english: 'Drug Information',
-    hindi: 'ওষুধের তথ্য',
+    hindi: 'ओषुधेर तथ्य',
     bengali: 'ওষুধের তথ্য'
   },
   'form.prescription': {
@@ -533,15 +573,227 @@ const translations: Translations = {
   },
   'form.review': {
     english: 'Review',
-    hindi: 'समीक্ষা',
+    hindi: 'समीक्षा',
     bengali: 'পর্যালোচনা'
+  },
+  
+  // Food Safety
+  'foodSafety.title': {
+    english: 'Food Safety Monitoring',
+    hindi: 'खाद्य सुरक्षा निगरानी',
+    bengali: 'খাদ্য নিরাপত্তা পর্যবেক্ষণ'
+  },
+  'foodSafety.category': {
+    english: 'Food Category',
+    hindi: 'खाद्य श्रेणी',
+    bengali: 'খাদ্য বিভাগ'
+  },
+  'foodSafety.milk': {
+    english: 'Milk',
+    hindi: 'दूध',
+    bengali: 'দুধ'
+  },
+  'foodSafety.honey': {
+    english: 'Honey',
+    hindi: 'शहद',
+    bengali: 'মধু'
+  },
+  'foodSafety.meat': {
+    english: 'Meat',
+    hindi: 'मांस',
+    bengali: 'মাংস'
+  },
+  'foodSafety.fish': {
+    english: 'Fish',
+    hindi: 'मछली',
+    bengali: 'মাছ'
+  },
+  'foodSafety.cereals': {
+    english: 'Cereals',
+    hindi: 'अनाज',
+    bengali: 'শস্য'
+  },
+  'foodSafety.fruits': {
+    english: 'Fruits/Vegetables',
+    hindi: 'फल/सब्जियां',
+    bengali: 'ফল/শাকসবজি'
+  },
+  'foodSafety.beverages': {
+    english: 'Packaged Beverages',
+    hindi: 'पैक किए गए पेय',
+    bengali: 'প্যাকেজড পানীয়'
+  },
+  'foodSafety.upload': {
+    english: 'Upload Lab Data',
+    hindi: 'प्रयोगशाला डेटा अपलोड करें',
+    bengali: 'ল্যাব ডেটা আপলোড করুন'
+  },
+  'foodSafety.analyze': {
+    english: 'Analyze Data',
+    hindi: 'डेटा का विश्लेषण करें',
+    bengali: 'ডেটা বিশ্লেষণ করুন'
+  },
+  'foodSafety.compliance': {
+    english: 'Compliance Report',
+    hindi: 'अनुपालन रिपोर्ट',
+    bengali: 'সম্মতি রিপোর্ট'
+  },
+  'foodSafety.contaminant': {
+    english: 'Contaminant',
+    hindi: 'दूषक',
+    bengali: 'দূষণকারী'
+  },
+  'foodSafety.detected': {
+    english: 'Detected Level',
+    hindi: 'पाया गया स्तर',
+    bengali: 'সনাক্ত স্তর'
+  },
+  'foodSafety.mrl': {
+    english: 'MRL (FSSAI)',
+    hindi: 'MRL (FSSAI)',
+    bengali: 'MRL (FSSAI)'
+  },
+  'foodSafety.result': {
+    english: 'Result',
+    hindi: 'परिणाम',
+    bengali: 'ফলাফল'
+  },
+  'foodSafety.safe': {
+    english: 'Safe ✅',
+    hindi: 'सुरक्षित ✅',
+    bengali: 'নিরাপদ ✅'
+  },
+  'foodSafety.warning': {
+    english: 'Warning ⚠️',
+    hindi: 'चेतावनी ⚠️',
+    bengali: 'সতর্কতা ⚠️'
+  },
+  'foodSafety.unsafe': {
+    english: 'Unsafe ❌',
+    hindi: 'असुरक्षित ❌',
+    bengali: 'অনিরাপদ ❌'
+  },
+  'foodSafety.action': {
+    english: 'Recommended Action',
+    hindi: 'अनुशंसित कार्य',
+    bengali: 'প্রস্তাবিত কর্ম'
+  },
+  'foodSafety.export': {
+    english: 'Export Report',
+    hindi: 'रिपोर्ट निर्यात करें',
+    bengali: 'রিপোর্ট রপ্তানি করুন'
+  },
+  'foodSafety.sampleInfo': {
+    english: 'Sample Information',
+    hindi: 'नमूना जानकारी',
+    bengali: 'নমুনা তথ্য'
+  },
+  'foodSafety.sampleId': {
+    english: 'Sample ID',
+    hindi: 'नमूना ID',
+    bengali: 'নমুনা আইডি'
+  },
+  'foodSafety.sampleIdPlaceholder': {
+    english: 'e.g., FS-2023-001',
+    hindi: 'उदाहरण, FS-2023-001',
+    bengali: 'উদাহরণ, FS-2023-001'
+  },
+  'foodSafety.collectionDate': {
+    english: 'Collection Date',
+    hindi: 'संग्रह तिथि',
+    bengali: 'সংগ্রহের তারিখ'
+  },
+  'foodSafety.farmLocation': {
+    english: 'Farm Location',
+    hindi: 'खेत स्थान',
+    bengali: 'খামারের অবস্থান'
+  },
+  'foodSafety.locationPlaceholder': {
+    english: 'e.g., Village Name, District',
+    hindi: 'उदाहरण, गांव का नाम, जिला',
+    bengali: 'উদাহরণ, গ্রামের নাম, জেলা'
+  },
+  'foodSafety.uploadedData': {
+    english: 'Uploaded Contaminants Data',
+    hindi: 'अपलोड किया गया दूषक डेटा',
+    bengali: 'আপলোড করা দূষণকারী ডেটা'
+  },
+  'foodSafety.uploadInstructions': {
+    english: 'Upload LC-MS/MS, ELISA, GC-MS or other lab test results',
+    hindi: 'LC-MS/MS, ELISA, GC-MS या अन्य प्रयोगशाला परीक्षण परिणाम अपलोड करें',
+    bengali: 'LC-MS/MS, ELISA, GC-MS বা অন্যান্য ল্যাব পরীক্ষার ফলাফল আপলোড করুন'
+  },
+  'foodSafety.method': {
+    english: 'Method',
+    hindi: 'विधि',
+    bengali: 'পদ্ধতি'
+  },
+  'foodSafety.inference': {
+    english: 'AMU Inference',
+    hindi: 'AMU अनुमान',
+    bengali: 'AMU অনুমান'
+  },
+  'foodSafety.recommendations': {
+    english: 'Recommended Actions',
+    hindi: 'अनुशंसित कार्य',
+    bengali: 'প্রস্তাবিত কর্ম'
+  },
+  'foodSafety.exceedsMRL': {
+    english: 'exceeds MRL by',
+    hindi: 'MRL से अधिक है',
+    bengali: 'MRL এর চেয়ে বেশি'
+  },
+  'foodSafety.immediateWithdrawal': {
+    english: ' Immediate withdrawal of product and investigation of AMU practices required.',
+    hindi: ' उत्पाद का तत्काल निष्कासन और AMU प्रथाओं की जांच आवश्यक है।',
+    bengali: ' পণ্যের তাৎক্ষণিক প্রত্যাহার এবং AMU অনুশীলনের তদন্ত প্রয়োজন।'
+  },
+  'foodSafety.closeToLimit': {
+    english: 'is close to MRL limit.',
+    hindi: 'MRL सीमा के करीब है।',
+    bengali: 'MRL সীমার কাছাকাছি।'
+  },
+  'foodSafety.reviewAMU': {
+    english: ' Review AMU protocols and increase monitoring frequency.',
+    hindi: ' AMU प्रोटोकॉल की समीक्षा करें और निगरानी आवृत्ति बढ़ाएं।',
+    bengali: ' AMU প্রোটোকল পর্যালোচনা করুন এবং নিরীক্ষণ ফ্রিকোয়েন্সি বাড়ান।'
+  },
+  'foodSafety.implementStricter': {
+    english: 'Implement stricter withdrawal periods for all antimicrobial usage',
+    hindi: 'सभी एंटीमाइक्रोबियल उपयोग के लिए कठोर निकासी अवधि लागू करें',
+    bengali: 'সমস্ত অ্যান্টিমাইক্রোবিয়াল ব্যবহারের জন্য কঠোর প্রত্যাহার সময়কাল বাস্তবায়ন করুন'
+  },
+  'foodSafety.conductSurveys': {
+    english: 'Conduct farm-level surveys to correlate detected residues with veterinary drug usage',
+    hindi: 'पशु चिकित्सा दवा उपयोग के साथ पाए गए अवशेषों का सहसंबंध स्थापित करने के लिए खेत स्तर के सर्वेक्षण आयोजित करें',
+    bengali: 'পশুচিকিৎসা ওষুধ ব্যবহারের সাথে সনাক্ত করা অবশেষগুলির সহসম্পর্ক স্থাপন করতে খামার স্তরের সমীক্ষা পরিচালনা করুন'
+  },
+  'foodSafety.reviewProcedures': {
+    english: 'Review and update AMU tracking procedures',
+    hindi: 'AMU ट्रैकिंग प्रक्रियाओं की समीक्षा और अद्यतन करें',
+    bengali: 'AMU ট্র্যাকিং পদ্ধতিগুলি পর্যালোচনা এবং আপডেট করুন'
+  },
+  'foodSafety.amuInsights': {
+    english: 'AMU Correlation Insights',
+    hindi: 'AMU सहसंबंध अंतर्दृष्टि',
+    bengali: 'AMU সহসম্পর্ক অন্তর্দৃষ্টি'
+  },
+  'foodSafety.insightText1': {
+    english: 'Based on detected contaminants, the following animals may have been treated with antimicrobials:',
+    hindi: 'पाए गए दूषकों के आधार पर, निम्नलिखित पशुओं का एंटीमाइक्रोबियल दवाओं के साथ उपचार किया गया हो सकता है:',
+    bengali: 'সনাক্ত করা দূষণকারীদের উপর ভিত্তি করে, নিম্নলিখিত পশুগুলিকে অ্যান্টিমাইক্রোবিয়াল দিয়ে চিকিৎসা করা হতে পারে:'
+  },
+  'foodSafety.insightText2': {
+    english: 'Recommend reviewing AMU records for these animals and implementing stricter withdrawal periods.',
+    hindi: 'इन पशुओं के लिए AMU रिकॉर्ड की समीक्षा करने और कठोर निकासी अवधि लागू करने की अनुशंसा की जाती है।',
+    bengali: 'এই পশুগুলির জন্য AMU রেকর্ড পর্যালোচনা এবং কঠোর প্রত্যাহার সময়কাল বাস্তবায়ন করার পরামর্শ দেওয়া হচ্ছে।'
   },
   
   // Footer
   'footer.empowering': {
     english: 'Empowering farmers with smart technology for better compliance and sustainable farming practices.',
     hindi: 'बेहतर अनुपालन और टिकाऊ खेती प्रथाओं के लिए स्मार्ट तकनीक के साथ किसानों को सशक्त बनाना।',
-    bengali: 'ভাল সম্মতি এবং স্থায়ী কৃষি অনুশীলনের জন্য স্মার্ট প্রযুক্তির সাথে কৃষকদের ক্ষমতায়ন।'
+    bengali: 'ভাল সম্মতি এবং স্থায়ী কৃষি অনুশীলনের জন্য স্মার্ট প্রযুক্তির সাথে কৃষকদের ক্ষমতায়ন।'
   },
   'footer.product': {
     english: 'Product',
@@ -550,77 +802,77 @@ const translations: Translations = {
   },
   'footer.features': {
     english: 'Features',
-    hindi: 'विशेষতাएं',
+    hindi: 'विशेषताएं',
     bengali: 'বৈশিষ্ট্য'
   },
   'footer.pricing': {
     english: 'Pricing',
-    hindi: 'मूল্য নির্ধারণ',
+    hindi: 'मूल्य निर्धारण',
     bengali: 'মূল্য'
   },
   'footer.caseStudies': {
     english: 'Case Studies',
-    hindi: 'केस स्टডীজ',
+    hindi: 'केस स्टडीज',
     bengali: 'কেস স্টাডি'
   },
   'footer.integrations': {
     english: 'Integrations',
-    hindi: 'एकीकরণ',
+    hindi: 'एकीकरण',
     bengali: 'একীকরণ'
   },
   'footer.resources': {
     english: 'Resources',
-    hindi: 'संসাধন',
+    hindi: 'संसाधन',
     bengali: 'সম্পদ'
   },
   'footer.documentation': {
     english: 'Documentation',
-    hindi: 'दস্তাবেज়ीकরণ',
+    hindi: 'दस्तावेज़ीकरण',
     bengali: 'নথিপত্র'
   },
   'footer.blog': {
     english: 'Blog',
-    hindi: 'ब্লগ',
+    hindi: 'ब्लग',
     bengali: 'ব্লগ'
   },
   'footer.webinars': {
     english: 'Webinars',
-    hindi: '঵েবিনার',
+    hindi: 'वेबिनार',
     bengali: 'ওয়েবিনার'
   },
   'footer.faq': {
     english: 'FAQ',
-    hindi: 'अक্সর পূছে জানে প্রশ্ন',
+    hindi: 'अक्सर पूछे जाने वाले प्रश्न',
     bengali: 'সাধারণ জিজ্ঞাসা'
   },
   'footer.company': {
     english: 'Company',
-    hindi: 'কম্পানী',
+    hindi: 'कंपनी',
     bengali: 'কোম্পানী'
   },
   'footer.aboutUs': {
     english: 'About Us',
-    hindi: 'হমারে বারে মেं',
+    hindi: 'हमारे बारे में',
     bengali: 'আমাদের সম্পর্কে'
   },
   'footer.careers': {
     english: 'Careers',
-    hindi: 'ক্যারিয়র',
+    hindi: 'करियर',
     bengali: 'ক্যারিয়ার'
   },
   'footer.contact': {
     english: 'Contact',
-    hindi: 'সংপর্ক',
+    hindi: 'संपर्क',
     bengali: 'যোগাযোগ'
   },
   'footer.privacy': {
     english: 'Privacy Policy',
-    hindi: 'গোপনীয়তা নীতি',
+    hindi: 'गोपनीयता नीति',
     bengali: 'গোপনীয়তা নীতি'
   },
   'footer.allRights': {
     english: 'All rights reserved.',
-    hindi: 'সभী অধিকার সুরক্ষিত।',
+    hindi: 'सभी अधिकार सुरक्षित।',
     bengali: 'সমস্ত অধিকার সংরক্ষিত।'
   }
 };

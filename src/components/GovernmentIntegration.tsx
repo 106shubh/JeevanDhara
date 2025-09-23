@@ -88,78 +88,83 @@ export default function GovernmentIntegration() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 p-4">
+    <div className="max-w-6xl mx-auto space-y-4 md:space-y-6 p-2 md:p-4">
       <motion.div 
-        className="text-center space-y-2"
+        className="text-center space-y-1 md:space-y-2"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl font-bold text-foreground">Government Integration</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">Government Integration</h2>
+        <p className="text-xs md:text-sm text-muted-foreground">
           Direct submission to regulatory bodies and compliance management
         </p>
       </motion.div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="submissions">My Submissions</TabsTrigger>
-          <TabsTrigger value="requirements">Compliance</TabsTrigger>
-          <TabsTrigger value="agencies">Government Agencies</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 h-9 md:h-10">
+          <TabsTrigger value="submissions" className="text-xs md:text-sm px-1 md:px-3">My Submissions</TabsTrigger>
+          <TabsTrigger value="requirements" className="text-xs md:text-sm px-1 md:px-3">Compliance</TabsTrigger>
+          <TabsTrigger value="agencies" className="text-xs md:text-sm px-1 md:px-3">Gov Agencies</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="submissions" className="space-y-6 mt-6">
-          <div className="flex justify-between items-center">
-            <div className="grid grid-cols-4 gap-4">
+        <TabsContent value="submissions" className="space-y-4 md:space-y-6 mt-4 md:mt-6">
+          <div className="flex flex-col gap-4">
+            {/* Stats Overview */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
               <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-blue-600" />
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-center gap-1 md:gap-2">
+                    <FileText className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Total</p>
-                      <p className="font-semibold">{submissions.length}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground">Total</p>
+                      <p className="text-sm md:text-base font-semibold">{submissions.length}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
               <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-yellow-600" />
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-center gap-1 md:gap-2">
+                    <Clock className="h-4 w-4 md:h-5 md:w-5 text-yellow-600" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Pending</p>
-                      <p className="font-semibold">{submissions.filter(s => s.status === 'under_review').length}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground">Pending</p>
+                      <p className="text-sm md:text-base font-semibold">{submissions.filter(s => s.status === 'under_review').length}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
               <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-green-600" />
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-center gap-1 md:gap-2">
+                    <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Approved</p>
-                      <p className="font-semibold">{submissions.filter(s => s.status === 'approved').length}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground">Approved</p>
+                      <p className="text-sm md:text-base font-semibold">{submissions.filter(s => s.status === 'approved').length}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
               <Card>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="h-5 w-5 text-red-600" />
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-center gap-1 md:gap-2">
+                    <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 text-red-600" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Issues</p>
-                      <p className="font-semibold">{submissions.filter(s => s.status === 'rejected').length}</p>
+                      <p className="text-xs md:text-sm text-muted-foreground">Issues</p>
+                      <p className="text-sm md:text-base font-semibold">{submissions.filter(s => s.status === 'rejected').length}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
-            <Button onClick={() => setShowSubmissionDialog(true)}>
-              <Upload className="h-4 w-4 mr-2" />
-              New Submission
-            </Button>
+            
+            {/* New Submission Button */}
+            <div className="flex justify-center sm:justify-end">
+              <Button onClick={() => setShowSubmissionDialog(true)} className="w-full sm:w-auto h-9 md:h-10 text-xs md:text-sm">
+                <Upload className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                New Submission
+              </Button>
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -173,36 +178,40 @@ export default function GovernmentIntegration() {
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                 >
                   <Card className="hover:shadow-md transition-all duration-300">
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                            <StatusIcon className="h-6 w-6 text-primary" />
+                    <CardContent className="p-4 md:p-6">
+                      <div className="flex flex-col gap-3 md:gap-4">
+                        <div className="flex items-start gap-3 md:gap-4">
+                          <div className="w-8 h-8 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <StatusIcon className="h-4 w-4 md:h-6 md:w-6 text-primary" />
                           </div>
-                          <div className="space-y-2">
+                          <div className="space-y-1 md:space-y-2 flex-1 min-w-0">
                             <div>
-                              <h3 className="font-semibold text-lg">{submission.title}</h3>
-                              <p className="text-sm text-muted-foreground">{submission.description}</p>
+                              <h3 className="font-semibold text-sm md:text-lg leading-tight">{submission.title}</h3>
+                              <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">{submission.description}</p>
                             </div>
-                            <div className="flex items-center gap-4 text-sm">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs md:text-sm">
                               <span className="flex items-center gap-1">
                                 <Building2 className="h-3 w-3" />
-                                {submission.agency}
+                                <span className="truncate">{submission.agency}</span>
                               </span>
+                              <span className="hidden sm:inline">Submitted: {submission.submitDate.toLocaleDateString()}</span>
+                              <span className="hidden sm:inline">Due: {submission.dueDate.toLocaleDateString()}</span>
+                            </div>
+                            <div className="flex sm:hidden flex-col gap-1 text-xs text-muted-foreground">
                               <span>Submitted: {submission.submitDate.toLocaleDateString()}</span>
                               <span>Due: {submission.dueDate.toLocaleDateString()}</span>
                             </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <Badge className={getStatusColor(submission.status)}>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                          <Badge className={`${getStatusColor(submission.status)} text-xs`}>
                             {submission.status.replace('_', ' ').toUpperCase()}
                           </Badge>
-                          <div className="flex gap-2">
-                            <Button size="sm" variant="outline">
-                              <Download className="h-4 w-4" />
+                          <div className="flex gap-2 w-full sm:w-auto">
+                            <Button size="sm" variant="outline" className="flex-1 sm:flex-none h-8 text-xs">
+                              <Download className="h-3 w-3 md:h-4 md:w-4" />
                             </Button>
-                            <Button size="sm">
+                            <Button size="sm" className="flex-1 sm:flex-none h-8 text-xs">
                               View Details
                             </Button>
                           </div>

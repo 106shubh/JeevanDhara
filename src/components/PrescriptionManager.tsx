@@ -660,42 +660,44 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
 
   return (
     <motion.div 
-      className="space-y-6"
+      className="space-y-6 max-w-full overflow-hidden"
       initial="hidden"
       animate="visible"
       variants={containerVariants}
     >
       {/* Upload Section */}
       <motion.div variants={itemVariants}>
-        <Card className="shadow-card hover:shadow-elevated transition-all duration-300">
-          <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300">
-            <CardTitle className="flex items-center space-x-2">
+        <Card className="shadow-card hover:shadow-elevated transition-all duration-300 max-w-full overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-transparent to-accent/20 transition-all duration-300 pb-4 md:pb-6 max-w-full overflow-hidden">
+            <CardTitle className="flex items-center space-x-2 text-base md:text-lg min-w-0 max-w-full">
               <motion.div 
                 whileHover={{ rotate: 15, scale: 1.2 }}
-                className="text-primary"
+                className="text-primary flex-shrink-0"
               >
-                <FileText className="h-5 w-5" />
+                <FileText className="h-4 w-4 md:h-5 md:w-5" />
               </motion.div>
-              <span>{t('prescriptions.management')}</span>
+              <span className="truncate">{t('prescriptions.management') || 'Prescription Management'}</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center space-y-4 hover:border-primary/50 transition-all duration-300 group">
-              <div className="flex justify-center space-x-4">
+          <CardContent className="space-y-3 md:space-y-4 p-4 md:p-6 max-w-full overflow-hidden">
+            <div className="border-2 border-dashed border-muted rounded-lg p-4 md:p-8 text-center space-y-3 md:space-y-4 hover:border-primary/50 transition-all duration-300 group max-w-full overflow-hidden">
+              <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 max-w-full">
                 <Button 
-                  className="bg-gradient-primary transform transition-all duration-300 hover:scale-105" 
+                  className="bg-gradient-primary transform transition-all duration-300 hover:scale-105 h-9 md:h-10 text-xs md:text-sm flex-shrink-0" 
                   onClick={() => setShowScannedDialog(true)}
+                  size="sm"
                 >
-                  <Camera className="h-4 w-4 mr-2" />
-                  {t('prescriptions.scan')}
+                  <Camera className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                  {t('prescriptions.scan') || 'Scan'}
                 </Button>
                 <Button 
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
-                  className="transform transition-all duration-300 hover:scale-105 hover:border-primary/30"
+                  className="transform transition-all duration-300 hover:scale-105 hover:border-primary/30 h-9 md:h-10 text-xs md:text-sm flex-shrink-0"
+                  size="sm"
                 >
-                  <Upload className="h-4 w-4 mr-2" />
-                  {t('prescriptions.upload')}
+                  <Upload className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                  {t('prescriptions.upload') || 'Upload'}
                 </Button>
                 <input 
                   type="file" 
@@ -705,8 +707,8 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
                   onChange={handleFileUpload}
                 />
               </div>
-              <p className="text-muted-foreground text-sm group-hover:text-foreground/80 transition-colors duration-300">
-                {t('prescriptions.uploadInstructions')}
+              <p className="text-muted-foreground text-xs md:text-sm group-hover:text-foreground/80 transition-colors duration-300 max-w-full break-words overflow-hidden">
+                {t('prescriptions.uploadInstructions') || 'Scan or upload prescription documents for automatic data extraction'}
               </p>
             </div>
           </CardContent>
@@ -715,102 +717,104 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
       
       {/* Prescription Scanning Dialog */}
       <Dialog open={showScannedDialog} onOpenChange={setShowScannedDialog}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle className="flex items-center">
+        <DialogContent className="max-w-sm sm:max-w-lg md:max-w-3xl mx-auto w-[95vw] sm:w-full max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="max-w-full overflow-hidden">
+            <DialogTitle className="flex items-center text-sm md:text-base min-w-0 max-w-full">
               <motion.div 
                 initial={{ rotate: 0 }}
                 animate={{ rotate: showScannedDialog ? 360 : 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-primary"
+                className="text-primary flex-shrink-0"
               >
-                <Scan className="h-5 w-5 mr-2" />
+                <Scan className="h-4 w-4 md:h-5 md:w-5 mr-1 md:mr-2" />
               </motion.div>
-              Prescription Scanner
+              <span className="truncate">Prescription Scanner</span>
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-xs md:text-sm">
               Scan your prescription to extract details automatically
             </DialogDescription>
           </DialogHeader>
           
-          <Tabs defaultValue="scan" className="w-full">
-            <TabsList className="grid grid-cols-2 mb-4">
-              <TabsTrigger value="scan">Scan Prescription</TabsTrigger>
-              <TabsTrigger value="results">Extracted Details</TabsTrigger>
+          <Tabs defaultValue="scan" className="w-full max-w-full overflow-hidden">
+            <TabsList className="grid grid-cols-2 mb-3 md:mb-4 h-8 md:h-10 max-w-full">
+              <TabsTrigger value="scan" className="text-xs md:text-sm truncate">Scan Prescription</TabsTrigger>
+              <TabsTrigger value="results" className="text-xs md:text-sm truncate">Extracted Details</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="scan" className="space-y-4">
+            <TabsContent value="scan" className="space-y-3 md:space-y-4 max-w-full overflow-hidden">
               {!scannedImage ? (
-                <div className="border-2 border-dashed border-muted rounded-lg p-12 text-center space-y-4">
-                  <div className="flex flex-col items-center justify-center gap-4">
-                    <Camera className="h-12 w-12 text-muted-foreground" />
-                    <p className="text-muted-foreground">Take a photo or upload an image of your prescription</p>
-                    <div className="flex gap-4">
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <div className="border-2 border-dashed border-muted rounded-lg p-6 md:p-12 text-center space-y-3 md:space-y-4 max-w-full overflow-hidden">
+                  <div className="flex flex-col items-center justify-center gap-3 md:gap-4 max-w-full">
+                    <Camera className="h-8 w-8 md:h-12 md:w-12 text-muted-foreground flex-shrink-0" />
+                    <p className="text-muted-foreground text-xs md:text-sm max-w-full break-words">Take a photo or upload an image of your prescription</p>
+                    <div className="flex flex-col sm:flex-row gap-2 md:gap-4 w-full sm:w-auto max-w-full">
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none">
                         <Button 
                           onClick={handleCameraCapture}
-                          className="transition-all duration-300 hover:shadow-md"
+                          className="w-full sm:w-auto transition-all duration-300 hover:shadow-md h-8 md:h-10 text-xs md:text-sm min-w-0"
+                          size="sm"
                         >
-                          <Camera className="h-4 w-4 mr-2" />
-                          Take Photo
+                          <Camera className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                          <span className="truncate">Take Photo</span>
                         </Button>
                       </motion.div>
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none">
                         <Button 
                           variant="outline" 
                           onClick={() => fileInputRef.current?.click()}
-                          className="transition-all duration-300 hover:shadow-md hover:border-primary"
+                          className="w-full sm:w-auto transition-all duration-300 hover:shadow-md hover:border-primary h-8 md:h-10 text-xs md:text-sm min-w-0"
+                          size="sm"
                         >
-                          <Upload className="h-4 w-4 mr-2" />
-                          Upload Image
+                          <Upload className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                          <span className="truncate">Upload Image</span>
                         </Button>
                       </motion.div>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div className="relative border rounded-md overflow-hidden">
+                <div className="space-y-3 md:space-y-4 max-w-full overflow-hidden">
+                  <div className="relative border rounded-md overflow-hidden max-w-full">
                     <img 
                       src={scannedImage} 
                       alt="Scanned Prescription" 
-                      className="w-full object-contain max-h-[400px]" 
+                      className="w-full object-contain max-h-[200px] md:max-h-[400px] max-w-full" 
                     />
                     <Button 
                       size="icon" 
                       variant="destructive" 
-                      className="absolute top-2 right-2" 
+                      className="absolute top-1 right-1 md:top-2 md:right-2 h-6 w-6 md:h-8 md:w-8 flex-shrink-0" 
                       onClick={() => setScannedImage(null)}
                     >
-                      <X className="h-4 w-4" />
+                      <X className="h-3 w-3 md:h-4 md:w-4" />
                     </Button>
                   </div>
                   
-                  <div className="flex justify-between">
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <div className="flex flex-col sm:flex-row justify-between gap-2 max-w-full">
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1 sm:flex-none">
                       <Button 
                         variant="outline" 
                         onClick={() => setScannedImage(null)}
-                        className="transition-all duration-300 hover:shadow-md hover:border-primary"
+                        className="w-full sm:w-auto transition-all duration-300 hover:shadow-md hover:border-primary h-8 md:h-10 text-xs md:text-sm min-w-0"
                       >
-                        Retake
+                        <span className="truncate">Retake</span>
                       </Button>
                     </motion.div>
-                    <motion.div whileHover={isScanning ? {} : { scale: 1.05 }} whileTap={isScanning ? {} : { scale: 0.95 }}>
+                    <motion.div whileHover={isScanning ? {} : { scale: 1.05 }} whileTap={isScanning ? {} : { scale: 0.95 }} className="flex-1 sm:flex-none">
                       <Button 
-                        className="bg-gradient-primary transition-all duration-300 hover:shadow-md" 
+                        className="w-full sm:w-auto bg-gradient-primary transition-all duration-300 hover:shadow-md h-8 md:h-10 text-xs md:text-sm min-w-0" 
                         onClick={handleScanPrescription}
                         disabled={isScanning}
                       >
                         {isScanning ? (
                           <>
                             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                            Processing...
+                            <span className="truncate">Processing...</span>
                           </>
                         ) : (
                           <>
                             <Scan className="h-4 w-4 mr-2" />
-                            Extract Details
+                            <span className="truncate">Extract Details</span>
                           </>
                         )}
                       </Button>
@@ -820,17 +824,17 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
               )}
             </TabsContent>
             
-            <TabsContent value="results" className="space-y-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <Languages className="h-4 w-4" />
-                  <span className="text-sm font-medium">Translate to:</span>
+            <TabsContent value="results" className="space-y-4 max-w-full overflow-hidden">
+              <div className="flex items-center justify-between mb-4 max-w-full">
+                <div className="flex items-center space-x-2 min-w-0 flex-shrink">
+                  <Languages className="h-4 w-4 flex-shrink-0" />
+                  <span className="text-sm font-medium truncate">Translate to:</span>
                 </div>
                 <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-[140px] sm:w-[180px] max-w-[50%]">
                     <SelectValue placeholder="Select Language" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="max-w-full">
                     <SelectItem value="english">English</SelectItem>
                     <SelectItem value="hindi">Hindi</SelectItem>
                     <SelectItem value="bengali">Bengali</SelectItem>
@@ -839,58 +843,58 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
               </div>
               
               {extractedData ? (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
+                <div className="space-y-4 max-w-full overflow-hidden">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-full">
+                    <div className="space-y-2 min-w-0 max-w-full">
                       <Label>Veterinarian Name</Label>
-                      <Input value={extractedData.veterinarianName || ''} readOnly />
+                      <Input value={extractedData.veterinarianName || ''} readOnly className="max-w-full" />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 min-w-0 max-w-full">
                       <Label>Animal ID</Label>
-                      <Input value={extractedData.animalId || ''} readOnly />
+                      <Input value={extractedData.animalId || ''} readOnly className="max-w-full" />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 min-w-0 max-w-full">
                       <Label>Drug Name</Label>
-                      <Input value={extractedData.drugName || ''} readOnly />
+                      <Input value={extractedData.drugName || ''} readOnly className="max-w-full" />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 min-w-0 max-w-full">
                       <Label>Issue Date</Label>
-                      <Input value={extractedData.issueDate || ''} readOnly />
+                      <Input value={extractedData.issueDate || ''} readOnly className="max-w-full" />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 min-w-0 max-w-full">
                       <Label>Dosage</Label>
-                      <Input value={extractedData.dosage || ''} readOnly />
+                      <Input value={extractedData.dosage || ''} readOnly className="max-w-full" />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 min-w-0 max-w-full">
                       <Label>Frequency</Label>
-                      <Input value={extractedData.frequency || ''} readOnly />
+                      <Input value={extractedData.frequency || ''} readOnly className="max-w-full" />
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-2 max-w-full">
                     <Label>Notes</Label>
-                    <Textarea value={extractedData.notes || ''} readOnly className="min-h-[100px]" />
+                    <Textarea value={extractedData.notes || ''} readOnly className="min-h-[100px] max-w-full overflow-hidden resize-none" />
                   </div>
                   
-                  <div className="flex justify-end space-x-2">
-                    <Button variant="outline" onClick={() => setShowScannedDialog(false)}>
+                  <div className="flex justify-end space-x-2 max-w-full">
+                    <Button variant="outline" onClick={() => setShowScannedDialog(false)} className="flex-shrink-0">
                       Cancel
                     </Button>
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-shrink-0">
                       <Button 
-                        className="bg-gradient-primary hover:shadow-lg transition-all duration-300" 
+                        className="bg-gradient-primary hover:shadow-lg transition-all duration-300 min-w-0" 
                         onClick={handleSavePrescription}
                         disabled={isLoading}
                       >
                         {isLoading ? (
                           <>
                             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                            Saving...
+                            <span className="truncate">Saving...</span>
                           </>
                         ) : (
                           <>
                             <CheckCircle className="h-4 w-4 mr-2" />
-                            Save Prescription
+                            <span className="truncate">Save Prescription</span>
                           </>
                         )}
                       </Button>
@@ -921,84 +925,94 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
 
       {/* Enhanced Search and Filter Section */}
       <motion.div variants={itemVariants}>
-        <Card className="shadow-card hover:shadow-elevated transition-all duration-300 border-0 bg-gradient-to-r from-card to-card/80">
-          <CardContent className="pt-6">
-            <div className="space-y-4">
+        <Card className="shadow-card hover:shadow-elevated transition-all duration-300 border-0 bg-gradient-to-r from-card to-card/80 max-w-full overflow-hidden">
+          <CardContent className="pt-6 max-w-full overflow-hidden">
+            <div className="space-y-4 max-w-full overflow-hidden">
               {/* Search and View Controls */}
-              <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
-                <div className="flex-1 relative group">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 group-focus-within:text-primary transition-colors duration-300" />
-                  <Input
-                    placeholder="Search prescriptions by ID, animal, drug, or veterinarian..."
-                    className="pl-10 h-11 border-2 focus:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  {searchTerm && (
-                    <motion.button
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-200"
-                      onClick={() => setSearchTerm('')}
+              <div className="flex flex-col gap-3 md:gap-4 max-w-full overflow-hidden">
+                {/* Top row - Search and quick actions */}
+                <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center max-w-full overflow-hidden">
+                  <div className="flex-1 relative group min-w-0 max-w-full">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 group-focus-within:text-primary transition-colors duration-300 flex-shrink-0" />
+                    <Input
+                      placeholder="Search prescriptions..."
+                      className="pl-10 h-9 md:h-11 text-xs md:text-sm border-2 focus:border-primary/50 transition-all duration-300 bg-background/50 backdrop-blur-sm max-w-full"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    {searchTerm && (
+                      <motion.button
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-200 flex-shrink-0"
+                        onClick={() => setSearchTerm('')}
+                      >
+                        <X className="h-3 w-3 md:h-4 md:w-4" />
+                      </motion.button>
+                    )}
+                  </div>
+                  
+                  {/* Filter Toggle - Always visible on mobile */}
+                  <Button
+                    variant={showFilters ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="transition-all duration-300 h-9 md:h-11 px-3 text-xs md:text-sm flex-shrink-0"
+                  >
+                    <Filter className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                    <span className="hidden sm:inline">Filters</span>
+                  </Button>
+                </div>
+                
+                {/* Bottom row - View mode and sort controls */}
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center justify-between max-w-full overflow-hidden">
+                  {/* View Mode Toggle */}
+                  <div className="flex items-center gap-2 min-w-0 flex-shrink">
+                    <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline flex-shrink-0">View:</span>
+                    <Button
+                      variant={viewMode === 'list' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setViewMode('list')}
+                      className="transition-all duration-300 h-8 md:h-9 px-2 md:px-3 flex-shrink-0"
                     >
-                      <X className="h-4 w-4" />
-                    </motion.button>
-                  )}
+                      <FileText className="h-3 w-3 md:h-4 md:w-4" />
+                      <span className="ml-1 text-xs md:text-sm hidden sm:inline">List</span>
+                    </Button>
+                    <Button
+                      variant={viewMode === 'grid' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setViewMode('grid')}
+                      className="transition-all duration-300 h-8 md:h-9 px-2 md:px-3 flex-shrink-0"
+                    >
+                      <Activity className="h-3 w-3 md:h-4 md:w-4" />
+                      <span className="ml-1 text-xs md:text-sm hidden sm:inline">Grid</span>
+                    </Button>
+                  </div>
+                  
+                  {/* Sort Controls */}
+                  <div className="flex items-center gap-2 min-w-0 flex-shrink">
+                    <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline flex-shrink-0">Sort:</span>
+                    <Select value={sortBy} onValueChange={(value: 'date' | 'status' | 'animal' | 'drug') => setSortBy(value)}>
+                      <SelectTrigger className="w-24 sm:w-32 h-8 md:h-9 text-xs md:text-sm max-w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-w-full">
+                        <SelectItem value="date">Date</SelectItem>
+                        <SelectItem value="status">Status</SelectItem>
+                        <SelectItem value="animal">Animal</SelectItem>
+                        <SelectItem value="drug">Drug</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                      className="transition-all duration-300 h-8 md:h-9 px-2 md:px-3 flex-shrink-0"
+                    >
+                      <span className="text-xs md:text-sm">{sortOrder === 'asc' ? '↑' : '↓'}</span>
+                    </Button>
+                  </div>
                 </div>
-                
-                {/* View Mode Toggle */}
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant={viewMode === 'list' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setViewMode('list')}
-                    className="transition-all duration-300"
-                  >
-                    <FileText className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === 'grid' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setViewMode('grid')}
-                    className="transition-all duration-300"
-                  >
-                    <Activity className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                {/* Sort Controls */}
-                <div className="flex items-center gap-2">
-                  <Select value={sortBy} onValueChange={(value: 'date' | 'status' | 'animal' | 'drug') => setSortBy(value)}>
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="date">Date</SelectItem>
-                      <SelectItem value="status">Status</SelectItem>
-                      <SelectItem value="animal">Animal</SelectItem>
-                      <SelectItem value="drug">Drug</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                    className="transition-all duration-300"
-                  >
-                    {sortOrder === 'asc' ? '↑' : '↓'}
-                  </Button>
-                </div>
-                
-                {/* Filter Toggle */}
-                <Button
-                  variant={showFilters ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="transition-all duration-300"
-                >
-                  <Filter className="h-4 w-4 mr-2" />
-                  Filters
-                </Button>
               </div>
               
               {/* Status Filter Pills with Animation */}
@@ -1008,7 +1022,7 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className="flex flex-wrap gap-2 pt-2 border-t border-border/50">
+                <div className="flex flex-wrap gap-2 pt-3 border-t border-border/50">
                   {[
                     { key: 'all', label: 'All', count: prescriptions.length },
                     { key: 'verified', label: 'Verified', count: prescriptions.filter(p => p.status === 'verified').length },
@@ -1024,7 +1038,7 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
                         variant={statusFilter === filter.key ? 'default' : 'outline'} 
                         size="sm"
                         onClick={() => setStatusFilter(filter.key)}
-                        className={`transition-all duration-300 ${
+                        className={`transition-all duration-300 h-8 md:h-9 px-2 md:px-3 text-xs md:text-sm ${
                           statusFilter === filter.key 
                             ? 'bg-gradient-primary shadow-md' 
                             : 'hover:border-primary/30 hover:shadow-sm'
@@ -1032,7 +1046,7 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
                       >
                         <span className="flex items-center gap-1">
                           {filter.label}
-                          <Badge variant="secondary" className="ml-1 text-xs">
+                          <Badge variant="secondary" className="ml-1 text-[10px] md:text-xs px-1 py-0 h-4 md:h-5">
                             {filter.count}
                           </Badge>
                         </span>
@@ -1043,13 +1057,13 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
               </motion.div>
               
               {/* Results Summary */}
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs md:text-sm text-muted-foreground">
                 <span>
                   Showing {filteredAndSortedPrescriptions.length} of {prescriptions.length} prescriptions
                   {searchTerm && ` for "${searchTerm}"`}
                 </span>
                 {filteredAndSortedPrescriptions.length > 0 && (
-                  <span>Sorted by {sortBy} ({sortOrder === 'asc' ? 'ascending' : 'descending'})</span>
+                  <span className="hidden sm:inline">Sorted by {sortBy} ({sortOrder === 'asc' ? 'ascending' : 'descending'})</span>
                 )}
               </div>
               
@@ -1058,55 +1072,57 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
                 <motion.div 
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg border border-primary/20"
+                  className="p-3 md:p-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg border border-primary/20 max-w-full overflow-hidden"
                 >
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                        <span className="text-sm font-medium text-foreground">
-                          {selectedPrescriptions.length} prescription{selectedPrescriptions.length > 1 ? 's' : ''} selected
-                        </span>
+                  <div className="flex flex-col gap-3 sm:gap-4 max-w-full overflow-hidden">
+                    <div className="flex items-center justify-between max-w-full">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-shrink">
+                        <div className="flex items-center gap-1 md:gap-2 min-w-0">
+                          <div className="w-2 h-2 bg-primary rounded-full animate-pulse flex-shrink-0"></div>
+                          <span className="text-xs md:text-sm font-medium text-foreground truncate">
+                            {selectedPrescriptions.length} prescription{selectedPrescriptions.length > 1 ? 's' : ''} selected
+                          </span>
+                        </div>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setSelectedPrescriptions([])}
+                          className="h-5 w-5 md:h-6 md:w-6 p-0 hover:bg-destructive/20 flex-shrink-0"
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
                       </div>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => setSelectedPrescriptions([])}
-                        className="h-6 w-6 p-0 hover:bg-destructive/20"
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
                     </div>
-                    <div className="flex gap-2">
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <div className="flex flex-col sm:flex-row gap-2 max-w-full">
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
                         <Button 
                           size="sm" 
                           onClick={handleBulkVerify}
-                          className="bg-gradient-primary hover:shadow-md transition-all duration-300"
+                          className="w-full sm:w-auto bg-gradient-primary hover:shadow-md transition-all duration-300 h-8 md:h-9 text-xs md:text-sm min-w-0"
                           disabled={isLoading}
                         >
                           {isLoading ? (
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            <Loader2 className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 animate-spin" />
                           ) : (
-                            <CheckCircle className="h-4 w-4 mr-2" />
+                            <CheckCircle className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
                           )}
-                          Verify Selected
+                          <span className="truncate">Verify Selected</span>
                         </Button>
                       </motion.div>
-                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
                         <Button 
                           size="sm" 
                           variant="destructive" 
                           onClick={handleBulkDelete}
                           disabled={isLoading}
-                          className="hover:shadow-md transition-all duration-300"
+                          className="w-full sm:w-auto hover:shadow-md transition-all duration-300 h-8 md:h-9 text-xs md:text-sm min-w-0"
                         >
                           {isLoading ? (
-                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            <Loader2 className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2 animate-spin" />
                           ) : (
-                            <Trash2 className="h-4 w-4 mr-2" />
+                            <Trash2 className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
                           )}
-                          Delete Selected
+                          <span className="truncate">Delete Selected</span>
                         </Button>
                       </motion.div>
                     </div>
@@ -1195,8 +1211,8 @@ Withdrawal period: 7 days for milk, 14 days for meat.`;
               </Card>
             </motion.div>
           ) : (
-            <div className={`grid gap-4 ${
-              viewMode === 'grid' ? 'grid-cols-1 lg:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'
+            <div className={`grid gap-3 md:gap-4 ${
+              viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'
             }`}>
               {filteredAndSortedPrescriptions.map((prescription, index) => (
                 <motion.div

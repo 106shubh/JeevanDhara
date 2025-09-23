@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -134,95 +134,95 @@ export default function AdvancedAnalytics() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 p-4">
+    <div className="max-w-7xl mx-auto space-y-4 md:space-y-6 p-2 md:p-4 max-w-full overflow-hidden">
       <motion.div 
-        className="text-center space-y-2"
+        className="text-center space-y-1 md:space-y-2 px-2 md:px-0 max-w-full overflow-hidden"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl font-bold text-foreground">Advanced Analytics & Insights</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground break-words">Advanced Analytics & Insights</h2>
+        <p className="text-xs md:text-sm text-muted-foreground max-w-full break-words">
           AI-powered analytics for predictive insights, cost optimization, and performance benchmarking
         </p>
       </motion.div>
 
       {/* Control Panel */}
       <motion.div 
-        className="flex flex-col md:flex-row gap-4 justify-between bg-card p-4 rounded-lg border"
+        className="flex flex-col gap-3 md:gap-4 bg-card p-3 md:p-4 rounded-lg border max-w-full overflow-hidden"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-2 md:gap-4 max-w-full">
           <Select value={timeFrame} onValueChange={setTimeFrame}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-full sm:w-32 md:w-40 h-8 md:h-10 text-xs md:text-sm max-w-full">
               <SelectValue placeholder="Time Frame" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-w-full">
               <SelectItem value="7days">Last 7 days</SelectItem>
               <SelectItem value="30days">Last 30 days</SelectItem>
               <SelectItem value="90days">Last 3 months</SelectItem>
               <SelectItem value="1year">Last year</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" onClick={refreshData}>
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
+          <Button variant="outline" onClick={refreshData} size="sm" className="h-8 md:h-10 text-xs md:text-sm flex-shrink-0">
+            <RefreshCw className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={generateReport}>
-            <Download className="h-4 w-4 mr-2" />
-            Export Report
+        <div className="flex flex-col sm:flex-row gap-2 max-w-full">
+          <Button variant="outline" onClick={generateReport} size="sm" className="h-8 md:h-10 text-xs md:text-sm flex-shrink-0">
+            <Download className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+            <span className="truncate">Export Report</span>
           </Button>
-          <Button>
-            <Bell className="h-4 w-4 mr-2" />
-            Set Alerts
+          <Button size="sm" className="h-8 md:h-10 text-xs md:text-sm flex-shrink-0">
+            <Bell className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+            <span className="truncate">Set Alerts</span>
           </Button>
         </div>
       </motion.div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="predictions">AI Predictions</TabsTrigger>
-          <TabsTrigger value="costs">Cost Analysis</TabsTrigger>
-          <TabsTrigger value="benchmarks">Benchmarking</TabsTrigger>
-          <TabsTrigger value="trends">Trend Analysis</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-full overflow-hidden">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 h-9 md:h-10 max-w-full">
+          <TabsTrigger value="predictions" className="text-xs md:text-sm px-1 md:px-3 truncate">AI Predictions</TabsTrigger>
+          <TabsTrigger value="costs" className="text-xs md:text-sm px-1 md:px-3 truncate">Cost Analysis</TabsTrigger>
+          <TabsTrigger value="benchmarks" className="text-xs md:text-sm px-1 md:px-3 truncate">Benchmarking</TabsTrigger>
+          <TabsTrigger value="trends" className="text-xs md:text-sm px-1 md:px-3 truncate">Trend Analysis</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="predictions" className="space-y-6 mt-6">
+        <TabsContent value="predictions" className="space-y-4 md:space-y-6 mt-4 md:mt-6 max-w-full overflow-hidden">
           {/* Predictions Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="border-orange-200 bg-orange-50">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3">
-                  <Brain className="h-8 w-8 text-orange-600" />
-                  <div>
-                    <p className="text-sm text-orange-600">AI Predictions</p>
-                    <p className="text-2xl font-bold">{predictions.length}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-full">
+            <Card className="border-orange-200 bg-orange-50 max-w-full overflow-hidden">
+              <CardContent className="p-4 md:p-6 max-w-full overflow-hidden">
+                <div className="flex items-center gap-2 md:gap-3 min-w-0 max-w-full">
+                  <Brain className="h-6 w-6 md:h-8 md:w-8 text-orange-600 flex-shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs md:text-sm text-orange-600 truncate">AI Predictions</p>
+                    <p className="text-lg md:text-2xl font-bold">{predictions.length}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-red-200 bg-red-50">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3">
-                  <AlertTriangle className="h-8 w-8 text-red-600" />
-                  <div>
-                    <p className="text-sm text-red-600">High Risk Alerts</p>
-                    <p className="text-2xl font-bold">{predictions.filter(p => p.probability > 70).length}</p>
+            <Card className="border-red-200 bg-red-50 max-w-full overflow-hidden">
+              <CardContent className="p-4 md:p-6 max-w-full overflow-hidden">
+                <div className="flex items-center gap-2 md:gap-3 min-w-0 max-w-full">
+                  <AlertTriangle className="h-6 w-6 md:h-8 md:w-8 text-red-600 flex-shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs md:text-sm text-red-600 truncate">High Risk Alerts</p>
+                    <p className="text-lg md:text-2xl font-bold">{predictions.filter(p => p.probability > 70).length}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-green-200 bg-green-50">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3">
-                  <Target className="h-8 w-8 text-green-600" />
-                  <div>
-                    <p className="text-sm text-green-600">Prevention Actions</p>
-                    <p className="text-2xl font-bold">{predictions.reduce((acc, p) => acc + p.preventionSteps.length, 0)}</p>
+            <Card className="border-green-200 bg-green-50 sm:col-span-2 lg:col-span-1 max-w-full overflow-hidden">
+              <CardContent className="p-4 md:p-6 max-w-full overflow-hidden">
+                <div className="flex items-center gap-2 md:gap-3 min-w-0 max-w-full">
+                  <Target className="h-6 w-6 md:h-8 md:w-8 text-green-600 flex-shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs md:text-sm text-green-600 truncate">Prevention Actions</p>
+                    <p className="text-lg md:text-2xl font-bold">{predictions.reduce((acc, p) => acc + p.preventionSteps.length, 0)}</p>
                   </div>
                 </div>
               </CardContent>
@@ -230,83 +230,84 @@ export default function AdvancedAnalytics() {
           </div>
 
           {/* Detailed Predictions */}
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4 max-w-full overflow-hidden">
             {predictions.map((prediction, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="max-w-full overflow-hidden"
               >
-                <Card className={`hover:shadow-lg transition-all duration-300 ${
+                <Card className={`hover:shadow-lg transition-all duration-300 max-w-full overflow-hidden ${
                   prediction.probability > 70 ? 'border-red-200' : 
                   prediction.probability > 50 ? 'border-orange-200' : 'border-green-200'
                 }`}>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                  <CardHeader className="pb-2 md:pb-3 p-3 md:p-6 max-w-full overflow-hidden">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 max-w-full overflow-hidden">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
                           prediction.probability > 70 ? 'bg-red-100' : 
                           prediction.probability > 50 ? 'bg-orange-100' : 'bg-green-100'
                         }`}>
-                          <AlertTriangle className={`h-6 w-6 ${
+                          <AlertTriangle className={`h-4 w-4 md:h-6 md:w-6 ${
                             prediction.probability > 70 ? 'text-red-600' : 
                             prediction.probability > 50 ? 'text-orange-600' : 'text-green-600'
                           }`} />
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-lg">{prediction.disease}</h3>
-                          <p className="text-sm text-muted-foreground">{prediction.timeframe}</p>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-semibold text-sm md:text-lg truncate">{prediction.disease}</h3>
+                          <p className="text-xs md:text-sm text-muted-foreground truncate">{prediction.timeframe}</p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="flex items-center gap-2">
-                          <Badge variant={
-                            prediction.probability > 70 ? 'destructive' : 
-                            prediction.probability > 50 ? 'default' : 'secondary'
-                          }>
-                            {prediction.probability}% Risk
-                          </Badge>
-                          <Badge variant="outline">
-                            {prediction.confidence}% Confidence
-                          </Badge>
-                        </div>
+                      <div className="flex flex-row sm:flex-col sm:text-right gap-2 flex-shrink-0">
+                        <Badge variant={
+                          prediction.probability > 70 ? 'destructive' : 
+                          prediction.probability > 50 ? 'default' : 'secondary'
+                        } className="text-xs">
+                          {prediction.probability}% Risk
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {prediction.confidence}% Confidence
+                        </Badge>
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <h4 className="font-medium mb-2 text-red-700">Risk Factors:</h4>
-                        <ul className="text-sm space-y-1">
+                  <CardContent className="space-y-3 md:space-y-4 p-3 md:p-6 pt-0 max-w-full overflow-hidden">
+                    <div className="grid grid-cols-1 gap-3 md:gap-4 max-w-full">
+                      <div className="max-w-full overflow-hidden">
+                        <h4 className="font-medium mb-1 md:mb-2 text-red-700 text-xs md:text-sm">Risk Factors:</h4>
+                        <ul className="text-xs md:text-sm space-y-1 max-w-full">
                           {prediction.riskFactors.map((factor, i) => (
-                            <li key={i} className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-red-400 rounded-full" />
-                              {factor}
+                            <li key={i} className="flex items-center gap-2 max-w-full overflow-hidden">
+                              <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-red-400 rounded-full flex-shrink-0" />
+                              <span className="break-words flex-1 min-w-0">{factor}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
-                      <div>
-                        <h4 className="font-medium mb-2 text-green-700">Prevention Steps:</h4>
-                        <ul className="text-sm space-y-1">
+                      <div className="max-w-full overflow-hidden">
+                        <h4 className="font-medium mb-1 md:mb-2 text-green-700 text-xs md:text-sm">Prevention Steps:</h4>
+                        <ul className="text-xs md:text-sm space-y-1 max-w-full">
                           {prediction.preventionSteps.map((step, i) => (
-                            <li key={i} className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-green-400 rounded-full" />
-                              {step}
+                            <li key={i} className="flex items-center gap-2 max-w-full overflow-hidden">
+                              <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full flex-shrink-0" />
+                              <span className="break-words flex-1 min-w-0">{step}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
                     </div>
-                    <div className="flex gap-2 pt-2">
-                      <Button size="sm" variant="outline">
+                    <div className="flex gap-2 pt-2 max-w-full overflow-x-auto">
+                      <Button size="sm" variant="outline" className="flex-shrink-0">
                         <Calendar className="h-4 w-4 mr-2" />
-                        Schedule Prevention
+                        <span className="hidden sm:inline">Schedule Prevention</span>
+                        <span className="sm:hidden">Schedule</span>
                       </Button>
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" className="flex-shrink-0">
                         <Bell className="h-4 w-4 mr-2" />
-                        Set Alert
+                        <span className="hidden sm:inline">Set Alert</span>
+                        <span className="sm:hidden">Alert</span>
                       </Button>
                     </div>
                   </CardContent>

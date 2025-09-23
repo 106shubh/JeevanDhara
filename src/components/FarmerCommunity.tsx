@@ -88,7 +88,18 @@ export default function FarmerCommunity() {
   const [showNewPostDialog, setShowNewPostDialog] = useState(false);
   const [newPostContent, setNewPostContent] = useState("");
   const [newPostCategory, setNewPostCategory] = useState("general");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const { toast } = useToast();
+
+  // Check for mobile screen size on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Sample data initialization
   useEffect(() => {

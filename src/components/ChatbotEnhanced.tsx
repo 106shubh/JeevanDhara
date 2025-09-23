@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, Variants } from "framer-motion";
+import { useEnhancedTTS } from "@/hooks/useEnhancedTTS";
 
 interface Message {
   id: string;
@@ -50,6 +51,9 @@ export const Chatbot = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+  // Enhanced TTS Hook
+  const enhancedTTS = useEnhancedTTS(language);
   
   // Voice Features
   const [isRecording, setIsRecording] = useState(false);
@@ -181,13 +185,175 @@ export const Chatbot = () => {
     }
   };
 
-  const speakText = (text: string) => {
-    if (speechSynthesis && voiceEnabled) {
-      speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = language === 'hindi' ? 'hi-IN' : language === 'bengali' ? 'bn-IN' : 'en-US';
-      utterance.rate = 0.9;
-      speechSynthesis.speak(utterance);
+  const speakText = async (text: string) => {
+    if (!voiceEnabled || !enhancedTTS.isSupported) return;
+    
+    try {
+      // Use enhanced TTS with better voice quality
+      await enhancedTTS.speak(text);
+      
+      toast({
+        title: "🔊 Speaking...",
+        description: `Reading text in ${language === 'hindi' ? 'Hindi' : language === 'bengali' ? 'Bengali' : 'English'}`,
+      });
+    } catch (error) {
+      console.error('Enhanced TTS failed, falling back to basic TTS:', error);
+      
+      // Fallback to basic TTS if enhanced fails
+      if (speechSynthesis) {
+        speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = language === 'hindi' ? 'hi-IN' : language === 'bengali' ? 'bn-IN' : 'en-US';
+        utterance.rate = 0.8; // Slower for clarity
+        speechSynthesis.speak(utterance);
+      }
+    }
+  };
+
+  const testVoiceQuality = async () => {
+    const testMessages = {
+      hindi: "नमस्कार! यह बेहतर आवाज़ गुणवत्ता का परीक्षण है। अब हिंदी में बोलना अधिक स्पष्ट होगा।",
+      bengali: "নমস্কার! আমি আপনার কৃষি সহায়ক। এখন বাংলা উচ্চারণ আরও ভালো এবং স্পষ্ট হবে। আমি পশু স্বাস্থ্য এবং কৃষি বিষয়ক সাহায্য করতে পারি।",
+      english: "Hello! This is a test of enhanced voice quality. Speaking should now be much clearer and more natural."
+    };
+    
+    const message = testMessages[language as keyof typeof testMessages] || testMessages.english;
+    
+    // Debug: Log available Bengali voices for troubleshooting
+    if (language === 'bengali') {
+      const bengaliVoices = enhancedTTS.getAvailableVoices('bengali');
+      console.log('Available Bengali voices:', bengaliVoices.map(v => `${v.name} (${v.lang})`));
+      
+      toast({
+        title: "🔊 Bengali Voice Test",
+        description: `Testing with ${bengaliVoices.length} available Bengali voices`,
+      });
+    }
+    
+    await speakText(message);
+  };
+  
+  // Voice Recording Functions
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          chunks.push(event.data);
+        }
+      };
+
+      recorder.onstop = async () => {
+        const audioBlob = new Blob(chunks, { type: 'audio/wav' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        
+        // Add voice message to chat
+        const voiceMessage: Message = {
+          id: Date.now().toString(),
+          text: "Processing voice message...",
+          isBot: false,
+          timestamp: new Date(),
+          type: 'voice',
+          audioUrl: audioUrl
+        };
+        
+        setMessages(prev => [...prev, voiceMessage]);
+        
+        // Process voice message with speech recognition
+        await processVoiceMessage(audioBlob);
+        
+        // Clean up
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      setMediaRecorder(recorder);
+      recorder.start();
+      setIsRecording(true);
+      
+      toast({
+        title: "🎤 Recording Started",
+        description: "Speak your message clearly. Click stop when done.",
+      });
+      
+    } catch (error) {
+      console.error('Error starting recording:', error);
+      toast({
+        title: "Recording Error",
+        description: "Unable to access microphone. Please check permissions.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      setIsRecording(false);
+      setMediaRecorder(null);
+    }
+  };
+
+  const processVoiceMessage = async (audioBlob: Blob) => {
+    setIsLoading(true);
+    
+    try {
+      // Convert audio to base64 for sending to backend
+      const reader = new FileReader();
+      const audioBase64 = await new Promise<string>((resolve) => {
+        reader.onload = () => resolve(reader.result as string);
+        reader.readAsDataURL(audioBlob);
+      });
+
+      const { data, error } = await supabase.functions.invoke('chatbot', {
+        body: { 
+          message: "[Voice message received]",
+          isVoiceMessage: true,
+          audioData: audioBase64,
+          language: language
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.success) {
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: data.reply || "I heard your voice message! Based on what you said, I can help you with farming and animal health questions. Please let me know how I can assist you.",
+          isBot: true,
+          timestamp: new Date(),
+          type: 'text'
+        };
+        setMessages(prev => [...prev, botMessage]);
+        
+        if (autoSpeak) {
+          await speakText(botMessage.text);
+        }
+      }
+    } catch (error) {
+      console.error('Voice processing error:', error);
+      
+      // Provide a helpful fallback response
+      const fallbackMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: language === 'hindi' 
+          ? "मैंने आपका आवाज़ संदेश सुना है! कृपया टेक्स्ट में अपना प्रश्न लिखें ताकि मैं बेहतर सहायता कर सकूं।"
+          : language === 'bengali'
+          ? "আমি আপনার ভয়েস মেসেজ শুনেছি! আরও ভাল সাহায্যের জন্য অনুগ্রহ করে আপনার প্রশ্ন টেক্সটে লিখুন।"
+          : "I received your voice message! For better assistance, please type your question so I can provide more accurate help with farming and animal health.",
+        isBot: true,
+        timestamp: new Date(),
+        type: 'text'
+      };
+      setMessages(prev => [...prev, fallbackMessage]);
+      
+      if (autoSpeak) {
+        await speakText(fallbackMessage.text);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -227,11 +393,109 @@ export const Chatbot = () => {
         setMessages(prev => [...prev, botMessage]);
         
         if (autoSpeak) {
-          speakText(botMessage.text);
+          await speakText(botMessage.text);
         }
       }
     } catch (error) {
       await handleOfflineMessage(transcript, 'voice');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Image Upload Functions
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid File",
+        description: "Please select an image file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imageUrl = e.target?.result as string;
+      
+      // Add image message to chat
+      const imageMessage: Message = {
+        id: Date.now().toString(),
+        text: "Image uploaded - analyzing...",
+        isBot: false,
+        timestamp: new Date(),
+        type: 'image',
+        imageUrl: imageUrl
+      };
+      
+      setMessages(prev => [...prev, imageMessage]);
+      
+      // Process image with AI
+      processImageMessage(imageUrl);
+    };
+    
+    reader.readAsDataURL(file);
+    
+    // Reset file input
+    if (event.target) {
+      event.target.value = '';
+    }
+  };
+
+  const processImageMessage = async (imageUrl: string) => {
+    setIsLoading(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('chatbot', {
+        body: { 
+          message: "[Image uploaded for analysis]",
+          isImageMessage: true,
+          imageUrl: imageUrl,
+          language: language
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.success) {
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: data.reply || "I can see your image! This appears to be related to farming or animal care. Here are some observations and suggestions based on what I can see. Please let me know if you have specific questions about this image.",
+          isBot: true,
+          timestamp: new Date(),
+          type: 'text'
+        };
+        setMessages(prev => [...prev, botMessage]);
+        
+        if (autoSpeak) {
+          await speakText(botMessage.text);
+        }
+      }
+    } catch (error) {
+      console.error('Image processing error:', error);
+      
+      // Provide helpful fallback response based on common farming images
+      const fallbackResponses = {
+        hindi: "मैं आपकी तस्वीर देख सकता हूं! यह कृषि या पशु देखभाल से संबंधित लगती है। कृपया बताएं कि आप इस तस्वीर के बारे में क्या जानना चाहते हैं - जैसे कि पशु का स्वास्थ्य, फसल की समस्या, या दवा की जानकारी?",
+        bengali: "আমি আপনার ছবি দেখতে পাচ্ছি! এটি কৃষি বা পশু পরিচর্যা সম্পর্কিত বলে মনে হচ্ছে। অনুগ্রহ করে বলুন আপনি এই ছবি সম্পর্কে কী জানতে চান - যেমন পশুর স্বাস্থ্য, ফসলের সমস্যা, বা ওষুধের তথ্য?",
+        english: "I can see your image! This appears to be related to farming or animal care. Please tell me what you'd like to know about this image - such as animal health, crop issues, disease identification, or medication advice?"
+      };
+      
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: fallbackResponses[language as keyof typeof fallbackResponses] || fallbackResponses.english,
+        isBot: true,
+        timestamp: new Date(),
+        type: 'text'
+      };
+      setMessages(prev => [...prev, botMessage]);
+      
+      if (autoSpeak) {
+        await speakText(botMessage.text);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -435,61 +699,6 @@ export const Chatbot = () => {
     }
   };
 
-  // Image Upload
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !file.type.startsWith('image/')) {
-      toast({
-        title: "Invalid File",
-        description: "Please select an image file.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const imageUrl = e.target?.result as string;
-      const imageMessage: Message = {
-        id: Date.now().toString(),
-        text: "Image uploaded for analysis",
-        isBot: false,
-        timestamp: new Date(),
-        type: 'image',
-        imageUrl
-      };
-      
-      setMessages(prev => [...prev, imageMessage]);
-      processImageMessage(imageUrl);
-    };
-    
-    reader.readAsDataURL(file);
-    if (event.target) event.target.value = '';
-  };
-
-  const processImageMessage = async (imageUrl: string) => {
-    setIsLoading(true);
-    
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: "🔍 I can see your image! This appears to be related to farming or agriculture. Based on visual analysis, I can provide guidance on crop health, pest identification, or general farming advice. What specific help do you need with this image?",
-        isBot: true,
-        timestamp: new Date(),
-        type: 'text'
-      };
-      setMessages(prev => [...prev, botMessage]);
-      
-      if (autoSpeak) {
-        speakText(botMessage.text);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -518,8 +727,19 @@ export const Chatbot = () => {
             </div>
           )}
           <div className="flex items-center gap-1">
-            {voiceEnabled ? <Volume2 className="h-4 w-4 text-green-500" /> : <VolumeX className="h-4 w-4 text-gray-500" />}
-            Voice {voiceEnabled ? "On" : "Off"}
+            {voiceEnabled ? (
+              <>
+                <Volume2 className="h-4 w-4 text-green-500" />
+                <span className="text-xs">
+                  Voice {enhancedTTS.isSupported ? 'HD' : 'Basic'}
+                </span>
+              </>
+            ) : (
+              <>
+                <VolumeX className="h-4 w-4 text-gray-500" />
+                <span className="text-xs">Voice Off</span>
+              </>
+            )}
           </div>
         </div>
       </motion.div>
@@ -538,23 +758,29 @@ export const Chatbot = () => {
                   onClick={() => setVoiceEnabled(!voiceEnabled)}
                   variant="outline"
                   size="sm"
+                  title={`Voice ${voiceEnabled ? 'enabled' : 'disabled'} - ${enhancedTTS.isSupported ? 'Enhanced TTS supported' : 'Basic TTS only'}`}
                 >
                   {voiceEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                  {enhancedTTS.isSupported && voiceEnabled && (
+                    <span className="ml-1 text-xs">HD</span>
+                  )}
                 </Button>
                 <Button
                   onClick={() => setAutoSpeak(!autoSpeak)}
                   variant={autoSpeak ? "default" : "outline"}
                   size="sm"
+                  title="Automatically speak bot responses"
                 >
                   Auto-speak
                 </Button>
                 <Button
-                  onClick={addWeatherMessage}
+                  onClick={testVoiceQuality}
                   variant="outline"
                   size="sm"
-                  disabled={!weatherData}
+                  disabled={!voiceEnabled}
+                  title="Test voice quality in current language"
                 >
-                  <Cloud className="h-4 w-4" />
+                  Test Voice
                 </Button>
               </div>
             </CardTitle>
