@@ -66,9 +66,9 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 md:h-16 items-center justify-between px-2 md:px-4">
-        <div className="flex flex-col">
-          <h1 className="text-lg md:text-2xl font-bold text-foreground">JeevanDhara</h1>
-          <p className="text-xs md:text-sm text-muted-foreground">MRL & AMU Monitoring System</p>
+        <div className="flex flex-col min-w-0">
+          <h1 className="text-lg md:text-2xl font-bold text-foreground truncate">JeevanDhara</h1>
+          <p className="text-xs md:text-sm text-muted-foreground truncate">MRL & AMU Monitoring System</p>
         </div>
         
         <div className="flex items-center space-x-2 md:space-x-4">
@@ -123,9 +123,9 @@ export const Header = () => {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-7 md:h-8">
-                <User className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1 md:mr-2" />
-                <span className="text-xs md:text-sm hidden sm:inline">{profile?.full_name || user?.email}</span>
+              <Button variant="ghost" size="sm" className="h-7 md:h-8 px-2">
+                <User className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1" />
+                <span className="text-xs md:text-sm hidden md:inline max-w-[100px] truncate">{profile?.full_name || user?.email}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 md:w-56">

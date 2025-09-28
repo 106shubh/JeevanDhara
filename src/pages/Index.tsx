@@ -48,14 +48,14 @@ const Index = () => {
         <div className="w-56 lg:w-64 hidden md:block">
           <Navigation activeView={activeView} setActiveView={setActiveView} />
         </div>
-        <main className="flex-1 overflow-auto p-3 md:p-6">
+        <main className="flex-1 overflow-auto p-2 md:p-6">
           {renderContent()}
         </main>
       </div>
       
       {/* Mobile Navigation - Bottom */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 p-1 pb-safe">
-        <div className="grid grid-cols-5 gap-1">
+        <div className="grid grid-cols-5 gap-0.5">
           {[
             { id: 'dashboard', icon: "📊", label: t("dashboard") || "Dashboard" },
             { id: 'log-amu', icon: "➕", label: t("logAMU") || "Log" },
@@ -66,16 +66,16 @@ const Index = () => {
             <button
               key={item.id}
               onClick={() => setActiveView(item.id)}
-              className={`flex flex-col items-center p-1.5 rounded-lg transition-colors ${
+              className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
                 activeView === item.id ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
               }`}
             >
-              <span className="text-base md:text-lg">{item.icon}</span>
-              <span className="text-[10px]">{item.label}</span>
+              <span className="text-lg">{item.icon}</span>
+              <span className="text-[10px] mt-1">{item.label}</span>
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-4 gap-1 mt-1">
+        <div className="grid grid-cols-4 gap-0.5 mt-0.5">
           {[
             { id: 'veterinarians', icon: "🩺", label: "Vets" },
             { id: 'community', icon: "👥", label: "Community" },
@@ -85,12 +85,12 @@ const Index = () => {
             <button
               key={item.id}
               onClick={() => setActiveView(item.id)}
-              className={`flex flex-col items-center p-1.5 rounded-lg transition-colors ${
+              className={`flex flex-col items-center p-2 rounded-lg transition-colors ${
                 activeView === item.id ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
               }`}
             >
-              <span className="text-base md:text-lg">{item.icon}</span>
-              <span className="text-[10px]">{item.label}</span>
+              <span className="text-lg">{item.icon}</span>
+              <span className="text-[10px] mt-1">{item.label}</span>
             </button>
           ))}
         </div>

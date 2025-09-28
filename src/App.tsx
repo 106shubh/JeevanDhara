@@ -5,6 +5,8 @@ import { useAuth } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import { Auth } from "./pages/Auth";
 import Landing from "./pages/Landing";
+import FoodSafetyTestPage from "./pages/FoodSafetyTestPage";
+import DatabaseTestPage from "./pages/DatabaseTestPage";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +39,14 @@ const App = () => {
           <Route 
             path="/" 
             element={user ? <Index /> : <Navigate to="/landing" replace />}
+          />
+          <Route 
+            path="/food-safety-test" 
+            element={user ? <FoodSafetyTestPage /> : <Navigate to="/landing" replace />}
+          />
+          <Route 
+            path="/database-test" 
+            element={user ? <DatabaseTestPage /> : <Navigate to="/landing" replace />}
           />
           <Route 
             path="*" 

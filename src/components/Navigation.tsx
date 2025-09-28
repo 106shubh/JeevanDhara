@@ -21,16 +21,14 @@ interface NavigationProps {
 
 export const Navigation = ({ activeView, setActiveView }: NavigationProps) => {
   const { t } = useLanguage();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  
   // Check for mobile screen size on resize
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      // This component is only used in desktop view, so we don't need to track mobile state here
     };
     
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    // No need to add/remove event listeners since we're not tracking mobile state
+    return () => {};
   }, []);
   
   const navItems = [
@@ -58,10 +56,10 @@ export const Navigation = ({ activeView, setActiveView }: NavigationProps) => {
                 activeView === item.id ? "bg-gradient-primary text-white" : ""
               } transition-all duration-200`}
               onClick={() => setActiveView(item.id)}
-              size={isMobile ? "sm" : "default"}
             >
               <Icon className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1 md:mr-2 flex-shrink-0" />
-              <span className="truncate">{isMobile && item.label.length > 8 ? item.label.slice(0, 8) + '...' : item.label}</span>
+              <span className="truncate hidden md:inline">{item.label}</span>
+              <span className="truncate md:hidden">{item.label.length > 8 ? item.label.slice(0, 8) + '...' : item.label}</span>
             </Button>
           );
         })}

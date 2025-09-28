@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { motion, Variants } from "framer-motion";
 import {
   ArrowRight,
@@ -15,7 +16,9 @@ import {
   Users,
   Star,
   Menu,
-  X
+  X,
+  Sun,
+  Moon
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import heroImage from "@/assets/hero-image.jpg";
@@ -25,6 +28,7 @@ import { LandingDashboardPreview } from "@/components/LandingDashboardPreview";
 export const Landing = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { theme, setTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -97,9 +101,18 @@ export const Landing = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundImage: `url(${gradientBg})`, backgroundSize: 'cover' }}>
+    <div className="min-h-screen flex flex-col relative bg-gradient-to-br from-background/90 to-muted/90">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Floating elements for background effect */}
+        <div className="absolute top-1/4 left-1/4 w-16 h-16 bg-primary/5 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-1/3 right-1/3 w-24 h-24 bg-green-500/5 rounded-full blur-xl animate-pulse delay-1000"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-20 h-20 bg-blue-500/5 rounded-full blur-xl animate-pulse delay-2000"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-28 h-28 bg-yellow-500/5 rounded-full blur-xl animate-pulse delay-3000"></div>
+      </div>
+      
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40 relative">
         <div className="container mx-auto flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center">
@@ -116,7 +129,15 @@ export const Landing = () => {
               <a href="#testimonials" className="text-foreground/80 hover:text-primary transition-colors">Testimonials</a>
               <a href="#faq" className="text-foreground/80 hover:text-primary transition-colors">FAQ</a>
             </nav>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </Button>
               <Button variant="ghost" onClick={() => navigate("/auth")}>
                 {t("signIn") || "Sign In"}
               </Button>
@@ -143,6 +164,17 @@ export const Landing = () => {
               <a href="#testimonials" className="text-foreground/80 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Testimonials</a>
               <a href="#faq" className="text-foreground/80 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>FAQ</a>
               <div className="flex flex-col space-y-2 pt-4 border-t border-border">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    aria-label="Toggle theme"
+                  >
+                    {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                  </Button>
+                </div>
                 <Button variant="outline" onClick={() => { navigate("/auth"); setIsMenuOpen(false); }}>
                   {t("signIn") || "Sign In"}
                 </Button>
@@ -157,7 +189,7 @@ export const Landing = () => {
 
       {/* Hero Section */}
       <motion.section 
-        className="py-20 px-6"
+        className="py-20 px-6 relative z-10"
         initial="hidden"
         animate={isVisible ? "visible" : "hidden"}
         variants={containerVariants}
@@ -169,7 +201,7 @@ export const Landing = () => {
               <span>{t("hero.badge") || "India's #1 Farm Compliance Platform"}</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-              {t("hero.title") || "Smart Farming with "}<span className="text-transparent bg-clip-text bg-gradient-primary">JeevanDhara</span>
+              {t("hero.title") || "Smart Farming with "}
             </h1>
             <p className="text-xl text-muted-foreground">
               {t("hero.subtitle") || "Simplify your farm management, monitor antimicrobial usage, and ensure compliance with regulations - all in one powerful platform."}
@@ -178,12 +210,7 @@ export const Landing = () => {
               <Button size="lg" onClick={() => navigate("/auth")} className="bg-gradient-primary hover:shadow-lg transition-all duration-300">
                 {t("GetStarted") || "Get Started"} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button size="lg" variant="outline" className="group">
-                {t("pricing.button") || "Check For Pricing"}
-                <div className="ml-2 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <ChevronRight className="h-3 w-3 text-primary" />
-                </div>
-              </Button>
+              
             </div>
             <div className="pt-8 flex items-center space-x-4">
               <div className="flex -space-x-2">
@@ -203,24 +230,60 @@ export const Landing = () => {
             </div>
           </motion.div>
           <motion.div className="relative" variants={itemVariants}>
-            <div className="absolute -top-6 -left-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
-            <div className="relative bg-gradient-to-br from-card to-card/50 p-2 rounded-2xl shadow-2xl border border-border/50 overflow-hidden">
-              <div className="aspect-video rounded-xl overflow-hidden shadow-inner">
-                <img 
-                  src={heroImage} 
-                  alt="Farm Management" 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              <div className="absolute -bottom-2 -right-2 transform rotate-6 bg-card p-3 rounded-lg shadow-lg border border-border">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-success/20 rounded-full flex items-center justify-center">
-                    <CheckCircle className="h-4 w-4 text-success" />
+            {/* 3D-like Hero Element with CSS animations */}
+            <div className="absolute -top-6 -left-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl animate-pulse"></div>
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-primary/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
+            <div className="relative bg-gradient-to-br from-card/80 to-card/40 p-2 rounded-2xl shadow-2xl border border-border/50 overflow-hidden h-[400px] flex items-center justify-center backdrop-blur-sm">
+              {/* Interactive 3D Dashboard Preview */}
+              <div className="relative w-full h-full rounded-xl overflow-hidden shadow-inner">
+                {/* Background elements */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-muted/5"></div>
+                
+                {/* Animated floating elements representing farm data */}
+                <div className="absolute top-1/4 left-1/4 w-8 h-8 bg-primary/20 rounded-full blur-sm animate-pulse"></div>
+                <div className="absolute top-1/3 right-1/3 w-6 h-6 bg-primary/20 rounded-full blur-sm animate-pulse delay-500"></div>
+                <div className="absolute bottom-1/4 left-1/3 w-10 h-10 bg-blue-500/20 rounded-full blur-sm animate-pulse delay-1000"></div>
+                <div className="absolute bottom-1/3 right-1/4 w-7 h-7 bg-yellow-500/20 rounded-full blur-sm animate-pulse delay-1500"></div>
+                
+                {/* Central interactive dashboard element */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="relative w-48 h-48 transform-gpu group">
+                    <div className="absolute inset-0 bg-gradient-primary rounded-2xl shadow-lg transform rotate-6 group-hover:rotate-12 transition-transform duration-500"></div>
+                    <div className="absolute inset-0 bg-primary/30 rounded-2xl shadow-lg transform -rotate-6 group-hover:-rotate-12 transition-transform duration-500 delay-100"></div>
+                    <div className="absolute inset-4 bg-card rounded-xl flex flex-col items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
+                      <Leaf className="h-12 w-12 text-primary mb-2" />
+                      <span className="text-sm font-semibold text-foreground">JeevanDhara</span>
+                      <span className="text-xs text-muted-foreground mt-1">Farm Management</span>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs font-medium">Compliance Status</p>
-                    <p className="text-sm font-bold text-success">98% Compliant</p>
+                </div>
+                
+                {/* Interactive data points */}
+                <div className="absolute top-6 left-6 bg-card/80 p-2 rounded-lg shadow border border-border backdrop-blur-sm">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+                    <span className="text-xs font-medium">AMU: 30% ↓</span>
+                  </div>
+                </div>
+                
+                <div className="absolute top-6 right-6 bg-card/80 p-2 rounded-lg shadow border border-border backdrop-blur-sm">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <span className="text-xs font-medium">Farms: 2.5K+</span>
+                  </div>
+                </div>
+                
+                <div className="absolute bottom-6 left-6 bg-card/80 p-2 rounded-lg shadow border border-border backdrop-blur-sm">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-3 w-3 text-success" />
+                    <span className="text-xs font-medium">98% Compliant</span>
+                  </div>
+                </div>
+                
+                <div className="absolute bottom-6 right-6 transform rotate-3 bg-card/80 p-2 rounded-lg shadow border border-border backdrop-blur-sm hover:rotate-6 transition-transform duration-300 cursor-pointer">
+                  <div className="flex items-center space-x-1">
+                    <div className="text-xs font-bold text-primary">AI</div>
+                    <span className="text-xs">Assistant</span>
                   </div>
                 </div>
               </div>
@@ -230,27 +293,48 @@ export const Landing = () => {
       </motion.section>
 
       {/* Stats Section */}
-      <section className="py-12 px-6 bg-primary/5">
+      <section className="py-12 px-6 bg-primary/5 relative z-10">
         <div className="container mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center">
+              <motion.div 
+                key={index} 
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
                 <h3 className="text-3xl md:text-4xl font-bold text-primary mb-1">{stat.value}</h3>
                 <p className="text-muted-foreground">{stat.label}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-6 bg-muted/30">
+      <section id="features" className="py-20 px-6 bg-muted/30 relative z-10">
         <div className="container mx-auto space-y-12">
           <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold">{t("features.title") || "Powerful Features for Modern Farming"}</h2>
-            <p className="text-xl text-muted-foreground">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              {t("features.title") || "Powerful Features for Modern Farming"}
+            </motion.h2>
+            <motion.p 
+              className="text-xl text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
               {t("features.subtitle") || "Everything you need to manage your farm efficiently and comply with regulations"}
-            </p>
+            </motion.p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -286,24 +370,49 @@ export const Landing = () => {
                 description: t("feature.team.desc") || "Collaborate with your team members, veterinarians, and consultants. Assign tasks and share important information securely."
               }
             ].map((feature, index) => (
-              <div 
-                key={index} 
-                className="bg-card p-8 rounded-xl shadow-sm border border-border hover:shadow-md hover:border-primary/20 transition-all duration-300 group"
+              <motion.div
+                key={index}
+                className="bg-card p-6 rounded-xl shadow-sm border border-border hover:shadow-md transition-all duration-300 group relative overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
               >
-                <div className="mb-6 p-4 bg-primary/10 rounded-lg w-fit group-hover:bg-primary/20 transition-colors">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">{feature.title}</h3>
+                {/* 3D-like icon with CSS effects */}
+                <div className="mb-4 h-16 flex items-center justify-center transform-gpu group-hover:scale-110 transition-transform duration-300">
+                  <div className="relative w-16 h-16 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-primary/10 rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-300"></div>
+                    <div className="absolute inset-2 bg-primary/20 rounded-full transform -rotate-12 group-hover:-rotate-45 transition-transform duration-300"></div>
+                    <div className="relative text-primary">
+                      {feature.icon}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Content */}
+                <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
                 <p className="text-muted-foreground">{feature.description}</p>
-              </div>
+                
+                {/* Hover effect overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section id="benefits" className="py-20 px-6">
+      <section id="benefits" className="py-20 px-6 relative z-10">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
+            <motion.div 
+              className="space-y-8"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
               <h2 className="text-3xl md:text-4xl font-bold">Why Choose JeevanDhara?</h2>
               <div className="space-y-6">
                 {[
@@ -324,7 +433,14 @@ export const Landing = () => {
                     description: "Our dedicated support team and comprehensive training resources ensure you get the most out of JeevanDhara."
                   }
                 ].map((benefit, index) => (
-                  <div key={index} className="flex gap-4">
+                  <motion.div 
+                    key={index} 
+                    className="flex gap-4"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
                     <div className="mt-1 bg-primary/10 h-6 w-6 rounded-full flex items-center justify-center flex-shrink-0">
                       <CheckCircle className="h-3.5 w-3.5 text-primary" />
                     </div>
@@ -332,26 +448,46 @@ export const Landing = () => {
                       <h3 className="text-lg font-semibold mb-1">{benefit.title}</h3>
                       <p className="text-muted-foreground">{benefit.description}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
-            <div className="relative">
+            </motion.div>
+            <motion.div 
+              className="relative"
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="absolute -z-10 w-full h-full bg-gradient-to-r from-primary/5 to-primary/10 rounded-3xl -rotate-6 transform-gpu"></div>
               <LandingDashboardPreview />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 px-6 bg-muted/30">
+      <section id="testimonials" className="py-20 px-6 bg-muted/30 relative z-10">
         <div className="container mx-auto space-y-12">
           <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold">What Our Users Say</h2>
-            <p className="text-xl text-muted-foreground">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              What Our Users Say
+            </motion.h2>
+            <motion.p 
+              className="text-xl text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
               Join thousands of satisfied farmers who have transformed their operations with JeevanDhara
-            </p>
+            </motion.p>
           </div>
 
           <div className="relative max-w-4xl mx-auto">
@@ -396,13 +532,27 @@ export const Landing = () => {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-20 px-6">
+      <section id="faq" className="py-20 px-6 relative z-10">
         <div className="container mx-auto space-y-12 max-w-4xl">
           <div className="text-center space-y-4">
-            <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
-            <p className="text-xl text-muted-foreground">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              Frequently Asked Questions
+            </motion.h2>
+            <motion.p 
+              className="text-xl text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
               Find answers to common questions about JeevanDhara
-            </p>
+            </motion.p>
           </div>
 
           <div className="space-y-6">
@@ -447,7 +597,7 @@ export const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 bg-gradient-primary text-primary-foreground">
+      <section className="py-20 px-6 bg-gradient-primary text-primary-foreground relative z-10">
         <div className="container mx-auto text-center space-y-8 max-w-3xl">
           <h2 className="text-3xl md:text-4xl font-bold">Ready to Transform Your Farm Management?</h2>
           <p className="text-xl opacity-90 max-w-2xl mx-auto">
@@ -477,7 +627,7 @@ export const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-card border-t border-border">
+      <footer className="py-12 px-6 bg-card border-t border-border relative z-10">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div className="space-y-4">

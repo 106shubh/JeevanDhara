@@ -878,7 +878,7 @@ export const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
-            <ResponsiveContainer width="100%" height={isMobile ? 200 : 300} className="mt-1 md:mt-2">
+            <ResponsiveContainer width="100%" height={isMobile ? 180 : 300} className="mt-1 md:mt-2">
               <LineChart data={amuTrendData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
                 <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" />
@@ -927,7 +927,7 @@ export const Dashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
-              <ResponsiveContainer width="100%" height={isMobile ? 200 : 300} className="mt-1 md:mt-2">
+              <ResponsiveContainer width="100%" height={isMobile ? 180 : 300} className="mt-1 md:mt-2">
                 <LineChart data={weatherHistory}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
                   <XAxis dataKey="time" stroke="hsl(var(--muted-foreground))" />
@@ -982,13 +982,13 @@ export const Dashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="px-2 md:px-6 pb-3 md:pb-6">
-              <ResponsiveContainer width="100%" height={isMobile ? 200 : 300} className="mt-1 md:mt-2">
+              <ResponsiveContainer width="100%" height={isMobile ? 180 : 300} className="mt-1 md:mt-2">
                 <PieChart>
                   <Pie
                     data={speciesData}
                     cx="50%"
                     cy="50%"
-                    outerRadius={100}
+                    outerRadius={isMobile ? 60 : 100}
                     dataKey="usage"
                     label={({name, value}) => `${name}: ${value}`}
                   >
@@ -1020,7 +1020,7 @@ export const Dashboard = () => {
               <div 
                 key={item.animal} 
                 onClick={() => handleWithdrawalClick(item.animal, item.drug, item.daysLeft)}
-                className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 rounded-lg border border-border hover:shadow-card transition-smooth hover:bg-accent/10 transform hover:scale-[1.01] cursor-pointer"
+                className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 rounded-lg border border-border hover:shadow-card transition-smooth hover:bg-accent/10 transform hover:scale-[1.01] cursor-pointer gap-2"
               >
                 <div className="flex items-center space-x-4 mb-2 sm:mb-0">
                   <div>

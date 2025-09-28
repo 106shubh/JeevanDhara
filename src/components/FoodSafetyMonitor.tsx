@@ -3,12 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { 
   Search,
-  Upload,
   FileText,
   CheckCircle,
   AlertTriangle,
@@ -17,10 +15,15 @@ import {
   RefreshCw,
   Database,
   Zap,
-  Eye
+  Eye,
+  Plus,
+  Save
 } from "lucide-react";
 import { motion, Variants } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { Tables } from "@/integrations/supabase/types";
 
 // Food categories with their contaminants
 const FOOD_CATEGORIES = [
@@ -32,63 +35,6 @@ const FOOD_CATEGORIES = [
   { id: "fruits", name: "Fruits/Vegetables", icon: "🍎" },
   { id: "beverages", name: "Packaged Beverages", icon: "🥤" }
 ];
-
-// Contaminants mapping for each food category with FSSAI MRL values
-const CONTAMINANTS_MAP: Record<string, any[]> = {
-  milk: [
-    { name: "Amoxicillin", type: "Antibiotic", mrl: 0.004, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Penicillin G", type: "Antibiotic", mrl: 0.004, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Tetracycline", type: "Antibiotic", mrl: 0.06, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Chloramphenicol", type: "Antibiotic", mrl: 0.0001, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "DDE", type: "Pesticide", mrl: 0.01, unit: "mg/kg", method: "GC-MS" },
-    { name: "Lead", type: "Heavy Metal", mrl: 0.02, unit: "mg/kg", method: "ICP-MS" }
-  ],
-  honey: [
-    { name: "Chloramphenicol", type: "Antibiotic", mrl: 0.0001, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Nitrofurans", type: "Antibiotic", mrl: 0.001, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "HMF", type: "Chemical", mrl: 40, unit: "mg/kg", method: "HPLC" },
-    { name: "Ciprofloxacin", type: "Antibiotic", mrl: 0.01, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Lead", type: "Heavy Metal", mrl: 0.1, unit: "mg/kg", method: "ICP-MS" }
-  ],
-  meat: [
-    { name: "Florfenicol", type: "Antibiotic", mrl: 0.03, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Enrofloxacin", type: "Antibiotic", mrl: 0.01, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Clenbuterol", type: "Beta-Agonist", mrl: 0.0001, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "DDT", type: "Pesticide", mrl: 0.01, unit: "mg/kg", method: "GC-MS" },
-    { name: "Cadmium", type: "Heavy Metal", mrl: 0.05, unit: "mg/kg", method: "ICP-MS" }
-  ],
-  fish: [
-    { name: "Malachite Green", type: "Dye", mrl: 0.0001, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Nitrofurazone", type: "Antibiotic", mrl: 0.001, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Oxytetracycline", type: "Antibiotic", mrl: 0.06, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Mercury", type: "Heavy Metal", mrl: 0.5, unit: "mg/kg", method: "ICP-MS" },
-    { name: "Lead", type: "Heavy Metal", mrl: 0.1, unit: "mg/kg", method: "ICP-MS" }
-  ],
-  cereals: [
-    { name: "Aflatoxin B1", type: "Mycotoxin", mrl: 0.002, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Ochratoxin A", type: "Mycotoxin", mrl: 0.005, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Glyphosate", type: "Herbicide", mrl: 0.01, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Chlorpyrifos", type: "Pesticide", mrl: 0.01, unit: "mg/kg", method: "GC-MS" },
-    { name: "Cadmium", type: "Heavy Metal", mrl: 0.1, unit: "mg/kg", method: "ICP-MS" }
-  ],
-  fruits: [
-    { name: "Carbendazim", type: "Fungicide", mrl: 0.1, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Chlorpyrifos", type: "Pesticide", mrl: 0.01, unit: "mg/kg", method: "GC-MS" },
-    { name: "Carbofuran", type: "Insecticide", mrl: 0.01, unit: "mg/kg", method: "LC-MS/MS" },
-    { name: "Lead", type: "Heavy Metal", mrl: 0.01, unit: "mg/kg", method: "ICP-MS" },
-    { name: "Cadmium", type: "Heavy Metal", mrl: 0.02, unit: "mg/kg", method: "ICP-MS" }
-  ],
-  beverages: [
-    { name: "Acesulfame", type: "Sweetener", mrl: 0.4, unit: "mg/kg", method: "HPLC" },
-    { name: "Aspartame", type: "Sweetener", mrl: 0.4, unit: "mg/kg", method: "HPLC" },
-    { name: "Saccharin", type: "Sweetener", mrl: 0.15, unit: "mg/kg", method: "HPLC" },
-    { name: "Lead", type: "Heavy Metal", mrl: 0.01, unit: "mg/kg", method: "ICP-MS" },
-    { name: "Aflatoxin M1", type: "Mycotoxin", mrl: 0.0005, unit: "mg/kg", method: "LC-MS/MS" }
-  ]
-};
-
-// Default MRL rule: if no specific value exists, apply 0.01 mg/kg tolerance
-const DEFAULT_MRL = 0.01;
 
 // AMU inference mapping
 const AMU_INFERENCE_MAP: Record<string, string[]> = {
@@ -103,6 +49,7 @@ const AMU_INFERENCE_MAP: Record<string, string[]> = {
 
 export const FoodSafetyMonitor = () => {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [labData, setLabData] = useState<any[]>([]);
   const [testResults, setTestResults] = useState<any[]>([]);
@@ -116,6 +63,11 @@ export const FoodSafetyMonitor = () => {
   const [sampleId, setSampleId] = useState<string>("");
   const [collectionDate, setCollectionDate] = useState<string>("");
   const [farmLocation, setFarmLocation] = useState<string>("");
+  const [labReference, setLabReference] = useState<string>("");
+  const [contaminants, setContaminants] = useState<Tables<"food_safety_contaminants">[]>([]);
+  const [sampleIdError, setSampleIdError] = useState<string>("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [savedSampleId, setSavedSampleId] = useState<string | null>(null);
 
   // Check for screen size on resize
   useEffect(() => {
@@ -130,6 +82,19 @@ export const FoodSafetyMonitor = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Load contaminants for the selected category
+  useEffect(() => {
+    if (selectedCategory && user) {
+      loadContaminantsForCategory(selectedCategory);
+    }
+  }, [selectedCategory, user]);
+
+  // Log when labData changes
+  useEffect(() => {
+    console.log('Lab data updated:', labData);
+    console.log('Lab data length:', labData.length);
+  }, [labData]);
 
   // Animation variants
   const containerVariants: Variants = {
@@ -155,29 +120,52 @@ export const FoodSafetyMonitor = () => {
     }
   };
 
-  // Handle file upload simulation
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFileUploaded(true);
-      // Simulate file processing
-      setTimeout(() => {
-        // Generate mock lab data based on selected category
-        if (selectedCategory) {
-          const contaminants = CONTAMINANTS_MAP[selectedCategory] || [];
-          const mockData = contaminants.map(contaminant => ({
-            name: contaminant.name,
-            type: contaminant.type,
-            detectedLevel: (Math.random() * (contaminant.mrl * 3)).toFixed(5),
-            mrl: contaminant.mrl,
-            unit: contaminant.unit,
-            method: contaminant.method,
-            status: "pending"
-          }));
-          setLabData(mockData);
-        }
-      }, 1000);
+  // Load contaminants for a specific food category
+  const loadContaminantsForCategory = async (category: string) => {
+    try {
+      console.log('Loading contaminants for category:', category);
+      
+      // For now, we'll load all contaminants since we don't have category-specific filtering in the database
+      // In a production implementation, this would filter by category
+      const { data, error } = await supabase
+        .from('food_safety_contaminants')
+        .select('*')
+        .limit(20);
+      
+      if (error) throw error;
+      
+      setContaminants(data || []);
+      
+      // Initialize lab data with values for each contaminant
+      const initialLabData = data?.map(contaminant => ({
+        id: contaminant.id,
+        name: contaminant.name,
+        type: contaminant.contaminant_type,
+        mrl: contaminant.mrl_limit,
+        unit: contaminant.unit || "mg/kg",
+        method: contaminant.test_method,
+        detectedLevel: "",
+        status: "pending"
+      })) || [];
+      
+      setLabData(initialLabData);
+      
+      // Log for debugging
+      console.log('Loaded contaminants:', data);
+      console.log('Initialized lab data:', initialLabData);
+      console.log('Lab data length:', initialLabData.length);
+    } catch (error) {
+      console.error('Error loading contaminants:', error);
     }
+  };
+
+  // Handle manual data entry
+  const handleDetectedLevelChange = (contaminantId: string, value: string) => {
+    setLabData(prev => prev.map(item => 
+      item.id === contaminantId 
+        ? { ...item, detectedLevel: value } 
+        : item
+    ));
   };
 
   // Analyze the data and compare with MRL values
@@ -186,28 +174,99 @@ export const FoodSafetyMonitor = () => {
     
     setIsAnalyzing(true);
     
-    // Simulate analysis processing
-    setTimeout(() => {
-      const results = labData.map(item => {
-        const detected = parseFloat(item.detectedLevel);
-        const mrl = item.mrl;
-        let status = "safe";
-        
-        if (detected > mrl) {
-          status = "unsafe";
-        } else if (detected > mrl * 0.8) {
-          status = "warning";
-        }
-        
+    // Process the data
+    const results = labData.map(item => {
+      if (!item.detectedLevel || item.detectedLevel === "") {
         return {
           ...item,
-          status
+          status: "pending"
         };
-      });
+      }
       
-      setTestResults(results);
-      setIsAnalyzing(false);
-    }, 2000);
+      const detected = parseFloat(item.detectedLevel);
+      const mrl = item.mrl;
+      
+      if (isNaN(detected) || mrl === null) {
+        return {
+          ...item,
+          status: "pending"
+        };
+      }
+      
+      let status: "safe" | "warning" | "unsafe" = "safe";
+      
+      if (detected > mrl) {
+        status = "unsafe";
+      } else if (detected > mrl * 0.8) {
+        status = "warning";
+      }
+      
+      return {
+        ...item,
+        status
+      };
+    });
+    
+    setTestResults(results);
+    setIsAnalyzing(false);
+  };
+
+  // Save the sample and test results to the database
+  const saveSample = async () => {
+    if (!user || !sampleId || !collectionDate || !selectedCategory) {
+      setSampleIdError("Please fill in all required fields");
+      return;
+    }
+    
+    setSampleIdError("");
+    setIsSaving(true);
+    
+    try {
+      // First, create the sample record
+      const { data: sampleData, error: sampleError } = await supabase
+        .from('food_safety_samples')
+        .insert({
+          user_id: user.id,
+          sample_id: sampleId,
+          food_category: selectedCategory as any,
+          collection_date: collectionDate,
+          farm_location: farmLocation,
+          lab_reference: labReference
+        })
+        .select()
+        .single();
+      
+      if (sampleError) throw sampleError;
+      
+      // Then, create test results for each contaminant with detected levels
+      const resultsToSave = testResults
+        .filter(result => result.detectedLevel && result.detectedLevel !== "")
+        .map(result => ({
+          sample_id: sampleData.id,
+          contaminant_id: result.id,
+          detected_level: parseFloat(result.detectedLevel),
+          status: result.status,
+          notes: `Detected level: ${result.detectedLevel} ${result.unit}`
+        }));
+      
+      if (resultsToSave.length > 0) {
+        const { error: resultsError } = await supabase
+          .from('food_safety_test_results')
+          .insert(resultsToSave);
+        
+        if (resultsError) throw resultsError;
+      }
+      
+      setSavedSampleId(sampleData.id);
+      
+      // Show success message
+      alert("Sample and test results saved successfully!");
+    } catch (error) {
+      console.error('Error saving sample:', error);
+      alert("Error saving sample. Please try again.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // Reset the form
@@ -219,6 +278,9 @@ export const FoodSafetyMonitor = () => {
     setSampleId("");
     setCollectionDate("");
     setFarmLocation("");
+    setLabReference("");
+    setSampleIdError("");
+    setSavedSampleId(null);
   };
 
   // Export results
@@ -229,6 +291,7 @@ export const FoodSafetyMonitor = () => {
       collectionDate,
       foodCategory: selectedCategory,
       farmLocation,
+      labReference,
       results: testResults,
       timestamp: new Date().toISOString()
     }, null, 2);
@@ -275,9 +338,11 @@ export const FoodSafetyMonitor = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="px-4 sm:px-5 md:px-6 pb-4 sm:pb-5 w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full">
               <div className="space-y-2 w-full">
-                <Label htmlFor="sampleId" className="text-xs sm:text-sm">{t("foodSafety.sampleId") || "Sample ID"}</Label>
+                <Label htmlFor="sampleId" className="text-xs sm:text-sm">
+                  {t("foodSafety.sampleId") || "Sample ID"} *
+                </Label>
                 <Input
                   id="sampleId"
                   placeholder={t("foodSafety.sampleIdPlaceholder") || "e.g., FS-2023-001"}
@@ -285,9 +350,14 @@ export const FoodSafetyMonitor = () => {
                   onChange={(e) => setSampleId(e.target.value)}
                   className="h-9 sm:h-10 text-xs sm:text-sm w-full"
                 />
+                {sampleIdError && (
+                  <p className="text-red-500 text-xs">{sampleIdError}</p>
+                )}
               </div>
               <div className="space-y-2 w-full">
-                <Label htmlFor="collectionDate" className="text-xs sm:text-sm">{t("foodSafety.collectionDate") || "Collection Date"}</Label>
+                <Label htmlFor="collectionDate" className="text-xs sm:text-sm">
+                  {t("foodSafety.collectionDate") || "Collection Date"} *
+                </Label>
                 <Input
                   id="collectionDate"
                   type="date"
@@ -297,12 +367,26 @@ export const FoodSafetyMonitor = () => {
                 />
               </div>
               <div className="space-y-2 w-full">
-                <Label htmlFor="farmLocation" className="text-xs sm:text-sm">{t("foodSafety.farmLocation") || "Farm Location"}</Label>
+                <Label htmlFor="farmLocation" className="text-xs sm:text-sm">
+                  {t("foodSafety.farmLocation") || "Farm Location"}
+                </Label>
                 <Input
                   id="farmLocation"
                   placeholder={t("foodSafety.locationPlaceholder") || "e.g., Village Name, District"}
                   value={farmLocation}
                   onChange={(e) => setFarmLocation(e.target.value)}
+                  className="h-9 sm:h-10 text-xs sm:text-sm w-full"
+                />
+              </div>
+              <div className="space-y-2 w-full">
+                <Label htmlFor="labReference" className="text-xs sm:text-sm">
+                  {t("foodSafety.labReference") || "Lab Reference"}
+                </Label>
+                <Input
+                  id="labReference"
+                  placeholder={t("foodSafety.labReferencePlaceholder") || "e.g., LAB-2023-001"}
+                  value={labReference}
+                  onChange={(e) => setLabReference(e.target.value)}
                   className="h-9 sm:h-10 text-xs sm:text-sm w-full"
                 />
               </div>
@@ -317,7 +401,7 @@ export const FoodSafetyMonitor = () => {
           <CardHeader className="px-4 sm:px-5 md:px-6 py-3 sm:py-4 w-full">
             <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
               <Search className="h-4 w-4 text-primary" />
-              <span>{t("foodSafety.category") || "Select Food Category"}</span>
+              <span>{t("foodSafety.category") || "Select Food Category"} *</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="px-4 sm:px-5 md:px-6 pb-4 sm:pb-5 w-full">
@@ -344,101 +428,93 @@ export const FoodSafetyMonitor = () => {
         </Card>
       </motion.div>
 
-      {/* Lab Data Upload */}
+      {/* Lab Data Entry */}
       {selectedCategory && (
         <motion.div variants={itemVariants}>
           <Card className="shadow-card hover:shadow-elevated transition-all duration-300 hover:border-primary/20 w-full overflow-hidden">
             <CardHeader className="px-4 sm:px-5 md:px-6 py-3 sm:py-4 w-full">
               <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                <Upload className="h-4 w-4 text-primary" />
-                <span>{t("foodSafety.upload") || "Upload Lab Test Data"}</span>
+                <Plus className="h-4 w-4 text-primary" />
+                <span>{t("foodSafety.enterData") || "Enter Lab Test Data"}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="px-4 sm:px-5 md:px-6 pb-4 sm:pb-5 w-full">
               <div className="space-y-4 w-full">
-                <div className="border-2 border-dashed border-muted rounded-lg p-4 sm:p-6 text-center space-y-3 w-full">
-                  <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 w-full">
-                    <Label 
-                      htmlFor="lab-data-upload" 
-                      className="cursor-pointer flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 h-9 sm:h-10 rounded-md px-3 sm:px-4 text-xs sm:text-sm font-medium transition-colors"
-                    >
-                      <Upload className="h-4 w-4" />
-                      {fileUploaded ? t("fileUploaded") || "File Uploaded" : t("uploadFile") || "Upload File"}
-                    </Label>
-                    <Input 
-                      id="lab-data-upload" 
-                      type="file" 
-                      className="hidden" 
-                      onChange={handleFileUpload}
-                      accept=".csv,.xlsx,.xls,.json,.txt"
-                    />
+                <div className="space-y-3 w-full">
+                  <div className="flex justify-between items-center w-full">
+                    <h3 className="font-semibold text-sm sm:text-base">
+                      {t("foodSafety.contaminantsData") || "Contaminants Data"}
+                    </h3>
                     <Button 
-                      variant="outline" 
-                      className="h-9 sm:h-10 text-xs sm:text-sm"
-                      onClick={() => document.getElementById('lab-data-upload')?.click()}
+                      onClick={analyzeData} 
+                      disabled={isAnalyzing}
+                      className="h-8 sm:h-9 text-xs sm:text-sm"
                     >
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                      {t("sampleData") || "Sample Data"}
+                      {isAnalyzing ? (
+                        <>
+                          <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                          {t("loading") || "Analyzing..."}
+                        </>
+                      ) : (
+                        <>
+                          <Zap className="h-4 w-4 mr-2" />
+                          {t("foodSafety.analyze") || "Analyze Data"}
+                        </>
+                      )}
                     </Button>
                   </div>
-                  <p className="text-muted-foreground text-xs sm:text-sm w-full">
-                    {t("foodSafety.uploadInstructions") || `Upload LC-MS/MS, ELISA, GC-MS or other lab test results for ${FOOD_CATEGORIES.find(c => c.id === selectedCategory)?.name}`}
-                  </p>
-                </div>
-
-                {labData.length > 0 && (
-                  <div className="space-y-3 w-full">
-                    <div className="flex justify-between items-center w-full">
-                      <h3 className="font-semibold text-sm sm:text-base">{t("foodSafety.uploadedData") || "Uploaded Contaminants Data"}</h3>
-                      <Button 
-                        onClick={analyzeData} 
-                        disabled={isAnalyzing}
-                        className="h-8 sm:h-9 text-xs sm:text-sm"
-                      >
-                        {isAnalyzing ? (
-                          <>
-                            <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                            {t("loading") || "Analyzing..."}
-                          </>
-                        ) : (
-                          <>
-                            <Zap className="h-4 w-4 mr-2" />
-                            {t("foodSafety.analyze") || "Analyze Data"}
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                    
-                    <div className="border rounded-lg overflow-hidden w-full">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="text-xs sm:text-sm">{t("foodSafety.contaminant") || "Contaminant"}</TableHead>
-                            <TableHead className="text-xs sm:text-sm">{t("type") || "Type"}</TableHead>
-                            <TableHead className="text-xs sm:text-sm">{t("foodSafety.method") || "Method"}</TableHead>
-                            <TableHead className="text-xs sm:text-sm">{t("foodSafety.detected") || "Detected Level"}</TableHead>
-                            <TableHead className="text-xs sm:text-sm">{t("foodSafety.mrl") || "MRL (FSSAI)"}</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {labData.map((item, index) => (
-                            <TableRow key={index}>
+                  
+                  <div className="border rounded-lg overflow-hidden w-full">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-xs sm:text-sm">{t("foodSafety.contaminant") || "Contaminant"}</TableHead>
+                          <TableHead className="text-xs sm:text-sm">{t("type") || "Type"}</TableHead>
+                          <TableHead className="text-xs sm:text-sm">{t("foodSafety.method") || "Method"}</TableHead>
+                          <TableHead className="text-xs sm:text-sm">{t("foodSafety.mrl") || "MRL (FSSAI)"}</TableHead>
+                          <TableHead className="text-xs sm:text-sm">{t("foodSafety.detected") || "Detected Level"}</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {labData.length > 0 ? (
+                          labData.map((item) => (
+                            <TableRow key={item.id}>
                               <TableCell className="text-xs sm:text-sm font-medium">{item.name}</TableCell>
                               <TableCell className="text-xs sm:text-sm">
                                 <Badge variant="outline" className="text-[8px] sm:text-[10px]">
                                   {item.type}
                                 </Badge>
                               </TableCell>
-                              <TableCell className="text-xs sm:text-sm">{item.method}</TableCell>
-                              <TableCell className="text-xs sm:text-sm">{item.detectedLevel} {item.unit}</TableCell>
-                              <TableCell className="text-xs sm:text-sm">{item.mrl} {item.unit}</TableCell>
+                              <TableCell className="text-xs sm:text-sm">{item.method || "N/A"}</TableCell>
+                              <TableCell className="text-xs sm:text-sm">
+                                {item.mrl !== null ? `${item.mrl} ${item.unit}` : "N/A"}
+                              </TableCell>
+                              <TableCell className="text-xs sm:text-sm">
+                                <Input
+                                  type="number"
+                                  step="0.00001"
+                                  placeholder="Enter value"
+                                  value={item.detectedLevel}
+                                  onChange={(e) => handleDetectedLevelChange(item.id, e.target.value)}
+                                  className="h-8 text-xs w-24"
+                                />
+                                <span className="ml-1 text-xs">{item.unit}</span>
+                              </TableCell>
                             </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                              {contaminants.length > 0 
+                                ? "Loading contaminants data..." 
+                                : "No contaminants data available. If this persists, please contact support."}
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
                   </div>
-                )}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -456,6 +532,23 @@ export const FoodSafetyMonitor = () => {
                   <span>{t("foodSafety.compliance") || "Compliance Report"}</span>
                 </CardTitle>
                 <div className="flex gap-2 w-full sm:w-auto">
+                  <Button 
+                    onClick={saveSample}
+                    disabled={isSaving}
+                    className="h-8 sm:h-9 text-xs sm:text-sm"
+                  >
+                    {isSaving ? (
+                      <>
+                        <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                        {t("saving") || "Saving..."}
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4 mr-2" />
+                        {t("foodSafety.save") || "Save Sample"}
+                      </>
+                    )}
+                  </Button>
                   <Button 
                     onClick={exportResults}
                     variant="outline" 
@@ -492,7 +585,9 @@ export const FoodSafetyMonitor = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {testResults.map((item, index) => (
+                      {testResults
+                        .filter(result => result.detectedLevel && result.detectedLevel !== "")
+                        .map((item, index) => (
                         <TableRow key={index}>
                           <TableCell className="text-xs sm:text-sm font-medium">
                             {t(`foodSafety.${selectedCategory}`) || FOOD_CATEGORIES.find(c => c.id === selectedCategory)?.name}
@@ -506,7 +601,9 @@ export const FoodSafetyMonitor = () => {
                             </div>
                           </TableCell>
                           <TableCell className="text-xs sm:text-sm">{item.detectedLevel} {item.unit}</TableCell>
-                          <TableCell className="text-xs sm:text-sm">{item.mrl} {item.unit}</TableCell>
+                          <TableCell className="text-xs sm:text-sm">
+                            {item.mrl !== null ? `${item.mrl} ${item.unit}` : "N/A"}
+                          </TableCell>
                           <TableCell className="text-xs sm:text-sm">
                             {item.status === "safe" && (
                               <Badge className="bg-green-100 text-green-800 hover:bg-green-100 text-[10px] sm:text-xs">
@@ -526,6 +623,11 @@ export const FoodSafetyMonitor = () => {
                                 {t("foodSafety.unsafe") || "Unsafe ❌"}
                               </Badge>
                             )}
+                            {item.status === "pending" && (
+                              <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100 text-[10px] sm:text-xs">
+                                {t("pending") || "Pending"}
+                              </Badge>
+                            )}
                           </TableCell>
                           <TableCell className="text-xs sm:text-sm">
                             <div className="flex flex-wrap gap-1">
@@ -543,7 +645,7 @@ export const FoodSafetyMonitor = () => {
                 </div>
 
                 {/* Summary */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4 w-full">
                   <Card className="bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800">
                     <CardContent className="p-3 sm:p-4">
                       <div className="flex items-center">
