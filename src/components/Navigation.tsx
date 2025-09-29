@@ -9,9 +9,7 @@ import {
   MessageCircle,
   Home,
   Stethoscope,
-  Users,
-  FileBarChart,
-  Settings
+  Users
 } from "lucide-react";
 
 interface NavigationProps {
@@ -38,9 +36,7 @@ export const Navigation = ({ activeView, setActiveView }: NavigationProps) => {
     { id: 'prescriptions', label: t('prescriptions') || 'Prescriptions', icon: FileText },
     { id: 'veterinarians', label: 'Veterinarians', icon: Stethoscope },
     { id: 'community', label: 'Community', icon: Users },
-    { id: 'reports', label: 'Reports', icon: FileBarChart },
-    { id: 'settings', label: 'Settings', icon: Settings },
-    { id: 'chatbot', label: t('chatbot') || 'Chatbot', icon: MessageCircle },
+    { id: 'chatbot', label: t('chatbot') || 'Farm Assistant', icon: MessageCircle },
   ];
 
   return (

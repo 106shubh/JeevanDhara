@@ -39,6 +39,23 @@ const translations: Translations = {
     hindi: 'खाद्य सुरक्षा',
     bengali: 'খাদ্য নিরাপত্তা'
   },
+  veterinarians: {
+    english: 'Veterinarians',
+    hindi: 'पशु चिकित्सक',
+    bengali: 'পশুচিকিৎসক'
+  },
+  community: {
+    english: 'Community',
+    hindi: 'समुदाय',
+    bengali: 'সম্প্রদায়'
+  },
+  chatbot: {
+    english: 'Farm Assistant',
+    hindi: 'कृषि सहायक',
+    bengali: 'কৃষি সহায়ক'
+  },
+  
+  // Prescription Management
   'prescriptions.management': {
     english: 'Prescription Management',
     hindi: 'नुस्खे प्रबंधन',
@@ -102,7 +119,7 @@ const translations: Translations = {
   'prescriptions.scannedText': {
     english: 'Scanned Text',
     hindi: 'स्कैन किया गया टेक्स्ट',
-    bengali: 'স্ক্যান করা টেক্সট'
+    bengali: 'স্ক্যান করা টেক্ট'
   },
   'prescriptions.extractedData': {
     english: 'Extracted Data',
@@ -149,12 +166,420 @@ const translations: Translations = {
     hindi: 'कृपया पहले एक नुस्खा स्कैन करें और डेटा निकालें',
     bengali: 'অনুগ্রহ করে প্রথমে একটি প্রেসক্রিপশন স্ক্যান করুন এবং ডাটা বের করুন'
   },
-  chatbot: {
-    english: 'Farm Assistant',
-    hindi: 'कृषि सहायक',
-    bengali: 'কৃষি সহায়ক'
+  
+  // Veterinarian Network
+  'veterinarianNetwork.title': {
+    english: 'Veterinarian Network',
+    hindi: 'पशु चिकित्सक नेटवर्क',
+    bengali: 'পশুচিকিৎসক নেটওয়ার্ক'
+  },
+  'veterinarianNetwork.description': {
+    english: 'Connect with qualified veterinarians for expert consultation and emergency care',
+    hindi: 'विशेषज्ञ परामर्श और आपातकालीन देखभाल के लिए योग्य पशु चिकित्सकों से जुड़ें',
+    bengali: 'বিশেষজ্ঞ পরামর্শ এবং জরুরি পরিচর্যার জন্য দক্ষ পশুচিকিৎসকদের সাথে সংযোগ করুন'
+  },
+  'veterinarianNetwork.findTab': {
+    english: 'Find Veterinarians',
+    hindi: 'पशु चिकित्सक खोजें',
+    bengali: 'পশুচিকিৎসক খুঁজুন'
+  },
+  'veterinarianNetwork.consultationsTab': {
+    english: 'My Consultations',
+    hindi: 'मेरे परामर्श',
+    bengali: 'আমার পরামর্শ'
+  },
+  'veterinarianNetwork.emergencyTab': {
+    english: 'Emergency Services',
+    hindi: 'आपातकालीन सेवाएं',
+    bengali: 'জরুরি সেবা'
+  },
+  'veterinarianNetwork.findTabMobile': {
+    english: 'Find',
+    hindi: 'खोजें',
+    bengali: 'খুঁজুন'
+  },
+  'veterinarianNetwork.consultationsTabMobile': {
+    english: 'Consults',
+    hindi: 'परामर्श',
+    bengali: 'পরামর্শ'
+  },
+  'veterinarianNetwork.emergencyTabMobile': {
+    english: 'Emergency',
+    hindi: 'आपातकालीन',
+    bengali: 'জরুরি'
+  },
+  'veterinarianNetwork.searchPlaceholder': {
+    english: 'Search by name or specialization...',
+    hindi: 'नाम या विशेषज्ञता के आधार पर खोजें...',
+    bengali: 'নাম বা বিশেষায়ন অনুসারে অনুসন্ধান করুন...'
+  },
+  'veterinarianNetwork.searchPlaceholderMobile': {
+    english: 'Search vets...',
+    hindi: 'पशु चिकित्सक खोजें...',
+    bengali: 'পশুচিকিৎসক খুঁজুন...'
+  },
+  'veterinarianNetwork.locationFilter': {
+    english: 'Location',
+    hindi: 'स्थान',
+    bengali: 'অবস্থান'
+  },
+  'veterinarianNetwork.allLocations': {
+    english: 'All Locations',
+    hindi: 'सभी स्थान',
+    bengali: 'সমস্ত অবস্থান'
+  },
+  'veterinarianNetwork.specializationFilter': {
+    english: 'Specialization',
+    hindi: 'विशेषज्ञता',
+    bengali: 'বিশেষায়ন'
+  },
+  'veterinarianNetwork.allSpecializations': {
+    english: 'All Specializations',
+    hindi: 'सभी विशेषज्ञता',
+    bengali: 'সমস্ত বিশেষায়ন'
+  },
+  'veterinarianNetwork.largeAnimals': {
+    english: 'Large Animals',
+    hindi: 'बड़े पशु',
+    bengali: 'বড় পশু'
+  },
+  'veterinarianNetwork.smallAnimals': {
+    english: 'Small Animals',
+    hindi: 'छोटे पशु',
+    bengali: 'ছোট পশু'
+  },
+  'veterinarianNetwork.poultry': {
+    english: 'Poultry',
+    hindi: 'पक्षि',
+    bengali: 'পাখি'
+  },
+  'veterinarianNetwork.emergency': {
+    english: 'Emergency',
+    hindi: 'आपातकालीन',
+    bengali: 'জরুরি'
+  },
+  'veterinarianNetwork.away': {
+    english: 'away',
+    hindi: 'दूर',
+    bengali: 'দূরে'
+  },
+  'veterinarianNetwork.consultation': {
+    english: 'consultation',
+    hindi: 'परामर्श',
+    bengali: 'পরামর্শ'
+  },
+  'veterinarianNetwork.viewProfile': {
+    english: 'View Profile',
+    hindi: 'प्रोफ़ाइल देखें',
+    bengali: 'প্রোফাইল দেখুন'
+  },
+  'veterinarianNetwork.noConsultationsTitle': {
+    english: 'No Consultations Yet',
+    hindi: 'अभी तक कोई परामर्श नहीं',
+    bengali: 'এখনও কোন পরামর্শ নেই'
+  },
+  'veterinarianNetwork.noConsultationsDescription': {
+    english: 'Book your first consultation to get started',
+    hindi: 'आरंभ करने के लिए अपना पहला परामर्श बुक करें',
+    bengali: 'শুরু করতে আপনার প্রথম পরামর্শ বুক করুন'
+  },
+  'veterinarianNetwork.findVeterinarians': {
+    english: 'Find Veterinarians',
+    hindi: 'पशु चिकित्सक खोजें',
+    bengali: 'পশুচিকিৎসক খুঁজুন'
+  },
+  'veterinarianNetwork.emergencyServices': {
+    english: 'Emergency Veterinary Services',
+    hindi: 'आपातकालीन पशु चिकित्सा सेवाएं',
+    bengali: 'জরুরি পশুচিকিৎসা সেবা'
+  },
+  'veterinarianNetwork.emergencyDescription': {
+    english: '24/7 emergency support for critical animal health situations',
+    hindi: 'गंभीर पशु स्वास्थ्य स्थितियों के लिए 24/7 आपातकालीन समर्थन',
+    bengali: 'গুরুতর পশু স্বাস্থ্য পরিস্থিতির জন্য 24/7 জরুরি সহায়তা'
+  },
+  'veterinarianNetwork.yearsExperience': {
+    english: 'years experience',
+    hindi: 'वर्षों का अनुभव',
+    bengali: 'বছরের অভিজ্ঞতা'
+  },
+  'veterinarianNetwork.available247': {
+    english: '24/7 Available',
+    hindi: '24/7 उपलब्ध',
+    bengali: '24/7 উপলব্ধ'
+  },
+  'veterinarianNetwork.responseTime': {
+    english: 'Response Time:',
+    hindi: 'प्रतिक्रिया समय:',
+    bengali: 'প্রতিক্রিয়া সময়:'
+  },
+  'veterinarianNetwork.successRate': {
+    english: 'Success Rate:',
+    hindi: 'सफलता दर:',
+    bengali: 'সাফল্যের হার:'
+  },
+  'veterinarianNetwork.emergencyCall': {
+    english: 'Emergency Call',
+    hindi: 'आपातकालीन कॉल',
+    bengali: 'জরুরি কল'
+  },
+  'veterinarianNetwork.profile': {
+    english: 'Profile',
+    hindi: 'प्रोफ़ाइल',
+    bengali: 'প্রোফাইল'
+  },
+  'veterinarianNetwork.contact': {
+    english: 'Contact',
+    hindi: 'संपर्क',
+    bengali: 'যোগাযোগ'
+  },
+  'veterinarianNetwork.details': {
+    english: 'Details',
+    hindi: 'विवरण',
+    bengali: 'বিবরণ'
+  },
+  'veterinarianNetwork.experience': {
+    english: 'Experience:',
+    hindi: 'अनुभव:',
+    bengali: 'অভিজ্ঞতা:'
+  },
+  'veterinarianNetwork.years': {
+    english: 'years',
+    hindi: 'वर्ष',
+    bengali: 'বছর'
+  },
+  'veterinarianNetwork.response': {
+    english: 'Response:',
+    hindi: 'प्रतिक्रिया:',
+    bengali: 'প্রতিক্রিয়া:'
+  },
+  'veterinarianNetwork.specializations': {
+    english: 'Specializations',
+    hindi: 'विशेषज्ञता',
+    bengali: 'বিশেষায়ন'
+  },
+  'veterinarianNetwork.bookConsultation': {
+    english: 'Book Consultation',
+    hindi: 'परामर्श बुक करें',
+    bengali: 'পরামর্শ বুক করুন'
+  },
+  'veterinarianNetwork.sendMessage': {
+    english: 'Send Message',
+    hindi: 'संदेश भेजें',
+    bengali: 'বার্তা পাঠান'
+  },
+  'veterinarianNetwork.video': {
+    english: 'Video',
+    hindi: 'वीडियो',
+    bengali: 'ভিডিও'
+  },
+  'veterinarianNetwork.phone': {
+    english: 'Phone',
+    hindi: 'फ़ोन',
+    bengali: 'ফোন'
+  },
+  'veterinarianNetwork.chat': {
+    english: 'Chat',
+    hindi: 'चैट',
+    bengali: 'চ্যাট'
   },
   
+  // Farmer Community
+  'farmerCommunity.title': {
+    english: 'Farmer Community',
+    hindi: 'किसान समुदाय',
+    bengali: 'কৃষক সম্প্রদায়'
+  },
+  'farmerCommunity.description': {
+    english: 'Connect, share experiences, and learn from fellow farmers',
+    hindi: 'जुड़ें, अनुभव साझा करें और सहकर्मी किसानों से सीखें',
+    bengali: 'সংযোগ করুন, অভিজ্ঞতা ভাগ করুন এবং সহকর্মী কৃষকদের কাছ থেকে শিখুন'
+  },
+  'farmerCommunity.feedTab': {
+    english: 'Community Feed',
+    hindi: 'समुदाय फ़ीड',
+    bengali: 'সম্প্রদায় ফিড'
+  },
+  'farmerCommunity.forumTab': {
+    english: 'Discussion Forum',
+    hindi: 'चर्चा मंच',
+    bengali: 'আলোচনা ফোরাম'
+  },
+  'farmerCommunity.knowledgeTab': {
+    english: 'Knowledge Base',
+    hindi: 'ज्ञानकोष',
+    bengali: 'জ্ঞানভিত্তি'
+  },
+  'farmerCommunity.eventsTab': {
+    english: 'Events & Groups',
+    hindi: 'कार्यक्रम और समूह',
+    bengali: 'ইভেন্ট এবং গ্রুপ'
+  },
+  'farmerCommunity.searchPlaceholder': {
+    english: 'Search posts and discussions...',
+    hindi: 'पोस्ट और चर्चाएं खोजें...',
+    bengali: 'পোস্ট এবং আলোচনা অনুসন্ধান করুন...'
+  },
+  'farmerCommunity.filterButton': {
+    english: 'Filter',
+    hindi: 'फ़िल्टर',
+    bengali: 'ফিল্টার'
+  },
+  'farmerCommunity.newPostButton': {
+    english: 'New Post',
+    hindi: 'नई पोस्ट',
+    bengali: 'নতুন পোস্ট'
+  },
+  'farmerCommunity.postImageAlt': {
+    english: 'Post image',
+    hindi: 'पोस्ट छवि',
+    bengali: 'পোস্ট ছবি'
+  },
+  'farmerCommunity.pinnedBadge': {
+    english: 'Pinned',
+    hindi: 'पिन किया गया',
+    bengali: 'পিন করা হয়েছে'
+  },
+  'farmerCommunity.answeredBadge': {
+    english: 'Answered',
+    hindi: 'उत्तर दिया गया',
+    bengali: 'উত্তর দেওয়া হয়েছে'
+  },
+  'farmerCommunity.byAuthor': {
+    english: 'by',
+    hindi: 'द्वारा',
+    bengali: 'দ্বারা'
+  },
+  'farmerCommunity.replies': {
+    english: 'replies',
+    hindi: 'उत्तर',
+    bengali: 'উত্তর'
+  },
+  'farmerCommunity.views': {
+    english: 'views',
+    hindi: 'दृश्य',
+    bengali: 'দৃশ্য'
+  },
+  'farmerCommunity.verifiedBadge': {
+    english: 'Verified',
+    hindi: 'सत्यापित',
+    bengali: 'যাচাই করা হয়েছে'
+  },
+  'farmerCommunity.minRead': {
+    english: 'min read',
+    hindi: 'मिनट पढ़ें',
+    bengali: 'মিনিট পড়ুন'
+  },
+  'farmerCommunity.votes': {
+    english: 'votes',
+    hindi: 'वोट',
+    bengali: 'ভোট'
+  },
+  'farmerCommunity.eventsComingSoonTitle': {
+    english: 'Events & Groups Coming Soon',
+    hindi: 'कार्यक्रम और समूह जल्द आ रहे हैं',
+    bengali: 'ইভেন্ট এবং গ্রুপ শীঘ্রই আসছে'
+  },
+  'farmerCommunity.eventsComingSoonDescription': {
+    english: 'Join local farmer groups and attend agricultural events in your area',
+    hindi: 'स्थानीय किसान समूहों में शामिल हों और अपने क्षेत्र में कृषि कार्यक्रमों में शामिल हों',
+    bengali: 'স্থানীয় কৃষক গ্রুপে যোগ দিন এবং আপনার এলাকার কৃষি ইভেন্টগুলিতে যোগ দিন'
+  },
+  'farmerCommunity.shareWithCommunity': {
+    english: 'Share with the Community',
+    hindi: 'समुदाय के साथ साझा करें',
+    bengali: 'সম্প্রদায়ের সাথে ভাগ করুন'
+  },
+  'farmerCommunity.categoryLabel': {
+    english: 'Category',
+    hindi: 'श्रेणी',
+    bengali: 'বিভাগ'
+  },
+  'farmerCommunity.generalDiscussion': {
+    english: 'General Discussion',
+    hindi: 'सामान्य चर्चा',
+    bengali: 'সাধারণ আলোচনা'
+  },
+  'farmerCommunity.technologyInnovation': {
+    english: 'Technology & Innovation',
+    hindi: 'प्रौद्योगिकी और नवाचार',
+    bengali: 'প্রযুক্তি এবং উদ্ভাবন'
+  },
+  'farmerCommunity.healthDisease': {
+    english: 'Health & Disease',
+    hindi: 'स्वास्थ्य और रोग',
+    bengali: 'স্বাস্থ্য এবং রোগ'
+  },
+  'farmerCommunity.nutritionFeed': {
+    english: 'Nutrition & Feed',
+    hindi: 'पोषण और चारा',
+    bengali: 'পুষ্টি এবং খাদ্য'
+  },
+  'farmerCommunity.economicsFinance': {
+    english: 'Economics & Finance',
+    hindi: 'अर्थशास्त्र और वित्त',
+    bengali: 'অর্থনীতি এবং অর্থায়ন'
+  },
+  'farmerCommunity.contentLabel': {
+    english: 'Content',
+    hindi: 'सामग्री',
+    bengali: 'বিষয়বস্তু'
+  },
+  'farmerCommunity.contentPlaceholder': {
+    english: 'Share your experience, ask questions, or provide advice to fellow farmers...',
+    hindi: 'अपना अनुभव साझा करें, प्रश्न पूछें, या सहकर्मी किसानों को सलाह दें...',
+    bengali: 'আপনার অভিজ্ঞতা ভাগ করুন, প্রশ্ন জিজ্ঞাসা করুন বা সহকর্মী কৃষকদের পরামর্শ দিন...'
+  },
+  'farmerCommunity.addPhotos': {
+    english: 'Add Photos',
+    hindi: 'तस्वीरें जोड़ें',
+    bengali: 'ছবি যোগ করুন'
+  },
+  'farmerCommunity.addVideo': {
+    english: 'Add Video',
+    hindi: 'वीडियो जोड़ें',
+    bengali: 'ভিডিও যোগ করুন'
+  },
+  'farmerCommunity.cancelButton': {
+    english: 'Cancel',
+    hindi: 'रद्द करें',
+    bengali: 'বাতিল করুন'
+  },
+  'farmerCommunity.sharePostButton': {
+    english: 'Share Post',
+    hindi: 'पोस्ट साझा करें',
+    bengali: 'পোস্ট ভাগ করুন'
+  },
+  'farmerCommunity.bookmarkRemoved': {
+    english: 'Bookmark Removed',
+    hindi: 'बुकमार्क हटाया गया',
+    bengali: 'বুকমার্ক সরানো হয়েছে'
+  },
+  'farmerCommunity.postBookmarked': {
+    english: 'Post Bookmarked',
+    hindi: 'पोस्ट बुकमार्क की गई',
+    bengali: 'পোস্ট বুকমার্ক করা হয়েছে'
+  },
+  'farmerCommunity.bookmarkRemovedDesc': {
+    english: 'Post removed from bookmarks',
+    hindi: 'पोस्ट बुकमारक से हटाई गई',
+    bengali: 'বুকমার্ক থেকে পোস্ট সরানো হয়েছে'
+  },
+  'farmerCommunity.bookmarkAddedDesc': {
+    english: 'Post saved to your bookmarks',
+    hindi: 'पोस्ट आपके बुकमार्क में सहेजी गई',
+    bengali: 'আপনার বুকমার্কে পোস্ট সংরক্ষণ করা হয়েছে'
+  },
+  'farmerCommunity.postCreated': {
+    english: 'Post Created!',
+    hindi: 'पोस्ट बनाई गई!',
+    bengali: 'পোস্ট তৈরি করা হয়েছে!'
+  },
+  'farmerCommunity.postShared': {
+    english: 'Your post has been shared with the community',
+    hindi: 'आपकी पोस्ट समुदाय के साथ साझा की गई है',
+    bengali: 'আপনার পোস্ট সম্প্রদায়ের সাথে ভাগ করা হয়েছে'
+  },
   
   // Authentication Pages
   'auth.signIn': {
@@ -410,265 +835,11 @@ const translations: Translations = {
     hindi: 'नियमों के साथ अनुपालन बनाए रखें और उचित दस्तावेज़ीकरण बनाए रखें। स्वचालित अलर्ट सुनिश्चित करते हैं कि आप कभी भी महत्वपूर्ण समय सीमा नहीं चूकते।',
     bengali: 'নিয়মাবলীর সাথে সম্মত থাকুন এবং যথাযথ ডকুমেন্টেশন বজায় রাখুন। স্বয়ংক্রিয় সতর্কতা নিশ্চিত করে যে আপনি কখনও গুরুত্বপূর্ণ সময়সীমা মিস করবেন না।'
   },
-  'feature.assistant.title': {
-    english: 'AI Assistant',
-    hindi: 'AI सहायक',
-    bengali: 'AI সহায়ক'
-  },
-  'feature.assistant.desc': {
-    english: 'Get instant answers to your farming and compliance questions. Our AI assistant is trained on the latest agricultural regulations and best practices.',
-    hindi: 'अपने खेती और अनुपालन प्रश्नों के तत्काल उत्तर प्राप्त करें। हमारा AI सहायक नवीनतम कृषि नियमों और सर्वोत्तम प्रथाओं पर प्रशिक्षित है।',
-    bengali: 'আপনার কৃষি এবং সম্মতি প্রশ্নের তাৎক্ষণিক উত্তর পান। আমাদের AI সহায়ক সর্বশেষ কৃষি নিয়মাবলী এবং সর্বোত্তম অনুশীলনে প্রশিক্ষিত।'
-  },
-  'feature.withdrawal.title': {
-    english: 'Withdrawal Period Tracking',
-    hindi: 'विद्राओय़ाल पीरियड ट्र्याकिंग',
-    bengali: 'প্রত্যাহার সময়কাল ট্র্যাকিং'
-  },
-  'feature.withdrawal.desc': {
-    english: 'Automatically track withdrawal periods for all medications. Receive timely alerts when animals are approaching clearance dates.',
-    hindi: 'सभी दवाओं के लिए विद्राओय़ाल समयकाल स्वयंक्रियभाबे ट्र्याक करून। पशुरा निष्काशनेर तारिखेर काछाकाछि आसार समय समयमत सतर्कता पान।',
-    bengali: 'সমস্ত ওষুধের জন্য প্রত্যাহার সময়কাল স্বয়ংক্রিয়ভাবে ট্র্যাক করুন। পশুরা ক্লিয়ারেন্স তারিখের কাছাকাছি আসার সময় সময়মত সতর্কতা পান।'
-  },
-  'feature.export.title': {
-    english: 'Export & Reporting',
-    hindi: 'निर्यात और रिपोर्टिंग',
-    bengali: 'রপ্তানি এবং রিপোর্টিং'
-  },
-  'feature.export.desc': {
-    english: 'Generate comprehensive reports for regulatory submissions. Export data in multiple formats for easy sharing with authorities.',
-    hindi: 'नियामक प्रस्तुति के लिए विस्तृत रिपोर्ट तैयार करें। कर्तृपक्ष के साथ आसान शेयरिंग के लिए एकाधिक प्रारूपों में डेटा निर्यात करें।',
-    bengali: 'নিয়ন্ত্রক জমা দেওয়ার জন্য ব্যাপক রিপোর্ট তৈরি করুন। কর্তৃপক্ষের সাথে সহজ ভাগাভাগির জন্য একাধিক ফরম্যাটে ডেটা রপ্তানি করুন।'
-  },
-  'feature.team.title': {
-    english: 'Team Collaboration',
-    hindi: 'दल सहयोगिता',
-    bengali: 'দলীয় সহযোগিতা'
-  },
-  'feature.team.desc': {
-    english: 'Collaborate with your team members, veterinarians, and consultants. Assign tasks and share important information securely.',
-    hindi: 'अपने दल के सदस्यों, पशुचिकित्सकों और परामर्शदाताओं के साथ सहयोग करें। कार्य निर्धारित करें और महत्वपूर्ण जानकारी सुरक्षित रूप से साझा करें।',
-    bengali: 'আপনার দলের সদস্য, পশুচিকিৎসক এবং পরামর্শদাতাদের সাথে সহযোগিতা করুন। কাজ বরাদ্দ করুন এবং গুরুত্বপূর্ণ তথ্য নিরাপদে ভাগ করুন।'
-  },
-  
-  // Common Actions
-  'action.logAMU': {
-    english: 'Log AMU',
-    hindi: 'AMU लॉग करें',
-    bengali: 'AMU লগ করুন'
-  },
-  'action.reports': {
-    english: 'Reports',
-    hindi: 'रिपोर्ट',
-    bengali: 'রিপোর্ট'
-  },
-  'action.exportData': {
-    english: 'Export data',
-    hindi: 'डेटा निर्यात करें',
-    bengali: 'ডেটা রপ্তানি করুন'
-  },
-  'action.checkAlerts': {
-    english: 'Check Alerts',
-    hindi: 'सतर्कता चेक करें',
-    bengali: 'সতর্কতা চেক করুন'
-  },
-  
-  // Dashboard Cards
-  'dashboard.totalAnimals': {
-    english: 'Total Animals',
-    hindi: 'कुल पशु',
-    bengali: 'মোট পশু'
-  },
-  'dashboard.activeTreatments': {
-    english: 'Active Treatments',
-    hindi: 'सक्रिय उपचार',
-    bengali: 'সক্রিয় চিকিৎসা'
-  },
-  'dashboard.mrlCompliance': {
-    english: 'MRL Compliance',
-    hindi: 'MRL अनुपालन',
-    bengali: 'MRL সম্মতি'
-  },
-  'dashboard.pendingAlerts': {
-    english: 'Pending Alerts',
-    hindi: 'लंबित अलर्ट',
-    bengali: 'অমীমাংসিত সতর্কতা'
-  },
-  'dashboard.amuTrends': {
-    english: 'AMU Trends & Compliance',
-    hindi: 'AMU रुझान और अनुपालन',
-    bengali: 'AMU প্রবণতা এবং সম্মতি'
-  },
-  'dashboard.amuBySpecies': {
-    english: 'AMU by Species',
-    hindi: 'प्रजातियों के अनुसार AMU',
-    bengali: 'প্রজাতি অনুযায়ী AMU'
-  },
-  'dashboard.withdrawalPeriods': {
-    english: 'Active Withdrawal Periods',
-    hindi: 'सक्रिय निकासी अवधि',
-    bengali: 'সক্রিয় প্রত্যাহার সময়কাল'
-  },
-  'dashboard.quickActions': {
-    english: 'Quick Actions',
-    hindi: 'त्वरित कार्य',
-    bengali: 'দ্রুত কার্যক্রম'
-  },
-  'dashboard.generateReport': {
-    english: 'Generate Report',
-    hindi: 'रिपोर्ट जेनरेट करें',
-    bengali: 'রিপোর্ট তৈরি করুন'
-  },
-  'dashboard.exportCompliance': {
-    english: 'Export compliance report',
-    hindi: 'अनुपालन रिपोर्ट निर्यात करें',
-    bengali: 'সম্মতি রিপোর্ট রপ্তানি করুন'
-  },
-  'dashboard.viewNotifications': {
-    english: 'View all notifications',
-    hindi: 'सभी सूचनाएं देखें',
-    bengali: 'সমস্ত বিজ্ঞপ্তি দেখুন'
-  },
-  'dashboard.daysLeft': {
-    english: 'days left',
-    hindi: 'दिन बचे',
-    bengali: 'দিন বাকি'
-  },
-  'dashboard.untilClearance': {
-    english: 'Until clearance',
-    hindi: 'क्लीयरेंस तक',
-    bengali: 'ক্লিয়ারেন্স পর্যন্ত'
-  },
-  
-  // Alert badges
-  'alert.urgent': {
-    english: 'Urgent',
-    hindi: 'तत्काल',
-    bengali: 'জরুরি'
-  },
-  'alert.soon': {
-    english: 'Soon',
-    hindi: 'जल्द',
-    bengali: 'শীঘ্রই'
-  },
-  'alert.normal': {
-    english: 'Normal',
-    hindi: 'सामान्य',
-    bengali: 'স্বাভাবিক'
-  },
-  'form.animalDetails': {
-    english: 'Animal Details',
-    hindi: 'पशु विवरण',
-    bengali: 'পশুর বিবরণ'
-  },
-  'form.drugInformation': {
-    english: 'Drug Information',
-    hindi: 'ओषुधेर तथ्य',
-    bengali: 'ওষুধের তথ্য'
-  },
-  'form.prescription': {
-    english: 'Prescription',
-    hindi: 'नुस्खा',
-    bengali: 'প্রেসক্রিপশন'
-  },
-  'form.review': {
-    english: 'Review',
-    hindi: 'समीक्षा',
-    bengali: 'পর্যালোচনা'
-  },
-  
-  
-  // Footer
-  'footer.empowering': {
-    english: 'Empowering farmers with smart technology for better compliance and sustainable farming practices.',
-    hindi: 'बेहतर अनुपालन और टिकाऊ खेती प्रथाओं के लिए स्मार्ट तकनीक के साथ किसानों को सशक्त बनाना।',
-    bengali: 'ভাল সম্মতি এবং স্থায়ী কৃষি অনুশীলনের জন্য স্মার্ট প্রযুক্তির সাথে কৃষকদের ক্ষমতায়ন।'
-  },
-  'footer.product': {
-    english: 'Product',
-    hindi: 'उत्पाद',
-    bengali: 'পণ্য'
-  },
-  'footer.features': {
-    english: 'Features',
-    hindi: 'विशेषताएं',
-    bengali: 'বৈশিষ্ট্য'
-  },
-  'footer.pricing': {
-    english: 'Pricing',
-    hindi: 'मूल्य निर्धारण',
-    bengali: 'মূল্য'
-  },
-  'footer.caseStudies': {
-    english: 'Case Studies',
-    hindi: 'केस स्टडीज',
-    bengali: 'কেস স্টাডি'
-  },
-  'footer.integrations': {
-    english: 'Integrations',
-    hindi: 'एकीकरण',
-    bengali: 'একীকরণ'
-  },
-  'footer.resources': {
-    english: 'Resources',
-    hindi: 'संसाधन',
-    bengali: 'সম্পদ'
-  },
-  'footer.documentation': {
-    english: 'Documentation',
-    hindi: 'दस्तावेज़ीकरण',
-    bengali: 'নথিপত্র'
-  },
-  'footer.blog': {
-    english: 'Blog',
-    hindi: 'ब्लग',
-    bengali: 'ব্লগ'
-  },
-  'footer.webinars': {
-    english: 'Webinars',
-    hindi: 'वेबिनार',
-    bengali: 'ওয়েবিনার'
-  },
-  'footer.faq': {
-    english: 'FAQ',
-    hindi: 'अक्सर पूछे जाने वाले प्रश्न',
-    bengali: 'সাধারণ জিজ্ঞাসা'
-  },
-  'footer.company': {
-    english: 'Company',
-    hindi: 'कंपनी',
-    bengali: 'কোম্পানী'
-  },
-  'footer.aboutUs': {
-    english: 'About Us',
-    hindi: 'हमारे बारे में',
-    bengali: 'আমাদের সম্পর্কে'
-  },
-  'footer.careers': {
-    english: 'Careers',
-    hindi: 'करियर',
-    bengali: 'ক্যারিয়ার'
-  },
-  'footer.contact': {
-    english: 'Contact',
-    hindi: 'संपर्क',
-    bengali: 'যোগাযোগ'
-  },
-  'footer.privacy': {
-    english: 'Privacy Policy',
-    hindi: 'गोपनीयता नीति',
-    bengali: 'গোপনীয়তা নীতি'
-  },
-  'footer.allRights': {
-    english: 'All rights reserved.',
-    hindi: 'सभी अधिकार सुरक्षित।',
-    bengali: 'সমস্ত অধিকার সংরক্ষিত।'
-  }
 };
 
 interface LanguageContextType {
   language: Language;
-  setLanguage: (lang: Language) => void;
+  setLanguage: (language: Language) => void;
   t: (key: string) => string;
 }
 
@@ -676,61 +847,52 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
 };
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>('english');
+  const [language, setLanguage] = useState<Language>('english');
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user) {
-      // Load user's preferred language
-      const loadLanguage = async () => {
-        const { data } = await supabase
+    const fetchUserLanguage = async () => {
+      if (user) {
+        const { data, error } = await supabase
           .from('profiles')
           .select('language')
-          .eq('user_id', user.id)
+          .eq('id', user.id)
           .single();
         
-        if (data?.language) {
-          setLanguageState(data.language as Language);
+        if (data && !error) {
+          setLanguage(data.language as Language || 'english');
         }
-      };
-      
-      loadLanguage();
-    }
+      }
+    };
+
+    fetchUserLanguage();
   }, [user]);
 
-  const setLanguage = async (lang: Language) => {
-    setLanguageState(lang);
-    
+  const updateLanguage = async (newLanguage: Language) => {
+    setLanguage(newLanguage);
     if (user) {
-      // Update user's language preference
       await supabase
         .from('profiles')
-        .update({ language: lang })
-        .eq('user_id', user.id);
+        .update({ language: newLanguage })
+        .eq('id', user.id);
     }
   };
 
-  const t = (key: string): string => {
+  const t = (key: string) => {
     const translation = translations[key];
     if (!translation) return key;
-    return translation[language] || translation.english;
-  };
-
-  const value: LanguageContextType = {
-    language,
-    setLanguage,
-    t
+    return translation[language] || translation.english || key;
   };
 
   return (
-    <LanguageContext.Provider value={value}>
+    <LanguageContext.Provider value={{ language, setLanguage: updateLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

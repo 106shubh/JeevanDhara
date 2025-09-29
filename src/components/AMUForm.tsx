@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -30,6 +30,7 @@ import {
 import { AlertBadge } from "./AlertBadge";
 import { motion, Variants } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Tesseract from 'tesseract.js';
 
 // Food categories with their contaminants
 const FOOD_CATEGORIES = [
@@ -175,6 +176,13 @@ export const AMUForm = () => {
   const [sampleId, setSampleId] = useState<string>("");
   const [collectionDate, setCollectionDate] = useState<string>("");
   const [farmLocation, setFarmLocation] = useState<string>("");
+  
+  // Prescription scanning state
+  const [isScanning, setIsScanning] = useState(false);
+  const [scannedImage, setScannedImage] = useState<string | null>(null);
+  const [scannedText, setScannedText] = useState<string | null>(null);
+  const [extractedPrescriptionData, setExtractedPrescriptionData] = useState<any>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Calculate withdrawal period based on current form data
   const withdrawalPeriod = calculateWithdrawalPeriod(
@@ -322,6 +330,135 @@ export const AMUForm = () => {
   // Get AMU inference for a contaminant
   const getAMUInference = (contaminant: string) => {
     return AMU_INFERENCE_MAP[contaminant] || ["General livestock"];
+  };
+  
+  // Handle file upload for prescription scanning
+  const handlePrescriptionFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      setScannedImage(result);
+      scanPrescriptionImage(result);
+    };
+    reader.readAsDataURL(file);
+  };
+  
+  // Handle camera capture for prescription scanning
+  const handleCameraCapture = async () => {
+    try {
+      // This is a simplified implementation
+      // In a real app, you would use a proper camera API or library
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      
+      // For demo purposes, we'll just show an alert
+      alert('Camera access would be requested here. For this demo, please use the file upload option.');
+      
+      // Clean up
+      stream.getTracks().forEach(track => track.stop());
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      alert('Could not access camera. Please use file upload instead.');
+    }
+  };
+  
+  // Scan prescription image with Tesseract.js
+  const scanPrescriptionImage = async (imageData: string) => {
+    if (!imageData) return;
+    
+    setIsScanning(true);
+    
+    try {
+      // Use Tesseract.js for OCR
+      const result = await Tesseract.recognize(
+        imageData,
+        'eng',
+        { 
+          logger: (m) => console.log(m)
+        }
+      );
+      
+      setScannedText(result.data.text);
+      
+      // Extract structured data from OCR text
+      extractPrescriptionData(result.data.text);
+    } catch (error) {
+      console.error('Error scanning prescription:', error);
+      alert('Could not extract text from image. Please try another image.');
+    } finally {
+      setIsScanning(false);
+    }
+  };
+  
+  // Extract structured data from OCR text
+  const extractPrescriptionData = (text: string) => {
+    if (!text) return;
+    
+    // Enhanced extraction with more robust regex patterns
+    const extractVeterinarian = /(?:veterinarian|doctor|dr\.?|vet\.?)[\s\S]*?:?\s*([A-Z][a-zA-Z\s\.]+(?:[A-Z]\.?\s*){1,3})/i;
+    const extractAnimalId = /(?:animal|patient|id)[\s\S]*?:?\s*([A-Z0-9\-_]+)/i;
+    const extractDrug = /(?:medication|prescription|drug)[\s\S]*?:?\s*([A-Z][a-zA-Z\s]+(?:[A-Z][a-zA-Z]*)?)/i;
+    const extractDosage = /(?:dosage|dose)[\s\S]*?:?\s*([\d\s\w\/\.]+)/i;
+    const extractFrequency = /(?:frequency|times)[\s\S]*?:?\s*([\d\w\s]+)/i;
+    const extractDate = /(?:date|issued)[\s\S]*?:?\s*(\d{4}[-\/]\d{1,2}[-\/]\d{1,2}|\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i;
+    
+    // Try multiple patterns for each field
+    const veterinarianMatch = text.match(extractVeterinarian) || 
+                            text.match(/(?:Dr\.?|Doctor)[\s\.]+([A-Z][a-zA-Z\s\.]+)/i) ||
+                            text.match(/([A-Z][a-zA-Z\s\.]+,\s*(?:DVM|VMD|BVSc))/i);
+    
+    const animalIdMatch = text.match(extractAnimalId) || 
+                         text.match(/(?:ID|Animal)[\s#]*([A-Z0-9\-_]+)/i);
+    
+    const drugMatch = text.match(extractDrug) || 
+                     text.match(/(?:Amoxicillin|Penicillin|Tetracycline|Florfenicol|Oxytetracycline)[\s\w]*/i);
+    
+    const dosageMatch = text.match(extractDosage) || 
+                       text.match(/(\d+\s*(?:mg|ml|g|capsules|tablets))/i);
+    
+    const frequencyMatch = text.match(extractFrequency) || 
+                          text.match(/(?:once|twice|thrice|\d+)\s*(?:daily|weekly|monthly)/i) ||
+                          text.match(/(\d+\s*(?:times\s*per\s*day|t\.?p\.?d\.?))/i);
+    
+    const dateMatch = text.match(extractDate) || 
+                     text.match(/(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/g);
+    
+    const extracted = {
+      veterinarianName: veterinarianMatch?.[1] ? String(veterinarianMatch[1]).trim() : '',
+      animalId: animalIdMatch?.[1] ? String(animalIdMatch[1]).trim() : '',
+      drugName: drugMatch?.[1] ? String(drugMatch[1]).trim() : '',
+      dosage: dosageMatch?.[1] ? String(dosageMatch[1]).trim() : '',
+      frequency: frequencyMatch?.[1] ? String(frequencyMatch[1]).trim() : '',
+      issueDate: dateMatch?.[0] ? String(dateMatch[0]).trim() : new Date().toISOString().split('T')[0],
+    };
+    
+    setExtractedPrescriptionData(extracted);
+    
+    // Auto-fill the form with extracted data
+    if (extracted.animalId) {
+      setFormData(prev => ({ ...prev, animalId: extracted.animalId }));
+    }
+    if (extracted.drugName) {
+      setFormData(prev => ({ ...prev, drugName: extracted.drugName }));
+    }
+    if (extracted.dosage) {
+      setFormData(prev => ({ ...prev, dosage: extracted.dosage }));
+    }
+    if (extracted.frequency) {
+      setFormData(prev => ({ ...prev, frequency: extracted.frequency }));
+    }
+  };
+  
+  // Reset prescription scanning state
+  const resetPrescriptionScan = () => {
+    setScannedImage(null);
+    setScannedText(null);
+    setExtractedPrescriptionData(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -489,16 +626,67 @@ export const AMUForm = () => {
               <div className="space-y-3 w-full">
                 <Label className="text-xs sm:text-sm md:text-base">Prescription Upload</Label>
                 <div className="border-2 border-dashed border-muted rounded-lg p-3 sm:p-4 md:p-5 text-center space-y-2 sm:space-y-3 w-full">
-                  <div className="flex flex-col xs:flex-row justify-center gap-2 xs:gap-3 w-full">
-                    <Button variant="outline" size={screenSize.isMobile ? "sm" : "default"} className="text-xs sm:text-sm md:text-base h-8 sm:h-9 md:h-10 flex-1">
-                      <Camera className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 mr-1 sm:mr-1.5" />
-                      {screenSize.isMobile ? "Photo" : "Take Photo"}
-                    </Button>
-                    <Button variant="outline" size={screenSize.isMobile ? "sm" : "default"} className="text-xs sm:text-sm md:text-base h-8 sm:h-9 md:h-10 flex-1">
-                      <Upload className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 mr-1 sm:mr-1.5" />
-                      {screenSize.isMobile ? "Upload" : "Upload File"}
-                    </Button>
-                  </div>
+                  {isScanning ? (
+                    <div className="flex flex-col items-center justify-center p-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-2"></div>
+                      <p className="text-muted-foreground text-xs sm:text-sm">Scanning prescription...</p>
+                    </div>
+                  ) : scannedImage ? (
+                    <div className="space-y-3">
+                      <div className="relative">
+                        <img 
+                          src={scannedImage} 
+                          alt="Scanned prescription" 
+                          className="max-h-40 sm:max-h-52 w-auto mx-auto rounded border"
+                        />
+                        <Button 
+                          size="icon" 
+                          variant="destructive" 
+                          className="absolute top-1 right-1 h-6 w-6 sm:h-7 sm:w-7"
+                          onClick={resetPrescriptionScan}
+                        >
+                          <XCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+                        </Button>
+                      </div>
+                      {extractedPrescriptionData && (
+                        <div className="text-left text-xs sm:text-sm p-2 bg-muted/50 rounded">
+                          <p><strong>Veterinarian:</strong> {extractedPrescriptionData.veterinarianName || 'Not found'}</p>
+                          <p><strong>Animal ID:</strong> {extractedPrescriptionData.animalId || 'Not found'}</p>
+                          <p><strong>Drug:</strong> {extractedPrescriptionData.drugName || 'Not found'}</p>
+                          <p><strong>Dosage:</strong> {extractedPrescriptionData.dosage || 'Not found'}</p>
+                          <p><strong>Frequency:</strong> {extractedPrescriptionData.frequency || 'Not found'}</p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col xs:flex-row justify-center gap-2 xs:gap-3 w-full">
+                      <Button 
+                        variant="outline" 
+                        size={screenSize.isMobile ? "sm" : "default"} 
+                        className="text-xs sm:text-sm md:text-base h-8 sm:h-9 md:h-10 flex-1"
+                        onClick={handleCameraCapture}
+                      >
+                        <Camera className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 mr-1 sm:mr-1.5" />
+                        {screenSize.isMobile ? "Photo" : "Take Photo"}
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size={screenSize.isMobile ? "sm" : "default"} 
+                        className="text-xs sm:text-sm md:text-base h-8 sm:h-9 md:h-10 flex-1"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Upload className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 mr-1 sm:mr-1.5" />
+                        {screenSize.isMobile ? "Upload" : "Upload File"}
+                      </Button>
+                      <input 
+                        type="file" 
+                        ref={fileInputRef}
+                        className="hidden" 
+                        accept="image/*,.pdf"
+                        onChange={handlePrescriptionFileUpload}
+                      />
+                    </div>
+                  )}
                   <p className="text-muted-foreground text-xs sm:text-sm md:text-base w-full break-words px-2">
                     Upload veterinary prescription or take a photo
                   </p>

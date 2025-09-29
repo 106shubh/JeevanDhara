@@ -1010,7 +1010,7 @@ export const Dashboard = () => {
                   {item.status === 'urgent' && <AlertBadge type="urgent">Urgent</AlertBadge>}
                   {item.status === 'warning' && <AlertBadge type="warning">Soon</AlertBadge>}
                   {item.status === 'normal' && <AlertBadge type="compliant">Normal</AlertBadge>}
-                </div>
+                </div> 
               </div>
             ))}
           </div>

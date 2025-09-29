@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext"; // Added LanguageContext import
 
 interface FarmerPost {
   id: string;
@@ -79,6 +80,7 @@ interface KnowledgeArticle {
 }
 
 export default function FarmerCommunity() {
+  const { t } = useLanguage(); // Added useLanguage hook
   const [posts, setPosts] = useState<FarmerPost[]>([]);
   const [forumThreads, setForumThreads] = useState<ForumThread[]>([]);
   const [knowledgeArticles, setKnowledgeArticles] = useState<KnowledgeArticle[]>([]);
@@ -245,8 +247,8 @@ export default function FarmerCommunity() {
     
     const post = posts.find(p => p.id === postId);
     toast({
-      title: post?.isBookmarked ? "Bookmark Removed" : "Post Bookmarked",
-      description: post?.isBookmarked ? "Post removed from bookmarks" : "Post saved to your bookmarks"
+      title: post?.isBookmarked ? t('farmerCommunity.bookmarkRemoved') || "Bookmark Removed" : t('farmerCommunity.postBookmarked') || "Post Bookmarked",
+      description: post?.isBookmarked ? t('farmerCommunity.bookmarkRemovedDesc') || "Post removed from bookmarks" : t('farmerCommunity.bookmarkAddedDesc') || "Post saved to your bookmarks"
     });
   };
 
@@ -278,8 +280,8 @@ export default function FarmerCommunity() {
     setShowNewPostDialog(false);
     
     toast({
-      title: "Post Created!",
-      description: "Your post has been shared with the community"
+      title: t('farmerCommunity.postCreated') || "Post Created!",
+      description: t('farmerCommunity.postShared') || "Your post has been shared with the community"
     });
   };
 
@@ -298,18 +300,18 @@ export default function FarmerCommunity() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl font-bold text-foreground">Farmer Community</h2>
+        <h2 className="text-3xl font-bold text-foreground">{t('farmerCommunity.title') || "Farmer Community"}</h2>
         <p className="text-muted-foreground">
-          Connect, share experiences, and learn from fellow farmers
+          {t('farmerCommunity.description') || "Connect, share experiences, and learn from fellow farmers"}
         </p>
       </motion.div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="feed">Community Feed</TabsTrigger>
-          <TabsTrigger value="forum">Discussion Forum</TabsTrigger>
-          <TabsTrigger value="knowledge">Knowledge Base</TabsTrigger>
-          <TabsTrigger value="events">Events & Groups</TabsTrigger>
+          <TabsTrigger value="feed">{t('farmerCommunity.feedTab') || "Community Feed"}</TabsTrigger>
+          <TabsTrigger value="forum">{t('farmerCommunity.forumTab') || "Discussion Forum"}</TabsTrigger>
+          <TabsTrigger value="knowledge">{t('farmerCommunity.knowledgeTab') || "Knowledge Base"}</TabsTrigger>
+          <TabsTrigger value="events">{t('farmerCommunity.eventsTab') || "Events & Groups"}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="feed" className="space-y-6 mt-6">
@@ -319,7 +321,7 @@ export default function FarmerCommunity() {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search posts and discussions..."
+                  placeholder={t('farmerCommunity.searchPlaceholder') || "Search posts and discussions..."}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -330,12 +332,12 @@ export default function FarmerCommunity() {
                 onClick={() => setCategoryFilter(categoryFilter === "all" ? "technology" : "all")}
               >
                 <Filter className="h-4 w-4 mr-2" />
-                Filter
+                {t('farmerCommunity.filterButton') || "Filter"}
               </Button>
             </div>
             <Button onClick={() => setShowNewPostDialog(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              New Post
+              {t('farmerCommunity.newPostButton') || "New Post"}
             </Button>
           </div>
 
@@ -392,7 +394,7 @@ export default function FarmerCommunity() {
                             <img 
                               key={imgIndex}
                               src={image} 
-                              alt="Post image" 
+                              alt={t('farmerCommunity.postImageAlt') || "Post image"} 
                               className="rounded-lg border max-h-60 object-cover w-full"
                             />
                           ))}
@@ -462,12 +464,12 @@ export default function FarmerCommunity() {
                         <div className="flex items-center gap-2 mb-2">
                           {thread.isPinned && (
                             <Badge variant="secondary" className="text-xs">
-                              Pinned
+                              {t('farmerCommunity.pinnedBadge') || "Pinned"}
                             </Badge>
                           )}
                           {thread.isAnswered && (
                             <Badge variant="default" className="text-xs bg-green-100 text-green-800">
-                              Answered
+                              {t('farmerCommunity.answeredBadge') || "Answered"}
                             </Badge>
                           )}
                           <Badge variant="outline" className="text-xs">
@@ -478,14 +480,14 @@ export default function FarmerCommunity() {
                           {thread.title}
                         </h3>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span>by {thread.author}</span>
+                          <span>{t('farmerCommunity.byAuthor') || "by"} {thread.author}</span>
                           <span className="flex items-center gap-1">
                             <MessageSquare className="h-3 w-3" />
-                            {thread.replies} replies
+                            {thread.replies} {t('farmerCommunity.replies') || "replies"}
                           </span>
                           <span className="flex items-center gap-1">
                             <Eye className="h-3 w-3" />
-                            {thread.views} views
+                            {thread.views} {t('farmerCommunity.views') || "views"}
                           </span>
                           <span>{new Date(thread.lastActivity).toLocaleDateString()}</span>
                         </div>
@@ -515,7 +517,7 @@ export default function FarmerCommunity() {
                           {article.isVerified && (
                             <Badge variant="default" className="text-xs bg-blue-100 text-blue-800">
                               <Award className="h-3 w-3 mr-1" />
-                              Verified
+                              {t('farmerCommunity.verifiedBadge') || "Verified"}
                             </Badge>
                           )}
                           <Badge variant="outline" className="text-xs">
@@ -527,11 +529,11 @@ export default function FarmerCommunity() {
                         </h3>
                         <p className="text-muted-foreground mb-3">{article.summary}</p>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span>by {article.author}</span>
-                          <span>{article.readTime} min read</span>
+                          <span>{t('farmerCommunity.byAuthor') || "by"} {article.author}</span>
+                          <span>{article.readTime} {t('farmerCommunity.minRead') || "min read"}</span>
                           <span className="flex items-center gap-1">
                             <ThumbsUp className="h-3 w-3" />
-                            {article.votes} votes
+                            {article.votes} {t('farmerCommunity.votes') || "votes"}
                           </span>
                           <span>{new Date(article.publishDate).toLocaleDateString()}</span>
                         </div>
@@ -547,9 +549,9 @@ export default function FarmerCommunity() {
         <TabsContent value="events" className="space-y-6 mt-6">
           <div className="text-center py-12">
             <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">Events & Groups Coming Soon</h3>
+            <h3 className="text-lg font-medium mb-2">{t('farmerCommunity.eventsComingSoonTitle') || "Events & Groups Coming Soon"}</h3>
             <p className="text-muted-foreground">
-              Join local farmer groups and attend agricultural events in your area
+              {t('farmerCommunity.eventsComingSoonDescription') || "Join local farmer groups and attend agricultural events in your area"}
             </p>
           </div>
         </TabsContent>
@@ -559,27 +561,27 @@ export default function FarmerCommunity() {
       <Dialog open={showNewPostDialog} onOpenChange={setShowNewPostDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Share with the Community</DialogTitle>
+            <DialogTitle>{t('farmerCommunity.shareWithCommunity') || "Share with the Community"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium mb-2 block">Category</label>
+              <label className="text-sm font-medium mb-2 block">{t('farmerCommunity.categoryLabel') || "Category"}</label>
               <select 
                 value={newPostCategory} 
                 onChange={(e) => setNewPostCategory(e.target.value)}
                 className="w-full p-2 border rounded-md"
               >
-                <option value="general">General Discussion</option>
-                <option value="technology">Technology & Innovation</option>
-                <option value="health">Health & Disease</option>
-                <option value="nutrition">Nutrition & Feed</option>
-                <option value="economics">Economics & Finance</option>
+                <option value="general">{t('farmerCommunity.generalDiscussion') || "General Discussion"}</option>
+                <option value="technology">{t('farmerCommunity.technologyInnovation') || "Technology & Innovation"}</option>
+                <option value="health">{t('farmerCommunity.healthDisease') || "Health & Disease"}</option>
+                <option value="nutrition">{t('farmerCommunity.nutritionFeed') || "Nutrition & Feed"}</option>
+                <option value="economics">{t('farmerCommunity.economicsFinance') || "Economics & Finance"}</option>
               </select>
             </div>
             <div>
-              <label className="text-sm font-medium mb-2 block">Content</label>
+              <label className="text-sm font-medium mb-2 block">{t('farmerCommunity.contentLabel') || "Content"}</label>
               <Textarea
-                placeholder="Share your experience, ask questions, or provide advice to fellow farmers..."
+                placeholder={t('farmerCommunity.contentPlaceholder') || "Share your experience, ask questions, or provide advice to fellow farmers..."}
                 value={newPostContent}
                 onChange={(e) => setNewPostContent(e.target.value)}
                 className="min-h-32"
@@ -588,19 +590,19 @@ export default function FarmerCommunity() {
             <div className="flex gap-2">
               <Button variant="outline" size="sm">
                 <Camera className="h-4 w-4 mr-2" />
-                Add Photos
+                {t('farmerCommunity.addPhotos') || "Add Photos"}
               </Button>
               <Button variant="outline" size="sm">
                 <Video className="h-4 w-4 mr-2" />
-                Add Video
+                {t('farmerCommunity.addVideo') || "Add Video"}
               </Button>
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => setShowNewPostDialog(false)}>
-                Cancel
+                {t('farmerCommunity.cancelButton') || "Cancel"}
               </Button>
               <Button onClick={createNewPost} disabled={!newPostContent.trim()}>
-                Share Post
+                {t('farmerCommunity.sharePostButton') || "Share Post"}
               </Button>
             </div>
           </div>

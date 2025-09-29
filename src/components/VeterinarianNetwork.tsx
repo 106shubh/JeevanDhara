@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Veterinarian {
   id: string;
@@ -44,6 +45,7 @@ interface Veterinarian {
 }
 
 export default function VeterinarianNetwork() {
+  const { t } = useLanguage();
   const [veterinarians, setVeterinarians] = useState<Veterinarian[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
@@ -169,22 +171,22 @@ export default function VeterinarianNetwork() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-xl md:text-3xl font-bold text-foreground">Veterinarian Network</h2>
+        <h2 className="text-xl md:text-3xl font-bold text-foreground">{t('veterinarianNetwork.title') || 'Veterinarian Network'}</h2>
         <p className="text-sm md:text-base text-muted-foreground px-4">
-          Connect with qualified veterinarians for expert consultation and emergency care
+          {t('veterinarianNetwork.description') || 'Connect with qualified veterinarians for expert consultation and emergency care'}
         </p>
       </motion.div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 h-10 md:h-12">
           <TabsTrigger value="find" className="text-xs md:text-sm px-2">
-            {isMobile ? "Find" : "Find Veterinarians"}
+            {isMobile ? (t('veterinarianNetwork.findTabMobile') || "Find") : (t('veterinarianNetwork.findTab') || "Find Veterinarians")}
           </TabsTrigger>
           <TabsTrigger value="consultations" className="text-xs md:text-sm px-2">
-            {isMobile ? "Consults" : "My Consultations"}
+            {isMobile ? (t('veterinarianNetwork.consultationsTabMobile') || "Consults") : (t('veterinarianNetwork.consultationsTab') || "My Consultations")}
           </TabsTrigger>
           <TabsTrigger value="emergency" className="text-xs md:text-sm px-2">
-            {isMobile ? "Emergency" : "Emergency Services"}
+            {isMobile ? (t('veterinarianNetwork.emergencyTabMobile') || "Emergency") : (t('veterinarianNetwork.emergencyTab') || "Emergency Services")}
           </TabsTrigger>
         </TabsList>
 
@@ -195,7 +197,7 @@ export default function VeterinarianNetwork() {
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder={isMobile ? "Search vets..." : "Search by name or specialization..."}
+                  placeholder={isMobile ? (t('veterinarianNetwork.searchPlaceholderMobile') || "Search vets...") : (t('veterinarianNetwork.searchPlaceholder') || "Search by name or specialization...")}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 h-10"
@@ -203,10 +205,10 @@ export default function VeterinarianNetwork() {
               </div>
               <Select value={locationFilter} onValueChange={setLocationFilter}>
                 <SelectTrigger className="h-10">
-                  <SelectValue placeholder="Location" />
+                  <SelectValue placeholder={t('veterinarianNetwork.locationFilter') || "Location"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Locations</SelectItem>
+                  <SelectItem value="all">{t('veterinarianNetwork.allLocations') || "All Locations"}</SelectItem>
                   <SelectItem value="Punjab">Punjab</SelectItem>
                   <SelectItem value="Haryana">Haryana</SelectItem>
                   <SelectItem value="Uttar Pradesh">Uttar Pradesh</SelectItem>
@@ -214,13 +216,13 @@ export default function VeterinarianNetwork() {
               </Select>
               <Select value={specializationFilter} onValueChange={setSpecializationFilter}>
                 <SelectTrigger className="h-10">
-                  <SelectValue placeholder="Specialization" />
+                  <SelectValue placeholder={t('veterinarianNetwork.specializationFilter') || "Specialization"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Specializations</SelectItem>
-                  <SelectItem value="large animals">Large Animals</SelectItem>
-                  <SelectItem value="small animals">Small Animals</SelectItem>
-                  <SelectItem value="poultry">Poultry</SelectItem>
+                  <SelectItem value="all">{t('veterinarianNetwork.allSpecializations') || "All Specializations"}</SelectItem>
+                  <SelectItem value="large animals">{t('veterinarianNetwork.largeAnimals') || "Large Animals"}</SelectItem>
+                  <SelectItem value="small animals">{t('veterinarianNetwork.smallAnimals') || "Small Animals"}</SelectItem>
+                  <SelectItem value="poultry">{t('veterinarianNetwork.poultry') || "Poultry"}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -260,7 +262,7 @@ export default function VeterinarianNetwork() {
                           </div>
                         </div>
                         {vet.availability.emergency && (
-                          <Badge variant="destructive" className="text-xs">Emergency</Badge>
+                          <Badge variant="destructive" className="text-xs">{t('veterinarianNetwork.emergency') || "Emergency"}</Badge>
                         )}
                       </div>
                     </CardHeader>
@@ -276,7 +278,7 @@ export default function VeterinarianNetwork() {
                         
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                           <MapPin className="h-3 w-3" />
-                          <span>{vet.distance} km away</span>
+                          <span>{vet.distance} km {t('veterinarianNetwork.away') || "away"}</span>
                         </div>
                         
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -286,7 +288,7 @@ export default function VeterinarianNetwork() {
                         
                         <div className="flex items-center gap-2 text-sm">
                           <span className="font-medium">₹{vet.consultationFee}</span>
-                          <span className="text-muted-foreground">/ consultation</span>
+                          <span className="text-muted-foreground">/ {t('veterinarianNetwork.consultation') || "consultation"}</span>
                         </div>
                       </div>
                       
@@ -299,7 +301,7 @@ export default function VeterinarianNetwork() {
                             setShowVetDetails(true);
                           }}
                         >
-                          View Profile
+                          {t('veterinarianNetwork.viewProfile') || "View Profile"}
                         </Button>
                         <Button 
                           size="sm" 
@@ -332,10 +334,10 @@ export default function VeterinarianNetwork() {
         <TabsContent value="consultations" className="space-y-6 mt-6">
           <div className="text-center py-12">
             <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">No Consultations Yet</h3>
-            <p className="text-muted-foreground mb-4">Book your first consultation to get started</p>
+            <h3 className="text-lg font-medium mb-2">{t('veterinarianNetwork.noConsultationsTitle') || "No Consultations Yet"}</h3>
+            <p className="text-muted-foreground mb-4">{t('veterinarianNetwork.noConsultationsDescription') || "Book your first consultation to get started"}</p>
             <Button onClick={() => setActiveTab("find")}>
-              Find Veterinarians
+              {t('veterinarianNetwork.findVeterinarians') || "Find Veterinarians"}
             </Button>
           </div>
         </TabsContent>
@@ -346,8 +348,8 @@ export default function VeterinarianNetwork() {
               <Heart className="h-8 w-8 text-red-600" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-red-600">Emergency Veterinary Services</h3>
-              <p className="text-muted-foreground">24/7 emergency support for critical animal health situations</p>
+              <h3 className="text-2xl font-bold text-red-600">{t('veterinarianNetwork.emergencyServices') || "Emergency Veterinary Services"}</h3>
+              <p className="text-muted-foreground">{t('veterinarianNetwork.emergencyDescription') || "24/7 emergency support for critical animal health situations"}</p>
             </div>
           </div>
 
@@ -367,21 +369,21 @@ export default function VeterinarianNetwork() {
                       </div>
                       <div>
                         <h3 className="font-semibold">{vet.name}</h3>
-                        <p className="text-sm text-muted-foreground">{vet.experience} years experience</p>
+                        <p className="text-sm text-muted-foreground">{vet.experience} {t('veterinarianNetwork.yearsExperience') || "years experience"}</p>
                       </div>
                       <Badge variant="destructive" className="ml-auto">
-                        24/7 Available
+                        {t('veterinarianNetwork.available247') || "24/7 Available"}
                       </Badge>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <span className="text-muted-foreground">Response Time:</span>
+                        <span className="text-muted-foreground">{t('veterinarianNetwork.responseTime') || "Response Time:"}</span>
                         <p className="font-medium">{vet.responseTime}</p>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Success Rate:</span>
+                        <span className="text-muted-foreground">{t('veterinarianNetwork.successRate') || "Success Rate:"}</span>
                         <p className="font-medium">{vet.successRate}%</p>
                       </div>
                     </div>
@@ -392,7 +394,7 @@ export default function VeterinarianNetwork() {
                         onClick={() => initiateEmergencyCall(vet)}
                       >
                         <Phone className="h-4 w-4 mr-2" />
-                        Emergency Call
+                        {t('veterinarianNetwork.emergencyCall') || "Emergency Call"}
                       </Button>
                       <Button 
                         variant="outline" 
@@ -401,7 +403,7 @@ export default function VeterinarianNetwork() {
                           setShowVetDetails(true);
                         }}
                       >
-                        Profile
+                        {t('veterinarianNetwork.profile') || "Profile"}
                       </Button>
                     </div>
                   </CardContent>
@@ -425,21 +427,21 @@ export default function VeterinarianNetwork() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <h4 className="font-medium mb-2">Contact</h4>
+                  <h4 className="font-medium mb-2">{t('veterinarianNetwork.contact') || "Contact"}</h4>
                   <p>{selectedVet.phone}</p>
                   <p>{selectedVet.email}</p>
                   <p>{selectedVet.location}</p>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2">Details</h4>
-                  <p>Experience: {selectedVet.experience} years</p>
-                  <p>Success Rate: {selectedVet.successRate}%</p>
-                  <p>Response: {selectedVet.responseTime}</p>
+                  <h4 className="font-medium mb-2">{t('veterinarianNetwork.details') || "Details"}</h4>
+                  <p>{t('veterinarianNetwork.experience') || "Experience:"} {selectedVet.experience} {t('veterinarianNetwork.years') || "years"}</p>
+                  <p>{t('veterinarianNetwork.successRate') || "Success Rate:"} {selectedVet.successRate}%</p>
+                  <p>{t('veterinarianNetwork.response') || "Response:"} {selectedVet.responseTime}</p>
                 </div>
               </div>
               
               <div>
-                <h4 className="font-medium mb-2">Specializations</h4>
+                <h4 className="font-medium mb-2">{t('veterinarianNetwork.specializations') || "Specializations"}</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedVet.specialization.map(spec => (
                     <Badge key={spec} variant="secondary">{spec}</Badge>
@@ -455,9 +457,9 @@ export default function VeterinarianNetwork() {
                     setShowBookingDialog(true);
                   }}
                 >
-                  Book Consultation
+                  {t('veterinarianNetwork.bookConsultation') || "Book Consultation"}
                 </Button>
-                <Button variant="outline">Send Message</Button>
+                <Button variant="outline">{t('veterinarianNetwork.sendMessage') || "Send Message"}</Button>
               </div>
             </div>
           )}
@@ -468,7 +470,7 @@ export default function VeterinarianNetwork() {
       <Dialog open={showBookingDialog} onOpenChange={setShowBookingDialog}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Book Consultation</DialogTitle>
+            <DialogTitle>{t('veterinarianNetwork.bookConsultation') || "Book Consultation"}</DialogTitle>
           </DialogHeader>
           {selectedVet && (
             <div className="space-y-4">
@@ -476,7 +478,7 @@ export default function VeterinarianNetwork() {
                 <Stethoscope className="h-6 w-6 text-primary" />
                 <div>
                   <p className="font-medium">{selectedVet.name}</p>
-                  <p className="text-sm text-muted-foreground">₹{selectedVet.consultationFee} / consultation</p>
+                  <p className="text-sm text-muted-foreground">₹{selectedVet.consultationFee} / {t('veterinarianNetwork.consultation') || "consultation"}</p>
                 </div>
               </div>
               
@@ -487,7 +489,7 @@ export default function VeterinarianNetwork() {
                   onClick={() => bookConsultation('video')}
                 >
                   <Video className="h-4 w-4" />
-                  <span className="text-xs">Video</span>
+                  <span className="text-xs">{t('veterinarianNetwork.video') || "Video"}</span>
                 </Button>
                 <Button 
                   variant="outline" 
@@ -495,14 +497,14 @@ export default function VeterinarianNetwork() {
                   onClick={() => bookConsultation('phone')}
                 >
                   <Phone className="h-4 w-4" />
-                  <span className="text-xs">Phone</span>
+                  <span className="text-xs">{t('veterinarianNetwork.phone') || "Phone"}</span>
                 </Button>
                 <Button 
                   variant="outline" 
                   className="h-16 flex-col gap-1"
                   onClick={() => bookConsultation('chat')}
                 >
-                  <span className="text-xs">Chat</span>
+                  <span className="text-xs">{t('veterinarianNetwork.chat') || "Chat"}</span>
                 </Button>
               </div>
             </div>
