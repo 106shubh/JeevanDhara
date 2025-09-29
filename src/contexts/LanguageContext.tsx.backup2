@@ -1,60 +1,3 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './AuthContext';
-
-type Language = 'english' | 'hindi' | 'bengali' | 'hinglish';
-
-interface Translations {
-  [key: string]: {
-    english: string;
-    hindi: string;
-    bengali: string;
-  };
-}
-
-const translations: Translations = {
-  // Navigation
-  dashboard: {
-    english: 'Dashboard',
-    hindi: 'डैशबोर्ड',
-    bengali: 'ড্যাশবোর্ড'
-  },
-  logAMU: {
-    english: 'Log AMU',
-    hindi: 'AMU लॉग करें',
-    bengali: 'AMU লগ করুন'
-  },
-  alerts: {
-    english: 'Alerts',
-    hindi: 'अलर्ट',
-    bengali: 'সতর্কতা'
-  },
-  prescriptions: {
-    english: 'Prescriptions',
-    hindi: 'नुस्खे',
-    bengali: 'প্রেসক্রিপশন'
-  },
-  'foodSafety': {
-    english: 'Food Safety',
-    hindi: 'खाद्य सुरक्षा',
-    bengali: 'খাদ্য নিরাপত্তা'
-  },
-  veterinarians: {
-    english: 'Veterinarians',
-    hindi: 'पशु चिकित्सक',
-    bengali: 'পশুচিকিৎসক'
-  },
-  community: {
-    english: 'Community',
-    hindi: 'समुदाय',
-    bengali: 'সম্প্রদায়'
-  },
-  chatbot: {
-    english: 'Farm Assistant',
-    hindi: 'कृषि सहायक',
-    bengali: 'কৃষি সহায়ক'
-  },
-  
   // Prescription Management
   'prescriptions.management': {
     english: 'Prescription Management',
@@ -165,6 +108,11 @@ const translations: Translations = {
     english: 'Please scan a prescription first and extract the data',
     hindi: 'कृपया पहले एक नुस्खा स्कैन करें और डेटा निकालें',
     bengali: 'অনুগ্রহ করে প্রথমে একটি প্রেসক্রিপশন স্ক্যান করুন এবং ডাটা বের করুন'
+  },
+  chatbot: {
+    english: 'Farm Assistant',
+    hindi: 'कृषि सहायक',
+    bengali: 'কৃষি সহায়ক'
   },
   
   // Veterinarian Network
@@ -562,7 +510,7 @@ const translations: Translations = {
   },
   'farmerCommunity.bookmarkRemovedDesc': {
     english: 'Post removed from bookmarks',
-    hindi: 'पोस्ट बुकमारक से हटाई गई',
+    hindi: 'पोस्ट बुकमार्क से हटाई गई',
     bengali: 'বুকমার্ক থেকে পোস্ট সরানো হয়েছে'
   },
   'farmerCommunity.bookmarkAddedDesc': {
@@ -833,134 +781,4 @@ const translations: Translations = {
   'feature.compliance.desc': {
     english: 'Stay compliant with regulations and maintain proper documentation. Automated alerts ensure you never miss important deadlines.',
     hindi: 'नियमों के साथ अनुपालन बनाए रखें और उचित दस्तावेज़ीकरण बनाए रखें। स्वचालित अलर्ट सुनिश्चित करते हैं कि आप कभी भी महत्वपूर्ण समय सीमा नहीं चूकते।',
-    bengali: 'নিয়মাবলীর সাথে সম্মত থাকুন এবং যথাযথ ডকুমেন্টেশন বজায় রাখুন। স্বয়ংক্রিয় সতর্কতা নিশ্চিত করে যে আপনি কখনও গুরুত্বপূর্ণ সময়সীমা মিস করবেন না।'
-  },
-  
-  // Dashboard
-  'dashboard.totalAnimals': {
-    english: 'Total Animals',
-    hindi: 'कुल पशु',
-    bengali: 'মোট পশু'
-  },
-  'dashboard.activeTreatments': {
-    english: 'Active Treatments',
-    hindi: 'सक्रिय उपचार',
-    bengali: 'সক্রিয় চিকিৎসা'
-  },
-  'dashboard.mrlCompliance': {
-    english: 'MRL Compliance',
-    hindi: 'MRL अनुपालन',
-    bengali: 'MRL সম্মতি'
-  },
-  'dashboard.pendingAlerts': {
-    english: 'Pending Alerts',
-    hindi: 'लंबित अलर्ट',
-    bengali: 'অমীমাংসিত সতর্কতা'
-  },
-  'dashboard.quickActions': {
-    english: 'Quick Actions',
-    hindi: 'त्वरित कार्य',
-    bengali: 'দ্রুত কাজ'
-  },
-  'dashboard.generateReport': {
-    english: 'Generate Report',
-    hindi: 'रिपोर्ट उत्पन्न करें',
-    bengali: 'রিপোর্ট তৈরি করুন'
-  },
-  'dashboard.exportCompliance': {
-    english: 'Export compliance report',
-    hindi: 'अनुपालन रिपोर्ट निर्यात करें',
-    bengali: 'সম্মতি রিপোর্ট এক্সপোর্ট করুন'
-  },
-  'dashboard.amuTrends': {
-    english: 'AMU Trends & Compliance',
-    hindi: 'AMU प्रवृत्ति और अनुपालन',
-    bengali: 'AMU প্রবণতা এবং সম্মতি'
-  },
-  'dashboard.amuBySpecies': {
-    english: 'AMU by Species',
-    hindi: 'प्रजाति के अनुसार AMU',
-    bengali: 'প্রজাতি অনুযায়ী AMU'
-  },
-  'dashboard.withdrawalPeriods': {
-    english: 'Active Withdrawal Periods',
-    hindi: 'सक्रिय निष्कासन अवधि',
-    bengali: 'সক্রিয় উত্তোলন সময়কাল'
-  },
-  'dashboard.daysLeft': {
-    english: 'days left',
-    hindi: 'दिन शेष',
-    bengali: 'দিন বাকি'
-  },
-  'dashboard.untilClearance': {
-    english: 'Until clearance',
-    hindi: 'निकासी तक',
-    bengali: 'মওসুম শেষ হওয়া পর্যন্ত'
-  },
-  'action.logAMU': {
-    english: 'Log New AMU',
-    hindi: 'नया AMU लॉग करें',
-    bengali: 'নতুন AMU লগ করুন'
-  },
-};
-
-interface LanguageContextType {
-  language: Language;
-  setLanguage: (language: Language) => void;
-  t: (key: string) => string;
-}
-
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
-
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  return context;
-};
-
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('english');
-  const { user } = useAuth();
-
-  useEffect(() => {
-    const fetchUserLanguage = async () => {
-      if (user) {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('language')
-          .eq('id', user.id)
-          .single();
-        
-        if (data && !error) {
-          setLanguage(data.language as Language || 'english');
-        }
-      }
-    };
-
-    fetchUserLanguage();
-  }, [user]);
-
-  const updateLanguage = async (newLanguage: Language) => {
-    setLanguage(newLanguage);
-    if (user) {
-      await supabase
-        .from('profiles')
-        .update({ language: newLanguage })
-        .eq('id', user.id);
-    }
-  };
-
-  const t = (key: string) => {
-    const translation = translations[key];
-    if (!translation) return key;
-    return translation[language] || translation.english || key;
-  };
-
-  return (
-    <LanguageContext.Provider value={{ language, setLanguage: updateLanguage, t }}>
-      {children}
-    </LanguageContext.Provider>
-  );
-};
+    bengali: 'নিয়মাবলীর সাথে সম্মত থাকুন এবং যথাযথ ডকুমেন্টেশন বজায় রাখুন। স্বয়ংক্রিয় সতর্কতা নিশ্চিত করে যে আপনি কখনও গুরুত্বপূর্ণ সময়সীমা মিস করবে
