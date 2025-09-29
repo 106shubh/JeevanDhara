@@ -321,132 +321,7 @@ export type Database = {
         }
         Relationships: []
       }
-      // Add new tables for food safety monitoring
-      food_safety_samples: {
-        Row: {
-          id: string
-          user_id: string
-          sample_id: string
-          food_category: Database["public"]["Enums"]["food_category"]
-          collection_date: string
-          farm_location: string | null
-          lab_reference: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          sample_id: string
-          food_category: Database["public"]["Enums"]["food_category"]
-          collection_date: string
-          farm_location?: string | null
-          lab_reference?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          sample_id?: string
-          food_category?: Database["public"]["Enums"]["food_category"]
-          collection_date?: string
-          farm_location?: string | null
-          lab_reference?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "food_safety_samples_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["user_id"]
-          }
-        ]
-      }
-      food_safety_contaminants: {
-        Row: {
-          id: string
-          name: string
-          contaminant_type: Database["public"]["Enums"]["contaminant_type"]
-          mrl_limit: number | null
-          unit: string | null
-          test_method: Database["public"]["Enums"]["test_method"] | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          name: string
-          contaminant_type: Database["public"]["Enums"]["contaminant_type"]
-          mrl_limit?: number | null
-          unit?: string | null
-          test_method?: Database["public"]["Enums"]["test_method"] | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          name?: string
-          contaminant_type?: Database["public"]["Enums"]["contaminant_type"]
-          mrl_limit?: number | null
-          unit?: string | null
-          test_method?: Database["public"]["Enums"]["test_method"] | null
-          created_at?: string
-        }
-        Relationships: []
-      }
-      food_safety_test_results: {
-        Row: {
-          id: string
-          sample_id: string
-          contaminant_id: string
-          detected_level: number | null
-          status: Database["public"]["Enums"]["test_status"]
-          notes: string | null
-          tested_at: string
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          sample_id: string
-          contaminant_id: string
-          detected_level?: number | null
-          status: Database["public"]["Enums"]["test_status"]
-          notes?: string | null
-          tested_at?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          sample_id?: string
-          contaminant_id?: string
-          detected_level?: number | null
-          status?: Database["public"]["Enums"]["test_status"]
-          notes?: string | null
-          tested_at?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "food_safety_test_results_sample_id_fkey"
-            columns: ["sample_id"]
-            isOneToOne: false
-            referencedRelation: "food_safety_samples"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "food_safety_test_results_contaminant_id_fkey"
-            columns: ["contaminant_id"]
-            isOneToOne: false
-            referencedRelation: "food_safety_contaminants"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
+
     }
     Views: {
       [_ in never]: never
@@ -462,11 +337,7 @@ export type Database = {
         | "metaphylaxis"
         | "growth_promotion"
       animal_species: "cattle" | "sheep" | "goat" | "pig" | "poultry"
-      // Add new enums for food safety
-      food_category: "milk" | "honey" | "meat" | "fish" | "cereals" | "fruits" | "beverages"
-      contaminant_type: "Antibiotic" | "Pesticide" | "Heavy Metal" | "Mycotoxin" | "Chemical" | "Dye" | "Beta-Agonist" | "Sweetener" | "Herbicide" | "Fungicide" | "Insecticide"
-      test_status: "safe" | "warning" | "unsafe"
-      test_method: "LC-MS/MS" | "GC-MS" | "HPLC" | "ICP-MS" | "ELISA"
+
     }
     CompositeTypes: {
       [_ in never]: never

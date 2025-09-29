@@ -50,17 +50,17 @@ const DatabaseTestPage = () => {
         <div className="mt-8 p-6 bg-muted rounded-lg">
           <h2 className="text-xl font-semibold mb-4">About This Test</h2>
           <p className="mb-3">
-            This test verifies that the food safety monitoring feature is properly integrated with the database.
+            This test verifies that the application is properly integrated with the database.
             It checks:
           </p>
           <ul className="list-disc pl-5 space-y-2 mb-4">
             <li>Connection to the Supabase database</li>
-            <li>Access to food safety contaminants data</li>
-            <li>Access to user-specific food safety samples</li>
-            <li>Access to food safety test results</li>
+            <li>Access to animals data</li>
+            <li>Access to antimicrobials data</li>
+            <li>Access to prescriptions data</li>
           </ul>
           <p>
-            If all tests pass, the food safety monitoring feature is ready for use with real data.
+            If all tests pass, the application is ready for use with real data.
           </p>
         </div>
       </div>

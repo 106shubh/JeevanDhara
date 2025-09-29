@@ -167,16 +167,6 @@ export const PrescriptionManager = () => {
     setExtractedData(extracted);
   };
   
-  // Handler for editing extracted data
-  const handleEditExtractedData = (field: keyof Prescription, value: string) => {
-    if (extractedData) {
-      setExtractedData({
-        ...extractedData,
-        [field]: value
-      });
-    }
-  };
-  
   // Handler for saving prescription
   const handleSavePrescription = async () => {
     if (!extractedData) {
@@ -225,38 +215,6 @@ export const PrescriptionManager = () => {
       });
     }
   };
-  
-  // Initialize with sample prescriptions for demonstration
-  useEffect(() => {
-    if (prescriptions.length === 0) {
-      setPrescriptions([
-        {
-          id: "RX001",
-          veterinarianName: "Dr. Sarah Johnson",
-          animalId: "COW-023",
-          drugName: "Amoxicillin",
-          issueDate: "2024-01-10",
-          status: "verified",
-          dosage: "500mg",
-          frequency: "Twice daily",
-          duration: "7 days",
-          notes: "Administer with food. Monitor for allergic reactions."
-        },
-        {
-          id: "RX002",
-          veterinarianName: "Dr. Michael Chen",
-          animalId: "GOAT-015",
-          drugName: "Oxytetracycline",
-          issueDate: "2024-01-12",
-          status: "pending",
-          dosage: "200mg",
-          frequency: "Once daily",
-          duration: "5 days",
-          notes: "For respiratory infection treatment."
-        }
-      ]);
-    }
-  }, [prescriptions.length]);
 
   return (
     <div className="space-y-6 max-w-full">
@@ -300,47 +258,6 @@ export const PrescriptionManager = () => {
           </div>
         </CardContent>
       </Card>
-      
-      {/* Prescriptions List */}
-      {prescriptions.length > 0 && (
-        <Card className="shadow-card">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Activity className="h-5 w-5" />
-              <span>Saved Prescriptions</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {prescriptions.map((prescription) => (
-                <div key={prescription.id} className="border rounded-lg p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="outline">{prescription.id}</Badge>
-                        <Badge variant={
-                          prescription.status === 'verified' ? 'default' : 
-                          prescription.status === 'pending' ? 'secondary' : 'destructive'
-                        }>
-                          {prescription.status}
-                        </Badge>
-                      </div>
-                      <h3 className="font-semibold">{prescription.drugName}</h3>
-                      <p className="text-sm text-muted-foreground">For {prescription.animalId}</p>
-                      <p className="text-sm">Veterinarian: {prescription.veterinarianName}</p>
-                      <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
-                        <div>Dosage: {prescription.dosage || 'Not specified'}</div>
-                        <div>Frequency: {prescription.frequency || 'Not specified'}</div>
-                        <div>Issue Date: {prescription.issueDate}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
       
       {/* Prescription Scanning Dialog */}
       <Dialog open={showScannedDialog} onOpenChange={setShowScannedDialog}>
@@ -456,55 +373,33 @@ export const PrescriptionManager = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Veterinarian Name</Label>
-                      <Input 
-                        value={extractedData.veterinarianName || ''} 
-                        onChange={(e) => handleEditExtractedData('veterinarianName', e.target.value)}
-                      />
+                      <Input value={extractedData.veterinarianName || ''} readOnly />
                     </div>
                     <div className="space-y-2">
                       <Label>Animal ID</Label>
-                      <Input 
-                        value={extractedData.animalId || ''} 
-                        onChange={(e) => handleEditExtractedData('animalId', e.target.value)}
-                      />
+                      <Input value={extractedData.animalId || ''} readOnly />
                     </div>
                     <div className="space-y-2">
                       <Label>Drug Name</Label>
-                      <Input 
-                        value={extractedData.drugName || ''} 
-                        onChange={(e) => handleEditExtractedData('drugName', e.target.value)}
-                      />
+                      <Input value={extractedData.drugName || ''} readOnly />
                     </div>
                     <div className="space-y-2">
                       <Label>Issue Date</Label>
-                      <Input 
-                        value={extractedData.issueDate || ''} 
-                        onChange={(e) => handleEditExtractedData('issueDate', e.target.value)}
-                      />
+                      <Input value={extractedData.issueDate || ''} readOnly />
                     </div>
                     <div className="space-y-2">
                       <Label>Dosage</Label>
-                      <Input 
-                        value={extractedData.dosage || ''} 
-                        onChange={(e) => handleEditExtractedData('dosage', e.target.value)}
-                      />
+                      <Input value={extractedData.dosage || ''} readOnly />
                     </div>
                     <div className="space-y-2">
                       <Label>Frequency</Label>
-                      <Input 
-                        value={extractedData.frequency || ''} 
-                        onChange={(e) => handleEditExtractedData('frequency', e.target.value)}
-                      />
+                      <Input value={extractedData.frequency || ''} readOnly />
                     </div>
                   </div>
                   
                   <div className="space-y-2">
                     <Label>Notes</Label>
-                    <Textarea 
-                      value={extractedData.notes || ''} 
-                      onChange={(e) => handleEditExtractedData('notes', e.target.value)}
-                      className="min-h-[100px]" 
-                    />
+                    <Textarea value={extractedData.notes || ''} readOnly className="min-h-[100px]" />
                   </div>
                   
                   <div className="flex justify-end space-x-2">

@@ -11,35 +11,34 @@ const DatabaseTest = () => {
   useEffect(() => {
     const runDatabaseTests = async () => {
       try {
-        // Test 1: Check if we can access the food safety contaminants table
-        const { data: contaminants, error: contaminantsError } = await supabase
-          .from('food_safety_contaminants')
-          .select('id, name, contaminant_type, mrl_limit, unit')
+        // Test 1: Check if we can access the animals table
+        const { data: animals, error: animalsError } = await supabase
+          .from('animals')
+          .select('id, animal_id, species')
           .limit(3);
         
-        if (contaminantsError) throw new Error(`Contaminants error: ${contaminantsError.message}`);
+        if (animalsError) throw new Error(`Animals error: ${animalsError.message}`);
         
-        // Test 2: Check if we can access the food safety samples table (should be empty for new users)
-        const { data: samples, error: samplesError } = await supabase
-          .from('food_safety_samples')
+        // Test 2: Check if we can access the antimicrobials table
+        const { data: antimicrobials, error: antimicrobialsError } = await supabase
+          .from('antimicrobials')
+          .select('id, name, active_ingredient')
+          .limit(3);
+        
+        if (antimicrobialsError) throw new Error(`Antimicrobials error: ${antimicrobialsError.message}`);
+        
+        // Test 3: Check if we can access the prescriptions table
+        const { data: prescriptions, error: prescriptionsError } = await supabase
+          .from('prescriptions')
           .select('id')
-          .eq('user_id', user?.id)
           .limit(1);
         
-        if (samplesError) throw new Error(`Samples error: ${samplesError.message}`);
-        
-        // Test 3: Check if we can access the food safety test results table (should be empty for new users)
-        const { data: testResults, error: testResultsError } = await supabase
-          .from('food_safety_test_results')
-          .select('id')
-          .limit(1);
-        
-        if (testResultsError) throw new Error(`Test results error: ${testResultsError.message}`);
+        if (prescriptionsError) throw new Error(`Prescriptions error: ${prescriptionsError.message}`);
         
         setTestResults({
-          contaminants: contaminants || [],
-          samples: samples || [],
-          testResults: testResults || [],
+          animals: animals || [],
+          antimicrobials: antimicrobials || [],
+          prescriptions: prescriptions || [],
           success: true
         });
       } catch (err) {
@@ -73,25 +72,34 @@ const DatabaseTest = () => {
             <h3 className="font-semibold mb-2">Test Details:</h3>
             <ul className="list-disc pl-5 space-y-2">
               <li>
-                <span className="font-medium">Food Safety Contaminants:</span> 
-                Found {testResults.contaminants.length} sample records
-                {testResults.contaminants.length > 0 && (
+                <span className="font-medium">Animals:</span> 
+                Found {testResults.animals.length} sample records
+                {testResults.animals.length > 0 && (
                   <ul className="list-circle pl-5 mt-1 text-sm">
-                    {testResults.contaminants.map((contaminant: any) => (
-                      <li key={contaminant.id}>
-                        {contaminant.name} ({contaminant.contaminant_type}) - MRL: {contaminant.mrl_limit} {contaminant.unit}
+                    {testResults.animals.map((animal: any) => (
+                      <li key={animal.id}>
+                        {animal.animal_id} ({animal.species})
                       </li>
                     ))}
                   </ul>
                 )}
               </li>
               <li>
-                <span className="font-medium">Food Safety Samples:</span> 
-                Found {testResults.samples.length} user records
+                <span className="font-medium">Antimicrobials:</span> 
+                Found {testResults.antimicrobials.length} sample records
+                {testResults.antimicrobials.length > 0 && (
+                  <ul className="list-circle pl-5 mt-1 text-sm">
+                    {testResults.antimicrobials.map((antimicrobial: any) => (
+                      <li key={antimicrobial.id}>
+                        {antimicrobial.name} ({antimicrobial.active_ingredient})
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
               <li>
-                <span className="font-medium">Food Safety Test Results:</span> 
-                Found {testResults.testResults.length} records
+                <span className="font-medium">Prescriptions:</span> 
+                Found {testResults.prescriptions.length} records
               </li>
             </ul>
           </div>
@@ -99,8 +107,7 @@ const DatabaseTest = () => {
           <div className="p-3 bg-blue-50 rounded-lg">
             <h3 className="font-semibold text-blue-800">ℹ️ Next Steps</h3>
             <p className="text-blue-700">
-              The food safety monitoring feature is ready to use. You can now test the full functionality 
-              by navigating to the Food Safety Monitor in the main dashboard.
+              The database is properly configured. You can now use all features of the application.
             </p>
           </div>
         </div>

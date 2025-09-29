@@ -331,15 +331,6 @@ export const Dashboard = () => {
     setShowAlertsDialog(true);
   };
 
-  const handleFoodSafety = () => {
-    // In a real implementation, this would navigate to the food safety page
-    // For now, we'll just show a toast
-    toast({
-      title: "Food Safety Monitoring",
-      description: "Navigate to the Food Safety Monitoring page to check compliance.",
-    });
-  };
-
   const handleWithdrawalClick = (animal: string, drug: string, daysLeft: number) => {
     // Find the withdrawal data to get more details
     const withdrawalItem = withdrawalData.find(item => item.animal === animal && item.drug === drug);
@@ -647,23 +638,6 @@ export const Dashboard = () => {
                 </Tabs>
               </DialogContent>
             </Dialog>
-
-            <Button 
-              onClick={handleFoodSafety}
-              variant="outline" 
-              className="h-auto p-3 md:p-4 justify-start group relative overflow-hidden hover:shadow-card hover:border-green-500/30 transition-all duration-300"
-            >
-              <div className="text-left flex items-center gap-2 md:gap-3">
-                <div className="bg-green-500/10 p-1.5 md:p-2 rounded-full">
-                  <Shield className="h-4 w-4 md:h-5 md:w-5 text-green-500" />
-                </div>
-                <div>
-                  <div className="text-sm md:text-base font-medium group-hover:translate-x-1 transition-transform duration-300">Food Safety</div>
-                  <div className="text-xs text-muted-foreground group-hover:translate-x-1 transition-transform duration-300">Monitor compliance</div>
-                </div>
-                <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-green-500" />
-              </div>
-            </Button>
 
             <Button 
               onClick={toggleWeatherCard}

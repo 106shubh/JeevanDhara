@@ -8,8 +8,6 @@ import { PrescriptionManager } from "@/components/PrescriptionManager";
 import { Chatbot } from "@/components/FunctionalChatbot";
 import VeterinarianNetwork from "@/components/VeterinarianNetwork";
 import FarmerCommunity from "@/components/FarmerCommunity";
-import AdvancedAnalytics from "@/components/AdvancedAnalytics";
-import { FoodSafetyMonitor } from "@/components/FoodSafetyMonitor";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
@@ -32,10 +30,6 @@ const Index = () => {
         return <VeterinarianNetwork />;
       case "community":
         return <FarmerCommunity />;
-      case "analytics":
-        return <AdvancedAnalytics />;
-      case "food-safety":
-        return <FoodSafetyMonitor />;
       default:
         return <Dashboard />;
     }
@@ -79,8 +73,8 @@ const Index = () => {
           {[
             { id: 'veterinarians', icon: "🩺", label: "Vets" },
             { id: 'community', icon: "👥", label: "Community" },
-            { id: 'analytics', icon: "📈", label: "Analytics" },
-            { id: 'food-safety', icon: "🛡️", label: "Safety" }
+            { id: 'reports', icon: "📋", label: "Reports" },
+            { id: 'settings', icon: "⚙️", label: "Settings" }
           ].map((item) => (
             <button
               key={item.id}

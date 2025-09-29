@@ -212,22 +212,7 @@ export const Landing = () => {
               </Button>
               
             </div>
-            <div className="pt-8 flex items-center space-x-4">
-              <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-8 h-8 rounded-full border-2 border-background overflow-hidden">
-                    <img 
-                      src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? 'women' : 'men'}/${i}.jpg`}
-                      alt="User"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="text-sm">
-                <span className="text-primary font-semibold">2,500+</span> farmers trust JeevanDhara
-              </div>
-            </div>
+            
           </motion.div>
           <motion.div className="relative" variants={itemVariants}>
             {/* 3D-like Hero Element with CSS animations */}
